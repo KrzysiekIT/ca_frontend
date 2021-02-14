@@ -25,6 +25,16 @@ export const actions = {
         return error;
       });
   },
+  users() {
+    return api.auth
+      .users()
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
   login({ commit }, data) {
     return api.auth.login(data).then(response => {
       commit("set_user", response.data.user);

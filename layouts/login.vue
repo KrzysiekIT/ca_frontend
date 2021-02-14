@@ -2,7 +2,11 @@
   <div class="login--layout">
     <header class="login--header">
       <figure>
-        <img src="~/assets/images/logo.png" alt="Champions academy" class="login--logo" />
+        <img
+          src="~/assets/images/logo.png"
+          alt="Champions academy"
+          class="login--logo"
+        />
       </figure>
     </header>
     <main class="login--box">

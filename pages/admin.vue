@@ -5,6 +5,7 @@
     <p v-else>The user is not authenticated!</p>
     <a href="/">Main Page</a>
     <button @click="$store.dispatch('auth/fetch')">Check Me</button>
+    <button @click="$store.dispatch('auth/users')">Check users (superadmin only)</button>
     <button @click="logOut">Log Out</button>
   </div>
 </template>
