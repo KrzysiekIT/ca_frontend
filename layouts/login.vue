@@ -2,8 +2,7 @@
   <div class="login--layout">
     <header class="login--header">
       <figure>
-        <Logo />
-        <figcaption class="logo--label">Champions<br />academy</figcaption>
+        <img src="~/assets/images/logo.png" alt="Champions academy" class="login--logo" />
       </figure>
     </header>
     <main class="login--box">
@@ -32,23 +31,26 @@ html {
   margin: 0;
 }
 .login--layout {
-  background-color: #003366;
+  background-color: #0e0f21;
   color: #fff;
   min-height: 100vh;
-  padding-top: 3rem;
+  padding-top: 4.5rem;
 }
 .login--header {
   display: flex;
   justify-content: center;
 }
+.login--logo {
+  width: 15rem;
+}
 .login--box {
   display: flex;
   justify-content: center;
-  padding-top: 2rem;
+  padding-top: 2.5rem;
 }
 .logo--label {
   display: flex;
-  font-size: 1.5rem;
+  font-size: 2.25rem;
   justify-content: flex-end;
   text-transform: uppercase;
 }

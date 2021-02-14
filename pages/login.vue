@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" class="login--form">
     <!-- <p v-if="alert">{{ alert.message }}</p> -->
     <label class="login--label">
       <span class="login--label__input">Nazwa użytkownika</span>
@@ -59,37 +59,47 @@ export default {
 };
 </script>
 <style scope>
+.login--form {
+  padding-bottom: 2rem;
+}
 .login--label {
   display: block;
-  padding-bottom: 0.5rem;
+  font-size: 1.5rem;
+  padding-bottom: 0.75rem;
 }
 .login--input {
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   display: block;
-  font-size: 1rem;
-  padding: 0.5rem;
+  font-size: 1.5rem;
+  padding: 0.75rem;
 }
 .login--label__input {
   display: block;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.375rem;
 }
 .login--button {
   border: none;
-  border-radius: 0.5rem;
-  background-color: #a4a4df;
+  border-radius: 0.75rem;
+  background-color: #4472c4;
+  color: #fff;
   display: flex;
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-left: auto;
-  padding: 0.5rem;
+  padding: 0.75rem;
   text-transform: uppercase;
 }
+.login--button:hover {
+  background-color: #4472c4e0;
+  cursor: pointer;
+}
 .login--link {
-  color: #5eb3c9;
+  color: #3c69bd;
+  font-size: 1.5rem;
   text-decoration: none;
 }
-.login--button:hover {
-  background-color: #7e7ec7;
-  cursor: pointer;
+input:focus {
+  box-shadow: 0 0 0 0.125rem #d48a0b;
+  outline: none;
 }
 </style>
