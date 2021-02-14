@@ -12,6 +12,9 @@
         <a href="/admin" class="button--grey">
           Admin
         </a>
+        <a href="/student" class="button--grey">
+          Student
+        </a>
       </div>
     </div>
   </div>
