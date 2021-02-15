@@ -22,13 +22,23 @@
 </template>
 <script>
 export default {
+  middleware: "auth",
+  meta: {
+    auth: { authority: 3 }
+  },
   layout: "login",
   data() {
     return {
       email: "",
       password: "",
       alert: null,
-      loading: false
+      loading: false,
+      nextPage: {
+        superadmin: "/admin",
+        admin: "/admin",
+        trainer: "/trainer",
+        student: "/student"
+      }
     };
   },
   methods: {
@@ -43,7 +53,9 @@ export default {
         .then(result => {
           this.alert = { type: "success", message: result.data.message };
           this.loading = false;
-          this.$router.push("/admin");
+          const role = result.data.user.role.name;
+          const nextPage = this.nextPage[role];
+          this.$router.push(nextPage);
         })
         .catch(error => {
           this.loading = false;

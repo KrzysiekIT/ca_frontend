@@ -87,8 +87,8 @@
           </li>
         </ul>
       </nav>
-      <main class="main">
-        <p v-if="user">Hello, {{ user.email }}</p>
+      <main class="main">{{user}}
+        <p v-if="user" style="color: darkblue;">Hello, {{ user.email }}</p>
         <p v-else>The user is not authenticated!</p>
         <a href="/">Main Page</a>
         <button @click="$store.dispatch('auth/fetch')">Check Me</button>
@@ -102,6 +102,10 @@
 </template>
 <script>
 export default {
+  middleware: "auth",
+  meta: {
+    auth: { authority: 8 }
+  },
   layout: "default",
   computed: {
     user() {
