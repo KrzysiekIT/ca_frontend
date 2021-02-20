@@ -29,7 +29,26 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources"],
+  modules: ["@nuxtjs/style-resources", "nuxt-i18n"],
+  i18n: {
+    lazy: true,
+    langDir: 'locales/',
+    locales: [
+       {
+        name: 'English',
+        code: 'en',
+        iso: 'en',
+        file: 'en'
+      },
+      {
+        name: 'Polish',
+        code: 'pl',
+        iso: 'pl',
+        file: 'pl'
+      },
+   ],
+    defaultLocale: 'pl',
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

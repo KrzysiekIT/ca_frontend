@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">
-        ca
+          {{ $t('general.welcome') }}
       </h1>
       <div class="links">
         <a href="/login" class="button--green">
