@@ -121,7 +121,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .header {
   display: flex;
   justify-content: space-between;
@@ -165,7 +165,7 @@ export default {
 .user--href {
   background-color: #fff;
   border-radius: 0.25rem;
-  color: #0e0f21;
+  color: $mainBackground;
   padding: 0 2rem 0 2rem;
   text-decoration: none;
 }

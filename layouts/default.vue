@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss"->
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -24,7 +24,7 @@ html {
   margin: 0;
 }
 .default--layout {
-  background-color: #0e0f21;
+  background-color: $mainBackground;
   color: #fff;
   min-height: 100vh;
   padding: 1rem;
