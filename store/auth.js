@@ -25,9 +25,9 @@ export const actions = {
         return error;
       });
   },
-  users() {
+  request(_, options) {
     return api.auth
-      .users()
+      .request(options)
       .then(response => {
         return response;
       })
