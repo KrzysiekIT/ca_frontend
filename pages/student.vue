@@ -1,11 +1,13 @@
 <template>
   <div>
     <header class="header">
-      <img
-        src="~/assets/images/logo.png"
-        alt="Champions academy"
-        class="header--logo"
-      />
+      <div class="header--logo-box">
+        <img
+          src="~/assets/images/logo.png"
+          alt="Champions academy"
+          class="header--logo"
+        />
+      </div>
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -58,7 +60,7 @@
           </li>
         </ul>
       </section>
-      <section>
+      <section class="header--end">
         <img src="~/assets/images/money.svg" alt="Sad icon" height="64" /><img
           src="~/assets/images/sad.svg"
           alt="Sad icon"
@@ -126,12 +128,19 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.header--logo-box {
+  width: 20rem;
+}
 .header--logo {
   height: 8rem;
 }
 .header--middle {
   display: flex;
   flex-direction: column;
+  min-width: calc(100% - 30rem);
+}
+.header--end {
+  width: 10rem;
 }
 .header--upper {
   display: flex;
@@ -178,7 +187,7 @@ export default {
 .lang--list {
   display: flex;
   list-style: none;
-  padding-left: 10rem;
+  padding-left: 5rem;
 }
 .lang--list-item {
   align-self: center;
