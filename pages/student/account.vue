@@ -15,29 +15,31 @@
       </div>
     </div>
     <div class="account__box">
-      <div class="account__box--inner">
-        <section class="payments">
-          <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
-          <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
-          <div>
-            <label class="payments__label">STATUS</label>
-            <strong
-              class="payments__label-value payments__label-value--suspended"
-              >AKTYWNY</strong
-            >
-          </div>
-          <div class="payments__icon-label">
-            <img
-              src="~/assets/images/terms_of_use.svg"
-              alt="User icon white"
-              height="32"
-            />
-            <span>KONTO UCZNIA</span>
-          </div>
-        </section>
-      </div>
-      <div class="account__box--inner">abc</div>
-      <div class="account__box--inner">abc</div>
+      <section class="account__box--inner payments">
+        <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
+        <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
+        <div>
+          <label class="payments__label">STATUS</label>
+          <strong class="payments__label-value payments__label-value--suspended"
+            >AKTYWNY</strong
+          >
+        </div>
+        <div class="payments__icon-label">
+          <img
+            src="~/assets/images/terms_of_use.svg"
+            alt="User icon white"
+            height="32"
+          />
+          <span>KONTO UCZNIA</span>
+        </div>
+      </section>
+      <section class="account__box--inner year">
+        <ul>
+          <li>ROK 1</li>
+          <li>ROK 2</li>
+        </ul>
+      </section>
+      <section class="account__box--inner year">abc</section>
     </div>
   </div>
 </template>
@@ -69,6 +71,13 @@ $boxPadding: 0.5rem;
 }
 .payments__label-value--suspended {
   color: #ffff00;
+}
+.year ul {
+  list-style-type: none;
+  padding: 0;
+}
+.year ul li:not(:first-child) {
+  padding: 0.75rem 0;
 }
 .account__box {
   display: flex;
