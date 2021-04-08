@@ -69,27 +69,9 @@
       </section>
     </header>
     <div class="page--middle">
-      <nav class="navigation">
-        <ul>
-          <li>
-            Strona główna
-            <ul>
-              <li>Konto ucznia</li>
-            </ul>
-          </li>
-          <li>
-            Trening
-            <ul>
-              <li>Abacus</li>
-              <li>Anzan</li>
-              <li>Gry Super Mind</li>
-              <li>Super Pamięć</li>
-              <li>Filmy</li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <main class="main">{{user}}
+      <NavigationStudent />
+      <main class="main">
+        {{ user }}
         <p v-if="user" style="color: darkblue;">Hello, {{ user.email }}</p>
         <p v-else>The user is not authenticated!</p>
         <a href="/">Main Page</a>
@@ -200,11 +182,6 @@ export default {
 }
 .page--middle {
   display: flex;
-}
-.navigation {
-  padding: 2rem 2rem 2rem 0;
-  min-height: calc(100vh - 10rem);
-  width: 20rem;
 }
 .main {
   background-color: #fff;
