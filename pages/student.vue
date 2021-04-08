@@ -71,15 +71,7 @@
     <div class="page--middle">
       <NavigationStudent />
       <main class="main">
-        {{ user }}
-        <p v-if="user" style="color: darkblue;">Hello, {{ user.email }}</p>
-        <p v-else>The user is not authenticated!</p>
-        <a href="/">Main Page</a>
-        <button @click="$store.dispatch('auth/fetch')">Check Me</button>
-        <button @click="$store.dispatch('auth/users')">
-          Check users (superadmin only)
-        </button>
-        <button @click="logOut">Log Out</button>
+        <nuxt-child />
       </main>
     </div>
   </div>
@@ -184,8 +176,9 @@ export default {
   display: flex;
 }
 .main {
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 4rem;
+  border: 0.125rem solid #fff;
   min-width: calc(100% - #{$navMenuWidth});
   padding: 2rem;
 }
