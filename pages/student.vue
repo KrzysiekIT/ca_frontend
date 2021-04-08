@@ -111,7 +111,7 @@ export default {
   justify-content: space-between;
 }
 .header--logo-box {
-  width: 20rem;
+  width: $logoIconWidth;
 }
 .header--logo {
   height: 8rem;
@@ -119,7 +119,7 @@ export default {
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - 30rem);
+  min-width: calc(100% - #{$navMenuWidth + $logoIconWidth});
 }
 .header--end {
   width: 10rem;
@@ -186,7 +186,7 @@ export default {
 .main {
   background-color: #fff;
   border-radius: 4rem;
-  min-width: calc(100% - 20rem);
+  min-width: calc(100% - #{$navMenuWidth});
   padding: 2rem;
 }
 </style>
