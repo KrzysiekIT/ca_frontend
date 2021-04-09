@@ -2,24 +2,24 @@
   <div class="account">
     <div class="account__header">
       <div>
-        <label class="account__header-label">Termin zajęć</label>
+        <span class="account__header-label">Termin zajęć</span>
         <strong>Czwartek 18:00</strong>
       </div>
       <div>
-        <label class="account__header-label">Trener</label>
+        <span class="account__header-label">Trener</span>
         <strong>Imię Nazwisko</strong>
       </div>
       <div>
-        <label class="account__header-label">Kontakt</label>
+        <span class="account__header-label">Kontakt</span>
         <strong>500 600 500</strong>
       </div>
     </div>
     <div class="account__box">
-      <section>
+      <section class="account__box--inner">
         <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
         <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
         <div>
-          <label class="payments__label">STATUS</label>
+          <span class="payments__label">STATUS</span>
           <strong
             class="payments__label-value payments__label-value--suspended"
           >
@@ -41,7 +41,44 @@
           <li class="year__li">ROK 2</li>
         </ul>
       </section>
-      <section class="account__box--inner year">abc</section>
+      <section class="account__box--inner attendance">
+        <div class="attendance__header">
+          <div class="attendance__score-box">
+            <div class="attendance__score attendance__score--first">
+              4<sup class="attendacne__sup">⭐</sup>
+            </div>
+            <div class="attendance__score">2</div>
+          </div>
+          <div class="attendance__title">STOPIEŃ REALIZACJI PROGRAMU</div>
+        </div>
+        <table class="attendance__table">
+          <thead>
+            <tr>
+              <th class="attendance__table-td" scope="col">Miesiąc</th>
+              <th class="attendance__table-td" scope="col">Lekcja 1</th>
+              <th class="attendance__table-td" scope="col">Lekcja 2</th>
+              <th class="attendance__table-td" scope="col">Lekcja 3</th>
+              <th class="attendance__table-td" scope="col">Lekcja 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="attendance__table-td">1</td>
+              <td class="attendance__table-td"><Absent /></td>
+              <td class="attendance__table-td"><Present /></td>
+              <td class="attendance__table-td"><Present /></td>
+              <td class="attendance__table-td"><Excused /></td>
+            </tr>
+            <tr>
+              <td class="attendance__table-td">2</td>
+              <td class="attendance__table-td">abc</td>
+              <td class="attendance__table-td">abc</td>
+              <td class="attendance__table-td">abc</td>
+              <td class="attendance__table-td">abc</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   </div>
 </template>
@@ -81,6 +118,48 @@ $boxPadding: 0.5rem;
   display: flex;
 }
 .account__box--inner {
-  padding: $boxPadding;
+  padding: 1.5rem;
+}
+.attendance {
+  flex: 1 1 auto;
+}
+.attendance__header {
+  display: flex;
+}
+.attendance__score-box {
+  display: flex;
+}
+.attendance__score {
+  font-size: 2rem;
+  background-color: $darkBackground;
+  padding: 0.75rem;
+}
+.attendance__score--first {
+  border-right: 0.125rem solid $lineColor;
+  color: #d4af37;
+}
+.attendance__title {
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.attendacne__sup {
+  font-size: 50%;
+  position: relative;
+  top: -1.25rem;
+  vertical-align: baseline;
+}
+.attendance__table {
+  border-collapse: collapse;
+  border-style: hidden;
+  margin-top: 2rem;
+  min-width: 100%;
+}
+.attendance__table-td {
+  border: 0.125rem solid $lineColor;
+  cursor: default;
+  padding: 0.5rem;
+  text-align: center;
 }
 </style>
