@@ -3,15 +3,15 @@
     <div class="account__header">
       <div>
         <span class="account__header-label">Termin zajęć</span>
-        <strong>Czwartek 18:00</strong>
+        <strong class="account__header-label--inline">Czwartek 18:00</strong>
       </div>
       <div>
         <span class="account__header-label">Trener</span>
-        <strong>Imię Nazwisko</strong>
+        <strong class="account__header-label--inline">Imię Nazwisko</strong>
       </div>
       <div>
         <span class="account__header-label">Kontakt</span>
-        <strong>500 600 500</strong>
+        <strong class="account__header-label--inline">500 600 500</strong>
       </div>
     </div>
     <div class="account__box">
@@ -45,9 +45,9 @@
         <div class="attendance__header">
           <div class="attendance__score-box">
             <div class="attendance__score attendance__score--first">
-              4<sup class="attendacne__sup">⭐</sup>
+              {{ numberOfPresences }}<sup class="attendacne__sup">⭐</sup>
             </div>
-            <div class="attendance__score">2</div>
+            <div class="attendance__score">{{ attendance.length }}</div>
           </div>
           <div class="attendance__title">STOPIEŃ REALIZACJI PROGRAMU</div>
         </div>
@@ -55,26 +55,31 @@
           <thead>
             <tr>
               <th class="attendance__table-td" scope="col">Miesiąc</th>
-              <th class="attendance__table-td" scope="col">Lekcja 1</th>
-              <th class="attendance__table-td" scope="col">Lekcja 2</th>
-              <th class="attendance__table-td" scope="col">Lekcja 3</th>
-              <th class="attendance__table-td" scope="col">Lekcja 4</th>
+              <th
+                class="attendance__table-td"
+                scope="col"
+                v-for="lessonInMonthNumber in maxMonthAttendance"
+                :key="'lesson' + lessonInMonthNumber"
+              >
+                Lekcja {{ lessonInMonthNumber }}
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="attendance__table-td">1</td>
-              <td class="attendance__table-td"><Absent /></td>
-              <td class="attendance__table-td"><Present /></td>
-              <td class="attendance__table-td"><Present /></td>
-              <td class="attendance__table-td"><Excused /></td>
-            </tr>
-            <tr>
-              <td class="attendance__table-td">2</td>
-              <td class="attendance__table-td">abc</td>
-              <td class="attendance__table-td">abc</td>
-              <td class="attendance__table-td">abc</td>
-              <td class="attendance__table-td">abc</td>
+            <tr v-for="monthNumber in months" :key="'month' + monthNumber">
+              <td class="attendance__table-td">{{ monthNumber }}</td>
+              <td
+                class="attendance__table-td"
+                v-for="(presence, index) in filterMonths(
+                  attendance,
+                  monthNumber
+                )"
+                :key="'presence' + index"
+              >
+                <component
+                  v-bind:is="ATTENDANCE_STATUS[presence.status]"
+                ></component>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -82,6 +87,68 @@
     </div>
   </div>
 </template>
+<script>
+const ATTENDANCE_STATUS = {
+  0: "Absent",
+  1: "Excused",
+  2: "Present"
+};
+export default {
+  async fetch() {
+    const userId = this.$store.state.auth.user.id;
+    const presences = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `presences/${userId}`
+    });
+    this.attendance = presences.data;
+  },
+  components: {
+    Absent: () => import("@/components/attendance/Absent.vue"),
+    Excused: () => import("@/components/attendance/Excused.vue"),
+    Present: () => import("@/components/attendance/Present.vue")
+  },
+  computed: {
+    maxMonthAttendance() {
+      const months = this.attendance.map(presence =>
+        new Date(presence.lessons_date).getMonth()
+      );
+      const monthOccurences = [];
+      monthOccurences.length = 12;
+      monthOccurences.fill(0);
+      months.forEach(month => monthOccurences[month]++);
+      return Math.max(...monthOccurences);
+    },
+    numberOfPresences() {
+      return this.attendance.filter(presence => presence.status === 2).length;
+    }
+  },
+  data() {
+    return {
+      attendance: [],
+      months: 12,
+      ATTENDANCE_STATUS
+    };
+  },
+  methods: {
+    filterMonths(attendance, monthNumber) {
+      const { maxMonthAttendance } = this;
+      monthNumber--;
+      attendance = attendance.filter(presence => {
+        const presenceMonthNumber = new Date(presence.lessons_date).getMonth();
+        return presenceMonthNumber === monthNumber;
+      });
+      if (attendance.length < maxMonthAttendance) {
+        let emptyIndex = attendance.length;
+        attendance.length = maxMonthAttendance;
+        for (emptyIndex; emptyIndex < maxMonthAttendance; emptyIndex++) {
+          attendance[emptyIndex] = {};
+        }
+      }
+      return attendance;
+    }
+  }
+};
+</script>
 <style lang="scss" scoped>
 $boxPadding: 0.5rem;
 .account__header {
@@ -92,6 +159,9 @@ $boxPadding: 0.5rem;
 .account__header-label {
   color: #00b0f0;
   padding-left: 1rem;
+}
+.account__header-label--inline {
+  white-space:nowrap;
 }
 .payments__label-value {
   padding-left: 1rem;
