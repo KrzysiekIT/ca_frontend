@@ -6,12 +6,14 @@
         Strona główna
         <ul>
           <li>
-            <img
-              src="~/assets/images/user_white.svg"
-              alt="User icon white"
-              height="32"
-            />
-            Konto ucznia
+            <nuxt-link class="navigation__link" to="account">
+              <img
+                src="~/assets/images/user_white.svg"
+                alt="User icon white"
+                height="32"
+              />
+              Konto ucznia
+            </nuxt-link>
           </li>
         </ul>
       </li>
@@ -74,5 +76,15 @@
 }
 .navigation ul li {
   padding: 1rem 0 0 0;
+}
+.navigation__link {
+  color: $white;
+  display: inline-block;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+.navigation__link:hover {
+  transform: scale(1.1);
+  font-weight: 800;
 }
 </style>
