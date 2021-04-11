@@ -43,12 +43,7 @@
       </section>
       <section class="account__box--inner attendance">
         <div class="attendance__header">
-          <div class="attendance__score-box">
-            <div class="attendance__score attendance__score--first">
-              {{ numberOfPresences }}<sup class="attendacne__sup">⭐</sup>
-            </div>
-            <div class="attendance__score">{{ attendance.length }}</div>
-          </div>
+          <score-box :presences="{present: numberOfPresences, total: attendance.length}" />
           <div class="attendance__title">STOPIEŃ REALIZACJI PROGRAMU</div>
         </div>
         <table class="attendance__table">
