@@ -147,7 +147,7 @@ export default {
 }
 .user--href {
   background-color: #fff;
-  border-radius: 0.25rem;
+  border-radius: $appRadius;
   color: $mainBackground;
   padding: 0 2rem 0 2rem;
   text-decoration: none;

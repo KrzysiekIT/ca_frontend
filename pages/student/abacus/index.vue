@@ -41,7 +41,7 @@
   border-spacing: 0.125rem;
 }
 .level__td {
-  border-radius: 0.5rem;
+  border-radius: $appRadius;
   color: $mainBackground;
   font-size: 2rem;
   text-align: center;
