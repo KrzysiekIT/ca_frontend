@@ -47,7 +47,7 @@
   text-align: center;
 }
 .level__td--unlocked {
-  background-color: #8da9db;
+  background-color: $lightBlue;
   cursor: pointer;
 }
 .level__td--locked {

@@ -6,7 +6,7 @@
         Strona główna
         <ul>
           <li>
-            <nuxt-link class="navigation__link" to="account">
+            <nuxt-link class="navigation__link" :to="localePath('/student/account')">
               <img
                 src="~/assets/images/user_white.svg"
                 alt="User icon white"
@@ -21,7 +21,7 @@
         Trening
         <ul>
           <li>
-            <nuxt-link class="navigation__link" to="abacus">
+            <nuxt-link class="navigation__link"  :to="localePath('/student/abacus')">
               <img
                 src="~/assets/images/abacus.png"
                 alt="Abacus icon"
@@ -68,7 +68,7 @@
   padding: 2rem 2rem 2rem 0;
   font-size: 2rem;
   min-height: calc(100vh - 10rem);
-  width: $navMenuWidth;
+  min-width: $navMenuWidth;
 }
 .navigation__first-ul {
   padding-left: 0;
