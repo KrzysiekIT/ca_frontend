@@ -43,7 +43,12 @@
       </section>
       <section class="account__box--inner attendance">
         <div class="attendance__header">
-          <score-box :presences="{present: numberOfPresences, total: attendance.length}" />
+          <score-box
+            :presences="{
+              present: numberOfPresences,
+              total: attendance.length
+            }"
+          />
           <div class="attendance__title">STOPIEŃ REALIZACJI PROGRAMU</div>
         </div>
         <table class="attendance__table">
@@ -71,9 +76,7 @@
                 )"
                 :key="'presence' + index"
               >
-                <component
-                  v-bind:is="ATTENDANCE_STATUS[presence.status]"
-                ></component>
+                <component :is="ATTENDANCE_STATUS[presence.status]"></component>
               </td>
             </tr>
           </tbody>
@@ -104,14 +107,14 @@ export default {
   },
   computed: {
     maxMonthAttendance() {
-      const months = this.attendance.map(presence =>
-        new Date(presence.lessons_date).getMonth()
+      const months = this.attendance.map(
+        presence => presence.lessons_month_number
       );
       const monthOccurences = [];
       monthOccurences.length = 12;
       monthOccurences.fill(0);
       months.forEach(month => monthOccurences[month]++);
-      return Math.max(...monthOccurences);
+      return Math.max(...months);
     },
     numberOfPresences() {
       return this.attendance.filter(presence => presence.status === 2).length;
@@ -127,19 +130,30 @@ export default {
   methods: {
     filterMonths(attendance, monthNumber) {
       const { maxMonthAttendance } = this;
-      monthNumber--;
-      attendance = attendance.filter(presence => {
-        const presenceMonthNumber = new Date(presence.lessons_date).getMonth();
-        return presenceMonthNumber === monthNumber;
-      });
-      if (attendance.length < maxMonthAttendance) {
+      attendance = attendance.filter(
+        presence => presence.lessons_month_number === monthNumber
+      );
+      let lessonNumber = 0;
+      for (lessonNumber; lessonNumber < maxMonthAttendance; lessonNumber++) {
+        if (
+          attendance[lessonNumber]?.lessons_order_in_month ===
+          lessonNumber + 1
+        ) {
+          continue;
+        } else {
+          attendance.splice(lessonNumber, 0, {});
+        }
+      }
+      /* if (attendance.length < maxMonthAttendance) {
         let emptyIndex = attendance.length;
         attendance.length = maxMonthAttendance;
         for (emptyIndex; emptyIndex < maxMonthAttendance; emptyIndex++) {
           attendance[emptyIndex] = {};
         }
-      }
-      return attendance;
+      } */
+      return attendance.sort(
+        (a, b) => a.lessons_order_in_month - b.lessons_order_in_month
+      );
     }
   }
 };
@@ -156,7 +170,7 @@ $boxPadding: 0.5rem;
   padding-left: 1rem;
 }
 .account__header-label--inline {
-  white-space:nowrap;
+  white-space: nowrap;
 }
 .payments__label-value {
   padding-left: 1rem;
@@ -194,26 +208,11 @@ $boxPadding: 0.5rem;
 .attendance__score-box {
   display: flex;
 }
-.attendance__score {
-  font-size: 2rem;
-  background-color: $darkBackground;
-  padding: 0.75rem;
-}
-.attendance__score--first {
-  border-right: 0.125rem solid $lineColor;
-  color: #d4af37;
-}
 .attendance__title {
   align-items: flex-end;
   display: flex;
   justify-content: center;
   width: 100%;
-}
-.attendacne__sup {
-  font-size: 50%;
-  position: relative;
-  top: -1.25rem;
-  vertical-align: baseline;
 }
 .attendance__table {
   border-collapse: collapse;
