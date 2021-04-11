@@ -21,12 +21,14 @@
         Trening
         <ul>
           <li>
-            <img
-              src="~/assets/images/abacus.png"
-              alt="Abacus icon"
-              height="32"
-            />
-            Abacus
+            <nuxt-link class="navigation__link" to="abacus">
+              <img
+                src="~/assets/images/abacus.png"
+                alt="Abacus icon"
+                height="32"
+              />
+              Abacus
+            </nuxt-link>
           </li>
           <li>
             <img src="~/assets/images/anzan.png" alt="Anzan icon" height="32" />
@@ -85,6 +87,5 @@
 }
 .navigation__link:hover {
   transform: scale(1.1);
-  font-weight: 800;
 }
 </style>
