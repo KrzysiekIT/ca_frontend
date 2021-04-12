@@ -114,7 +114,7 @@ export default {
       monthOccurences.length = 12;
       monthOccurences.fill(0);
       months.forEach(month => monthOccurences[month]++);
-      return Math.max(...months);
+      return months.length ? Math.max(...months) : 0;
     },
     numberOfPresences() {
       return this.attendance.filter(presence => presence.status === 2).length;
