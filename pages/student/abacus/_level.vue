@@ -70,6 +70,11 @@ export default {
           event.target.className += " abacus__input--wrong";
         }
       }
+    },
+    generateSamples() {
+      const samplesNumber = 50;
+      const sampleLenght = { min: 4, max: 6 };
+      const interval = { min: 100, max: 999 };
     }
   }
 };
