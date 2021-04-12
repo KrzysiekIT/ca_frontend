@@ -69,35 +69,9 @@
       </section>
     </header>
     <div class="page--middle">
-      <nav class="navigation">
-        <ul>
-          <li>
-            Strona główna
-            <ul>
-              <li>Konto ucznia</li>
-            </ul>
-          </li>
-          <li>
-            Trening
-            <ul>
-              <li>Abacus</li>
-              <li>Anzan</li>
-              <li>Gry Super Mind</li>
-              <li>Super Pamięć</li>
-              <li>Filmy</li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <main class="main">{{user}}
-        <p v-if="user" style="color: darkblue;">Hello, {{ user.email }}</p>
-        <p v-else>The user is not authenticated!</p>
-        <a href="/">Main Page</a>
-        <button @click="$store.dispatch('auth/fetch')">Check Me</button>
-        <button @click="$store.dispatch('auth/users')">
-          Check users (superadmin only)
-        </button>
-        <button @click="logOut">Log Out</button>
+      <NavigationStudent />
+      <main class="main">
+        <nuxt-child />
       </main>
     </div>
   </div>
@@ -129,7 +103,7 @@ export default {
   justify-content: space-between;
 }
 .header--logo-box {
-  width: 20rem;
+  width: $logoIconWidth;
 }
 .header--logo {
   height: 8rem;
@@ -137,7 +111,7 @@ export default {
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - 30rem);
+  min-width: calc(100% - #{$navMenuWidth + $logoIconWidth});
 }
 .header--end {
   width: 10rem;
@@ -173,7 +147,7 @@ export default {
 }
 .user--href {
   background-color: #fff;
-  border-radius: 0.25rem;
+  border-radius: $appRadius;
   color: $mainBackground;
   padding: 0 2rem 0 2rem;
   text-decoration: none;
@@ -201,15 +175,11 @@ export default {
 .page--middle {
   display: flex;
 }
-.navigation {
-  padding: 2rem 2rem 2rem 0;
-  min-height: calc(100vh - 10rem);
-  width: 20rem;
-}
 .main {
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 4rem;
-  min-width: calc(100% - 20rem);
+  border: 0.125rem solid #fff;
+  min-width: calc(100% - #{$navMenuWidth});
   padding: 2rem;
 }
 </style>

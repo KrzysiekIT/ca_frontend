@@ -70,7 +70,7 @@ export default {
   }
 };
 </script>
-<style scope>
+<style lang="scss" scope>
 .login--form {
   padding-bottom: 2rem;
 }
@@ -81,7 +81,7 @@ export default {
 }
 .login--input {
   border: none;
-  border-radius: 0.75rem;
+  border-radius: $appRadius;
   display: block;
   font-size: 1.5rem;
   padding: 0.75rem;
@@ -92,7 +92,7 @@ export default {
 }
 .login--button {
   border: none;
-  border-radius: 0.75rem;
+  border-radius: $appRadius;
   background-color: #4472c4;
   color: #fff;
   display: flex;
