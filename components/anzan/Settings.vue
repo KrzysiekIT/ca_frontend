@@ -102,7 +102,10 @@
       </div>
     </fieldset>
     <div class="options__start-box">
-      <button @click="$emit('start')" class="options__button options__button--transparent">
+      <button
+        @click="$emit('changeState', { state: 'anzan-count-down' })"
+        class="options__button options__button--transparent"
+      >
         <figure>
           <img src="~/assets/images/rocket.png" alt="Start" height="128" />
           <figcaption class="options__label--start">START</figcaption>

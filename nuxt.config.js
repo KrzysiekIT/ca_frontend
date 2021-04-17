@@ -30,7 +30,7 @@ export default {
   fontawesome: {
     component: "fa",
     icons: {
-      solid: ["faRedo", "faArrowAltCircleLeft", "faArrowAltCircleRight", "faQuestionCircle"]
+      solid: ["faRedo", "faArrowLeft", "faArrowRight", "faQuestion"]
     }
   },
 

@@ -1,16 +1,32 @@
 <template>
-  <component :is="state" @start="state='anzan-game'" />
+  <component
+    :is="state.current"
+    :options="state.options"
+    @changeState="changeState"
+  />
 </template>
 <script>
 export default {
   components: {
-    AnzanSettings: () => import("@/components/anzan/Settings.vue"),
-    AnzanGame: () => import("@/components/anzan/Game.vue")
+    AnzanCountDown: () => import("@/components/anzan/CountDown.vue"),
+    AnzanGameTime: () => import("@/components/anzan/GameTime.vue"),
+    AnzanPutResult: () => import("@/components/anzan/PutResult.vue"),
+    AnzanResult: () => import("@/components/anzan/Result.vue"),
+    AnzanSettings: () => import("@/components/anzan/Settings.vue")
   },
   data() {
     return {
-      state: "anzan-settings"
+      state: {
+        current: "anzan-settings",
+        options: null
+      }
     };
+  },
+  methods: {
+    changeState({ state, options = null }) {
+      const newState = { current: state, options };
+      this.state = newState;
+    }
   }
 };
 </script>

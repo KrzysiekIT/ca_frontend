@@ -18,13 +18,19 @@ export default {
   data() {
     return {
       game: {
-        generatedNumbers: [1, 2, 3, 4, -43, 2, 9, 1],
+        generatedNumbers: [1, 2, 3],
         currentIndex: 0,
         speed: 1000
       }
     };
   },
   methods: {
+    getArraySum(sumArray) {
+      return sumArray.reduce(
+        (factorLeft, factorRight) => factorLeft + factorRight,
+        0
+      );
+    },
     nextNumber(game) {
       const { generatedNumbers, speed } = game;
       if (generatedNumbers[game.currentIndex]) {
@@ -34,7 +40,10 @@ export default {
         const numberToShow = generatedNumbers[game.currentIndex];
         return `${numberToShow < 0 ? "" : "+"}${numberToShow}`;
       } else {
-        this.$emit("changeState", "anzan-game-time");
+        this.$emit("changeState", {
+          state: "anzan-put-result",
+          options: { answer: this.getArraySum(game.generatedNumbers) }
+        });
       }
     }
   }

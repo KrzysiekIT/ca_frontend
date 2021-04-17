@@ -27,7 +27,7 @@ export default {  beforeMount() {
         }, 1000);
         return this.countDown ? this.countDown : "GO";
       } else {
-        this.$emit("changeState", "anzan-count-down");
+        this.$emit("changeState", {state: "anzan-game-time"});
       }
     }
   }

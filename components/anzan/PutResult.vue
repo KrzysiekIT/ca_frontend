@@ -1,9 +1,24 @@
 <template>
-  <div class="result">
+  <form
+    @submit="
+      $emit('changeState', {
+        state: 'anzan-result',
+        options: { correct }
+      })
+    "
+    class="result"
+  >
     <span>ODPOWIEDŹ</span>
-    <input class="result__input" type="text" inputmode="numeric" />
-    <button @click="$emit('changeState', 'anzan-put-result')" class="result__button">SPRAWDŹ</button>
-  </div>
+    <input
+      class="result__input"
+      type="text"
+      v-model="yourAnswer"
+      inputmode="numeric"
+    />{{ correct }}
+    <button type="submit" class="result__button">
+      SPRAWDŹ
+    </button>
+  </form>
 </template>
 <style lang="scss" scoped>
 .result {
@@ -43,3 +58,23 @@
   transform: scale(0.95);
 }
 </style>
+<script>
+export default {
+  props: {
+    options: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    correct() {
+      return this.options.answer === +this.yourAnswer;
+    }
+  },
+  data() {
+    return {
+      yourAnswer: null
+    };
+  }
+};
+</script>
