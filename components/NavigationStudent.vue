@@ -68,6 +68,19 @@
           <li>
             <nuxt-link
               class="navigation__link"
+              :to="localePath('/student/fast-reading')"
+            >
+              <img
+                src="~/assets/images/fast_reading.png"
+                alt="Abacus icon"
+                height="32"
+              />
+              Szybkie czytanie
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link
+              class="navigation__link"
               :to="localePath('/student/movies')"
             >
               <img
