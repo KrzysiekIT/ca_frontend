@@ -66,12 +66,17 @@
             Super Pamięć
           </li>
           <li>
-            <img
-              src="~/assets/images/movies.png"
-              alt="Movies icon"
-              height="32"
-            />
-            Filmy
+            <nuxt-link
+              class="navigation__link"
+              :to="localePath('/student/movies')"
+            >
+              <img
+                src="~/assets/images/movies.png"
+                alt="Movies icon"
+                height="32"
+              />
+              Filmy
+            </nuxt-link>
           </li>
         </ul>
       </li>
