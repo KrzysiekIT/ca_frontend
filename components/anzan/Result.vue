@@ -9,10 +9,10 @@
       NASTĘPNE<div class="result__icon">➜</div>
     </button>
     <div>
-      OK MAMY WYNIK⟲?➜<span
-        style="transform: scale(-1, 1); display: inline-block;"
-        >➜</span
-      >
+      <fa icon="redo" /><fa icon="arrow-alt-circle-left" /><fa
+        icon="arrow-alt-circle-right"
+      />
+      <fa icon="question-circle" />
     </div>
   </div>
 </template>
@@ -58,11 +58,5 @@ export default {
 }
 .result__button--correct:hover {
   background-color: darken($green, 15%);
-}
-.result__icon {
-    border: 0.125rem solid red;
-    border-radius: 50%;
-    display: inline-block;
-    padding: 0.125rem;
 }
 </style>
