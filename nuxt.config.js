@@ -26,28 +26,34 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: ["@nuxtjs/fontawesome"],
+  fontawesome: {
+    component: "fa",
+    icons: {
+      solid: ["faRedo", "faArrowLeft", "faArrowRight", "faQuestion"]
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxtjs/style-resources", "nuxt-i18n"],
   i18n: {
     lazy: true,
-    langDir: 'locales/',
+    langDir: "locales/",
     locales: [
-       {
-        name: 'English',
-        code: 'en',
-        iso: 'en',
-        file: 'en'
+      {
+        name: "English",
+        code: "en",
+        iso: "en",
+        file: "en"
       },
       {
-        name: 'Polish',
-        code: 'pl',
-        iso: 'pl',
-        file: 'pl'
-      },
-   ],
-    defaultLocale: 'pl',
+        name: "Polish",
+        code: "pl",
+        iso: "pl",
+        file: "pl"
+      }
+    ],
+    defaultLocale: "pl"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
