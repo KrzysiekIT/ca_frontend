@@ -29,4 +29,8 @@ html {
   min-height: 100vh;
   padding: 1rem 1rem 0 1rem;
 }
+.embed-responsive-item {
+    width: 16rem;
+    height: 9rem;
+}
 </style>
