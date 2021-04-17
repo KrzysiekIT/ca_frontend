@@ -1,5 +1,9 @@
 <template>
-  <div class="movies">MOVIES</div>
+  <div class="movies">
+    <video-embed
+      src="https://www.youtube.com/watch?v=ZbZSe6N_BXs"
+    ></video-embed>
+  </div>
 </template>
 <script>
 export default {};
