@@ -7,11 +7,13 @@
 export default {
   mounted() {
     this.socket = this.$nuxtSocket({});
-    this.socket.emit("msg", { id: "abc123" }, resp => {
-      console.log(resp + "AAAAAAAAAAAAAa");
+    this.socket.emit("message", { id: "abc123" }, res => {
+      console.log("Wysyłałem event 'message' z obiektem, w odpowiedzi dostałem");
+      console.log(res);
     });
-    this.socket.on("someEvent", (msg, cb) => {
-      console.log(msg);
+    this.socket.on("message", (message, cb) => {
+      console.log("Odebrano  event 'message'");
+      console.log(message);
     });
   }
 };
