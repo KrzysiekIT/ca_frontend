@@ -69,7 +69,7 @@
       </section>
     </header>
     <div class="page--middle">
-      <NavigationStudent />
+      <NavigationAdmin />
       <main class="main">
         <nuxt-child />
       </main>
