@@ -17,7 +17,7 @@
               class="user--image"
             />
             <figcaption class="user--label">
-              Uczeń <strong>Jan Kowalski</strong>
+              Admin <strong>Jan Kowalski</strong>
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -60,18 +60,11 @@
           </li>
         </ul>
       </section>
-      <section class="header--end">
-        <img src="~/assets/images/money.svg" alt="Sad icon" height="64" /><img
-          src="~/assets/images/sad.svg"
-          alt="Sad icon"
-          height="64"
-        />
-      </section>
     </header>
     <div class="page--middle">
       <NavigationAdmin />
       <main class="main">
-        <nuxt-child />
+        <section class="main__flip"><nuxt-child /></section>
       </main>
     </div>
   </div>
@@ -176,10 +169,29 @@ export default {
   display: flex;
 }
 .main {
-  /* background-color: #fff; */
-  border-radius: 4rem;
-  border: 0.125rem solid #fff;
   min-width: calc(100% - #{$navMenuWidth});
-  padding: 2rem;
+  overflow: auto;
+  padding: 0.5rem;
+  transform: rotateX(180deg);
+  scrollbar-width: auto;
+  scrollbar-color: $yellow $darkYellow;
 }
+.main::-webkit-scrollbar-track {
+  background: $darkYellow;
+}
+.main::-webkit-scrollbar {
+  width: 10px;
+}
+.main::-webkit-scrollbar-thumb {
+  background: $yellow;
+}
+.main::-webkit-scrollbar-thumb:hover {
+  background: $lightYellow;
+}
+.main__flip {
+  height: 100%;
+  transform: rotateX(180deg);
+  width: 100%;
+}
+
 </style>

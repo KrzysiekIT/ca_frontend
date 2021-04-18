@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$borderLight: #ad8225;
+$borderLight: $orange;
 $fontSize: 1rem;
 .custom-select {
   font-size: $fontSize;

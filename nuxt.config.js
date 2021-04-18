@@ -33,7 +33,7 @@ export default {
   fontawesome: {
     component: "fa",
     icons: {
-      solid: ["faRedo", "faArrowLeft", "faArrowRight", "faQuestion"]
+      solid: ["faRedo", "faArrowLeft", "faArrowRight", "faQuestion", "faLink"]
     }
   },
 
