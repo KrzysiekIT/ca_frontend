@@ -38,7 +38,16 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources", "nuxt-i18n"],
+  modules: ["@nuxtjs/style-resources", "nuxt-i18n", "nuxt-socket-io"],
+  io: {
+    // module options
+    sockets: [
+      {
+        name: "main",
+        url: "http://localhost:41206"
+      }
+    ]
+  },
   i18n: {
     lazy: true,
     langDir: "locales/",

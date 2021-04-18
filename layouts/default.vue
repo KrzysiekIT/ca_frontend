@@ -3,8 +3,20 @@
     <Nuxt />
   </div>
 </template>
-
-<style lang="scss"->
+<script>
+export default {
+  mounted() {
+    this.socket = this.$nuxtSocket({});
+    this.socket.emit("msg", { id: "abc123" }, resp => {
+      console.log(resp + "AAAAAAAAAAAAAa");
+    });
+    this.socket.on("someEvent", (msg, cb) => {
+      console.log(msg);
+    });
+  }
+};
+</script>
+<style lang="scss">
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -30,7 +42,7 @@ html {
   padding: 1rem 1rem 0 1rem;
 }
 .embed-responsive-item {
-    width: 16rem;
-    height: 9rem;
+  width: 16rem;
+  height: 9rem;
 }
 </style>
