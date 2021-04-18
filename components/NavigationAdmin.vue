@@ -1,94 +1,25 @@
 <template>
   <nav class="navigation">
-    <ul class="navigation__first-ul">
-      <li>
-        <img src="~/assets/images/home.svg" alt="Home icon" height="28" />
-        Strona główna
+    <ul class="navigation__ul">
+      <li
+        v-for="({ img, label, link, sub }, index) in navigation"
+        :key="'link' + index"
+      >
+        <nuxt-link class="navigation__link" :to="localePath(`/admin/${link}`)">
+          <img
+            :src="require(`~/assets/images/${img.file}`)"
+            :alt="img.alt"
+            height="32"
+          />
+          {{ label }}
+        </nuxt-link>
         <ul>
-          <li>
+          <li v-for="(sublink, index) in sub" :key="'link' + index">
             <nuxt-link
               class="navigation__link"
-              :to="localePath('/student/account')"
+              :to="localePath(`/admin/${link}${sublink.link}`)"
             >
-              <img
-                src="~/assets/images/user_white.svg"
-                alt="User icon white"
-                height="32"
-              />
-              Konto ucznia
-            </nuxt-link>
-          </li>
-        </ul>
-      </li>
-      <li>
-        Trening
-        <ul>
-          <li>
-            <nuxt-link
-              class="navigation__link"
-              :to="localePath('/student/abacus')"
-            >
-              <img
-                src="~/assets/images/abacus.png"
-                alt="Abacus icon"
-                height="32"
-              />
-              Abacus
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link
-              class="navigation__link"
-              :to="localePath('/student/anzan')"
-            >
-              <img
-                src="~/assets/images/anzan.png"
-                alt="Anzan icon"
-                height="32"
-              />
-              Anzan
-            </nuxt-link>
-          </li>
-          <li>
-            <img
-              src="~/assets/images/supermind.png"
-              alt="Supermind icon"
-              height="32"
-            />
-            Gry Super Mind
-          </li>
-          <li>
-            <img
-              src="~/assets/images/supermemory.png"
-              alt="Supermemory icon"
-              height="32"
-            />
-            Super Pamięć
-          </li>
-          <li>
-            <nuxt-link
-              class="navigation__link"
-              :to="localePath('/student/fast-reading')"
-            >
-              <img
-                src="~/assets/images/fast_reading.png"
-                alt="Abacus icon"
-                height="32"
-              />
-              Szybkie czytanie
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link
-              class="navigation__link"
-              :to="localePath('/student/movies')"
-            >
-              <img
-                src="~/assets/images/movies.png"
-                alt="Movies icon"
-                height="32"
-              />
-              Filmy
+              {{ `- ${sublink.label} `}}
             </nuxt-link>
           </li>
         </ul>
@@ -96,6 +27,58 @@
     </ul>
   </nav>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      navigation: [
+        {
+          label: "Uczniowie",
+          link: "users/",
+          img: { file: "users.svg", alt: "users icon white" },
+          sub: []
+        },
+        {
+          label: "Trenerzy",
+          link: "trainers/",
+          img: { file: "trainers.svg", alt: "trainers icon white" },
+          sub: []
+        },
+        {
+          label: "Zajęcia",
+          link: "lessons/",
+          img: { file: "lessons.svg", alt: "lessons icon white" },
+          sub: [
+            { label: "Zajęcia demo", link: "demo/" },
+            { label: "Grafiki", link: "schedule/" }
+          ]
+        },
+        {
+          label: "Obecności",
+          link: "presences/",
+          img: { file: "presences.svg", alt: "presences icon white" },
+          sub: []
+        },
+        {
+          label: "Rozliczenia",
+          link: "payments/",
+          img: { file: "payments.svg", alt: "payments icon white" },
+          sub: []
+        },
+        {
+          label: "Materiały szkoleniowe",
+          link: "teaching-materials/",
+          img: {
+            file: "teaching_materials.svg",
+            alt: "teaching materials icon white"
+          },
+          sub: []
+        }
+      ]
+    };
+  }
+};
+</script>
 <style lang="scss" scoped>
 .navigation {
   padding: 2rem 2rem 2rem 0;
@@ -103,7 +86,7 @@
   min-height: calc(100vh - 10rem);
   min-width: $navMenuWidth;
 }
-.navigation__first-ul {
+.navigation__ul {
   padding-left: 0;
 }
 .navigation ul {
