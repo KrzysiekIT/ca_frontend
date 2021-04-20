@@ -23,7 +23,8 @@
         :class="{ 'is-active': i === arrowCounter }"
       >
         <div>
-          <strong>{{ result }}</strong>
+          <strong v-if="type === 'multiple'">{{ result.label }}</strong>
+          <strong v-else>{{ result }}</strong>
         </div>
       </li>
     </ul>
@@ -44,6 +45,9 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    type: {
+      type: String
     }
   },
 
@@ -78,12 +82,25 @@ export default {
         this.results = [];
       } else {
         this.results = this.items.filter(item => {
-          return item.toLowerCase().startsWith(this.search.toLowerCase());
+          if (this.type === "multiple") {
+            return item.label
+              .toLowerCase()
+              .startsWith(this.search.toLowerCase());
+          }
+          item += "";
+          return item
+            .toLowerCase()
+            .trim()
+            .includes(this.search.toLowerCase().trim());
         });
       }
     },
     setResult(result) {
-      this.search = result;
+      if (this.type === "multiple") {
+        this.search = result.label;
+      } else {
+        this.search = result;
+      }
       this.isOpen = false;
       this.$emit("set", result);
     },
@@ -98,7 +115,11 @@ export default {
       }
     },
     onEnter() {
-      this.search = this.results[this.arrowCounter];
+      if (this.type === "multiple") {
+        this.search = this.results[this.arrowCounter].label;
+      } else {
+        this.search = this.results[this.arrowCounter];
+      }
       this.isOpen = false;
       this.$emit("set", this.results[this.arrowCounter]);
       this.arrowCounter = -1;

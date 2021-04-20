@@ -1,8 +1,6 @@
 <template>
   <div>
-    <header class="users__header">
-      {{ filters }}
-    </header>
+    <header class="users__header"></header>
     <table class="users__table">
       <thead>
         <tr>
@@ -22,30 +20,16 @@
           >
             <autocomplete
               :items="
-                filteredUsers.map(user => {
-                  return getDeepValue(user, options['field']);
-                })
+                component === 'select-option'
+                  ? options.options
+                  : Array.from(new Set((filteredUsers.map(user => {
+                      return getDeepValue(user, options['field']);
+                    }))))
               "
-              @set="filter['value'] = $event"
-              @input="filter['value'] = $event"
-              v-if="filter.active && component !== 'select-option'"
-            />
-            <autocomplete
-              :items="
-                filteredUsers
-                  .map(user => {
-                    return getDeepValue(user, options['field']);
-                  })
-                  .map(
-                    valueIndex =>
-                      options.options.find(
-                        option => option.value === valueIndex
-                      ).label
-                  )
-              "
-              @set="filter['value'] = $event"
-              @input="filter['value'] = $event"
-              v-if="filter.active && component === 'select-option'"
+              :type="component === 'select-option' ? 'multiple' : ''"
+              @set="setFilterValue(filter, 'set', $event, component)"
+              @input="setFilterValue(filter, 'input', $event, component)"
+              v-if="filter.active"
             />
           </th>
         </tr>
@@ -96,7 +80,8 @@ export default {
             field: options.field,
             options: options.options,
             value: filter.value,
-            component
+            component,
+            selected: filter.selected
           };
         });
     },
@@ -109,13 +94,32 @@ export default {
         newUsers = newUsers.filter(user => {
           let deepValue;
           deepValue = getDeepValue(user, filters[filterIndex]["field"]);
-          if (filters[filterIndex]["component"] === "select-option") {
+          if (
+            filters[filterIndex]["component"] === "select-option" &&
+            !filters[filterIndex]["selected"]
+          ) {
             deepValue = filters[filterIndex]["options"].find(
               option => option.value === deepValue
             ).label;
+          } else if (filters[filterIndex]["selected"]) {
+            deepValue = filters[filterIndex]["options"].find(
+              option => option.value === deepValue
+            );
           }
-          console.log()
-          return deepValue.toLowerCase().trim().includes(filters[filterIndex]["value"].toLowerCase().trim());
+          if (filters[filterIndex]["selected"]) {
+            const stay =
+              deepValue.value ===
+              filters[filterIndex].options.find(
+                option => option.value === filters[filterIndex].value.value
+              ).value;
+            return stay;
+          } else {
+            deepValue = deepValue;
+            return deepValue
+              .toLowerCase()
+              .trim()
+              .includes(filters[filterIndex]["value"].toLowerCase().trim());
+          }
         });
       }
       return newUsers;
@@ -126,82 +130,44 @@ export default {
       highlighted: null,
       fields: [
         {
-          name: "presences",
-          label: "Obecności",
-          filter: { active: false, value: "" },
-          component: "link-button",
-          options: { to: "presences/", field: ["id"] }
-        },
-        {
-          name: "payments",
-          label: "Płatności",
-          filter: { active: false, value: "" },
-          component: "link-button",
-          options: { to: "payments/", field: ["id"] }
-        },
-        {
-          name: "status",
-          label: "Status ucznia",
-          filter: { active: false, value: "" },
-          component: "select-option",
-          options: {
-            options: [
-              { value: 4, label: "Blokada" },
-              { value: 3, label: "Nieaktywny" },
-              { value: 2, label: "Pauza" },
-              { value: 1, label: "Aktywny" }
-            ],
-            field: ["status"]
-          }
-        },
-        {
-          name: "date",
-          label: "Data rozpoczęcia",
-          filter: { active: false, value: "" },
-          component: "calendar-picker",
-          options: {
-            field: ["startDate"]
-          }
-        },
-        {
           name: "fullName",
           label: "Imię i nazwisko dziecka",
-          filter: { active: true, value: "" },
+          filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["fullName"] }
         },
         {
           name: "birthYear",
           label: "Rok urodzenia",
-          filter: { active: false, value: "" },
+          filter: { active: false, value: "", selected: false },
           component: "editable",
           options: { field: ["birthYear"] }
         },
         {
           name: "parentFullName",
           label: "Imię i nazwisko rodzica",
-          filter: { active: true, value: "" },
+          filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["parent", "fullName"] }
         },
         {
           name: "parentEmail",
           label: "Adres e-mail rodzica",
-          filter: { active: true, value: "" },
+          filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["parent", "email"] }
         },
         {
           name: "parentPhoneNumber",
           label: "Telefon rodzica",
-          filter: { active: false, value: "" },
+          filter: { active: false, value: "", selected: false },
           component: "editable",
           options: { field: ["parent", "phoneNumber"] }
         },
         {
           name: "trainer",
           label: "Trener",
-          filter: { active: true, value: "" },
+          filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
             options: [
@@ -217,7 +183,7 @@ export default {
         {
           name: "day",
           label: "Dzień zajęć",
-          filter: { active: true, value: "" },
+          filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
             options: [
@@ -251,6 +217,44 @@ export default {
           }
         },
         {
+          name: "presences",
+          label: "Obecności",
+          filter: { active: false, value: "", selected: false },
+          component: "link-button",
+          options: { to: "presences/", field: ["id"] }
+        },
+        {
+          name: "payments",
+          label: "Płatności",
+          filter: { active: false, value: "", selected: false },
+          component: "link-button",
+          options: { to: "payments/", field: ["id"] }
+        },
+        {
+          name: "status",
+          label: "Status ucznia",
+          filter: { active: false, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: [
+              { value: 4, label: "Blokada" },
+              { value: 3, label: "Nieaktywny" },
+              { value: 2, label: "Pauza" },
+              { value: 1, label: "Aktywny" }
+            ],
+            field: ["status"]
+          }
+        },
+        {
+          name: "date",
+          label: "Data rozpoczęcia",
+          filter: { active: false, value: "", selected: false },
+          component: "calendar-picker",
+          options: {
+            field: ["startDate"]
+          }
+        },
+        {
           name: "linkSend",
           label: "Link wysłany",
           filter: { active: false, value: "" },
@@ -266,7 +270,7 @@ export default {
           status: 2,
           startDate: "2021-04-17T19:16:07.716Z",
           fullName: "Adam Ardian",
-          birthYear: 1995,
+          birthYear: 1992,
           parent: {
             fullName: "Tata Nowak",
             email: "mama@nowak.pl",
@@ -282,7 +286,7 @@ export default {
           status: 2,
           startDate: "2021-04-17T19:16:07.716Z",
           fullName: "Bronisław Buczek",
-          birthYear: 1995,
+          birthYear: 1992,
           parent: {
             fullName: "Tata Nowak",
             email: "mama@nowak.pl",
@@ -345,6 +349,14 @@ export default {
     };
   },
   methods: {
+    setFilterValue(filter, action, value, component) {
+      if (action === "set" && component === "select-option") {
+        filter.selected = true;
+      } else {
+        filter.selected = false;
+      }
+      filter["value"] = value;
+    },
     getDeepValue(sourceObject, fields) {
       let value = sourceObject;
       const fieldsLength = fields.length;
