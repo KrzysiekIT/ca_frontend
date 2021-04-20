@@ -1,188 +1,343 @@
 <template>
-  <table class="users__table">
-    <thead>
-      <tr>
-        <th
-          v-for="({ label }, index) in fields"
-          :key="'th' + index"
-          class="users__table-th"
+  <div>
+    <header class="users__header">
+      {{ filters }}
+    </header>
+    <table class="users__table">
+      <thead>
+        <tr>
+          <th
+            v-for="({ label }, index) in fields"
+            :key="'th' + index"
+            class="users__table-th"
+          >
+            {{ label }}
+          </th>
+        </tr>
+        <tr>
+          <th
+            v-for="({ filter, options, component }, index) in fields"
+            :key="'filter' + index"
+            class="users__table-th"
+          >
+            <autocomplete
+              :items="
+                filteredUsers.map(user => {
+                  return getDeepValue(user, options['field']);
+                })
+              "
+              @set="filter['value'] = $event"
+              @input="filter['value'] = $event"
+              v-if="filter.active && component !== 'select-option'"
+            />
+            <autocomplete
+              :items="
+                filteredUsers
+                  .map(user => {
+                    return getDeepValue(user, options['field']);
+                  })
+                  .map(
+                    valueIndex =>
+                      options.options.find(
+                        option => option.value === valueIndex
+                      ).label
+                  )
+              "
+              @set="filter['value'] = $event"
+              @input="filter['value'] = $event"
+              v-if="filter.active && component === 'select-option'"
+            />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(user, userIndex) in filteredUsers"
+          :key="'user' + user.id"
+          @click="highlight(userIndex)"
+          class="user__table-row"
+          :class="
+            highlighted === userIndex ? 'user__table-row--hightligted' : ''
+          "
         >
-          {{ label }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(user, userIndex) in users"
-        :key="'user' + userIndex"
-        @click="highlight(userIndex)"
-        class="user__table-row"
-        :class="highlighted === userIndex ? 'user__table-row--hightligted' : ''"
-      >
-        <td
-          v-for="(row, fieldIndex) in fields"
-          :key="'td' + fieldIndex"
-          class="users__table-td"
-        >
-          <component
-            v-if="['link-button'].includes(row.component)"
-            :is="'link-button'"
-            :options="row.options"
-            :info="user"
-          />
-          <div v-else>{{ getDeepValue(user, row.field) }}</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td
+            v-for="(row, fieldIndex) in fields"
+            :key="'td' + fieldIndex"
+            class="users__table-td"
+          >
+            <component
+              :is="row.component"
+              :options="row.options"
+              :info="user"
+              :row="userIndex"
+              @action="handleAction"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
 export default {
   components: {
-    LinkButton: () => import("@/components/table/LinkButton.vue")
+    LinkButton: () => import("@/components/table/LinkButton.vue"),
+    ActionButton: () => import("@/components/table/ActionButton.vue"),
+    SelectOption: () => import("@/components/table/SelectOption.vue"),
+    CalendarPicker: () => import("@/components/table/CalendarPicker.vue"),
+    Editable: () => import("@/components/table/Editable.vue")
+  },
+  computed: {
+    filters() {
+      return this.fields
+        .filter(({ filter }) => filter.active && filter.value)
+        .map(({ filter, options, component }) => {
+          return {
+            field: options.field,
+            options: options.options,
+            value: filter.value,
+            component
+          };
+        });
+    },
+    filteredUsers() {
+      const { filters, users, getDeepValue } = this;
+      let newUsers = users;
+      const filtersLength = this.filters.length;
+      let filterIndex = 0;
+      for (filterIndex; filterIndex < filtersLength; filterIndex++) {
+        newUsers = newUsers.filter(user => {
+          let deepValue;
+          deepValue = getDeepValue(user, filters[filterIndex]["field"]);
+          if (filters[filterIndex]["component"] === "select-option") {
+            deepValue = filters[filterIndex]["options"].find(
+              option => option.value === deepValue
+            ).label;
+          }
+          console.log()
+          return deepValue.toLowerCase().trim().includes(filters[filterIndex]["value"].toLowerCase().trim());
+        });
+      }
+      return newUsers;
+    }
   },
   data() {
     return {
       highlighted: null,
       fields: [
         {
+          name: "presences",
           label: "Obecności",
+          filter: { active: false, value: "" },
           component: "link-button",
-          field: ["id"],
           options: { to: "presences/", field: ["id"] }
         },
         {
+          name: "payments",
           label: "Płatności",
+          filter: { active: false, value: "" },
           component: "link-button",
-          field: ["id"],
           options: { to: "payments/", field: ["id"] }
         },
-        { label: "Status ucznia", component: "select", field: ["status"] },
         {
+          name: "status",
+          label: "Status ucznia",
+          filter: { active: false, value: "" },
+          component: "select-option",
+          options: {
+            options: [
+              { value: 4, label: "Blokada" },
+              { value: 3, label: "Nieaktywny" },
+              { value: 2, label: "Pauza" },
+              { value: 1, label: "Aktywny" }
+            ],
+            field: ["status"]
+          }
+        },
+        {
+          name: "date",
           label: "Data rozpoczęcia",
-          component: "calendar",
-          field: ["startDate"]
+          filter: { active: false, value: "" },
+          component: "calendar-picker",
+          options: {
+            field: ["startDate"]
+          }
         },
         {
+          name: "fullName",
           label: "Imię i nazwisko dziecka",
+          filter: { active: true, value: "" },
           component: "editable",
-          field: ["fullName"]
+          options: { field: ["fullName"] }
         },
-        { label: "Rok urodzenia", component: "editable", field: ["birthYear"] },
         {
+          name: "birthYear",
+          label: "Rok urodzenia",
+          filter: { active: false, value: "" },
+          component: "editable",
+          options: { field: ["birthYear"] }
+        },
+        {
+          name: "parentFullName",
           label: "Imię i nazwisko rodzica",
+          filter: { active: true, value: "" },
           component: "editable",
-          field: ["parent", "fullName"]
+          options: { field: ["parent", "fullName"] }
         },
         {
+          name: "parentEmail",
           label: "Adres e-mail rodzica",
+          filter: { active: true, value: "" },
           component: "editable",
-          field: ["parent", "email"]
+          options: { field: ["parent", "email"] }
         },
         {
+          name: "parentPhoneNumber",
           label: "Telefon rodzica",
+          filter: { active: false, value: "" },
           component: "editable",
-          field: ["parent", "phoneNumber"]
+          options: { field: ["parent", "phoneNumber"] }
         },
         {
+          name: "trainer",
           label: "Trener",
-          component: "select",
-          field: ["trainer"]
+          filter: { active: true, value: "" },
+          component: "select-option",
+          options: {
+            options: [
+              { value: 5, label: "Galik Anonimik" },
+              { value: 4, label: "Jan Nowak" },
+              { value: 3, label: "Michał Anioł" },
+              { value: 2, label: "Lech Kowalski" },
+              { value: 1, label: "Marek Dzięcioł" }
+            ],
+            field: ["trainer"]
+          }
         },
         {
+          name: "day",
           label: "Dzień zajęć",
-          component: "select",
-          field: ["day"]
+          filter: { active: true, value: "" },
+          component: "select-option",
+          options: {
+            options: [
+              { value: 1, label: "poniedziałek" },
+              { value: 2, label: "wtorek" },
+              { value: 3, label: "środa" },
+              { value: 4, label: "czwartek" },
+              { value: 5, label: "piątek" },
+              { value: 6, label: "sobota" },
+              { value: 7, label: "niedziela" }
+            ],
+            field: ["day"]
+          }
         },
         {
+          name: "hour",
           label: "Godzina zajęć",
-          component: "select",
-          field: ["hour"]
+          filter: { active: true, value: "" },
+          component: "select-option",
+          options: {
+            options: [
+              { value: "00:00", label: "00:00" },
+              { value: "05:00", label: "05:00" },
+              { value: "18:00", label: "18:00" },
+              { value: "19:00", label: "19:00" },
+              { value: "21:00", label: "21:00" },
+              { value: "22:00", label: "22:00" },
+              { value: "23:00", label: "23:00" }
+            ],
+            field: ["hour"]
+          }
         },
         {
+          name: "linkSend",
           label: "Link wysłany",
+          filter: { active: false, value: "" },
           component: "action-button",
-          field: ["linkSend"]
+          options: {
+            field: ["linkSend"]
+          }
         }
       ],
       users: [
         {
           id: 1,
-          status: 0,
-          startDate: Date.now(),
-          fullName: "Jan Kowalski",
+          status: 2,
+          startDate: "2021-04-17T19:16:07.716Z",
+          fullName: "Adam Ardian",
           birthYear: 1995,
           parent: {
             fullName: "Tata Nowak",
             email: "mama@nowak.pl",
             phoneNumber: "609328523"
           },
-          trainer: "Jan Moskwa",
-          day: "czwartek",
+          trainer: 1,
+          day: 3,
           hour: "18:00",
           linkSend: false
+        },
+        {
+          id: 2,
+          status: 2,
+          startDate: "2021-04-17T19:16:07.716Z",
+          fullName: "Bronisław Buczek",
+          birthYear: 1995,
+          parent: {
+            fullName: "Tata Nowak",
+            email: "mama@nowak.pl",
+            phoneNumber: "609328523"
+          },
+          trainer: 2,
+          day: 3,
+          hour: "18:00",
+          linkSend: true
         },
         {
           id: 3,
-          status: 2,
-          startDate: Date.now(),
-          fullName: "Jan Kowalski",
-          birthYear: 1995,
-          parent: {
-            fullName: "Tata Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: "Jan Moskwa",
-          day: "czwartek",
-          hour: "18:00",
-          linkSend: false
-        },
-        {
-          id: 1,
-          status: 0,
-          startDate: Date.now(),
-          fullName: "Jan Kowalski",
+          status: 1,
+          startDate: "2021-04-17T19:16:07.716Z",
+          fullName: "Cecylia Cieć",
           birthYear: 1995,
           parent: {
             fullName: "Mama Nowak",
             email: "mama@nowak.pl",
             phoneNumber: "609328523"
           },
-          trainer: "Jan Moskwa",
-          day: "czwartek",
+          trainer: 3,
+          day: 3,
           hour: "18:00",
           linkSend: false
         },
         {
-          id: 2,
-          status: 0,
-          startDate: Date.now(),
-          fullName: "Jan Kowalski",
+          id: 4,
+          status: 2,
+          startDate: "2010-04-17T19:16:07.716Z",
+          fullName: "Dobrowa Dymonoga",
           birthYear: 1995,
           parent: {
             fullName: "Tata Nowak",
             email: "mama@nowak.pl",
             phoneNumber: "609328523"
           },
-          trainer: "Jan Moskwa",
-          day: "czwartek",
+          trainer: 4,
+          day: 3,
           hour: "18:00",
           linkSend: false
         },
         {
-          id: 1,
-          status: 0,
-          startDate: Date.now(),
-          fullName: "Jan Nowak",
+          id: 5,
+          status: 3,
+          startDate: "2021-05-17T19:16:07.716Z",
+          fullName: "Jan Janowski",
           birthYear: 1995,
           parent: {
             fullName: "Tata Nowak",
             email: "mama@nowak.pl",
             phoneNumber: "609328523"
           },
-          trainer: "Jan Moskwa",
-          day: "środa",
+          trainer: 5,
+          day: 3,
           hour: "18:00",
           linkSend: true
         }
@@ -199,9 +354,33 @@ export default {
       }
       return value;
     },
+    changeDeepValue(sourceObject, fields, newValue) {
+      let value = sourceObject;
+      const fieldsLength = fields.length;
+      let fieldIndex = 0;
+      for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
+        if (fieldIndex === fieldsLength - 1) {
+          value[fields[fieldIndex]] = newValue;
+        } else {
+          value = value[fields[fieldIndex]];
+        }
+      }
+    },
     highlight(rowIndex) {
       this.highlighted = rowIndex;
       //this.highlighted = this.highlighted === rowIndex ? null : rowIndex;
+    },
+    handleAction(details) {
+      const actions = {
+        changeValue: options => {
+          this.changeDeepValue(
+            this.users[options.row],
+            options.field,
+            options.value
+          );
+        }
+      };
+      actions[details.name](details);
     }
   }
 };
@@ -214,7 +393,7 @@ export default {
   overflow: scroll;
 }
 .user__table-row--hightligted {
-  background-color: $optionsBackground;
+  background-color: lighten($mainBackground, 10);
 }
 .users__table-td {
   border: solid 2px $white;

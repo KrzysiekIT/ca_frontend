@@ -17,7 +17,7 @@
               class="user--image"
             />
             <figcaption class="user--label">
-              Admin <strong>Jan Kowalski</strong>
+              <strong>Admin</strong>
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -64,7 +64,7 @@
     <div class="page--middle">
       <NavigationAdmin />
       <main class="main">
-        <section class="main__flip"><nuxt-child /></section>
+        <!-- <section class="main__flip"> --><nuxt-child /><!-- </section> -->
       </main>
     </div>
   </div>
@@ -172,11 +172,11 @@ export default {
   min-width: calc(100% - #{$navMenuWidth});
   overflow: auto;
   padding: 0.5rem;
-  transform: rotateX(180deg);
+  /* transform: rotateX(180deg);
   scrollbar-width: auto;
-  scrollbar-color: $yellow $darkYellow;
+  scrollbar-color: $yellow $darkYellow; */
 }
-.main::-webkit-scrollbar-track {
+/* .main::-webkit-scrollbar-track {
   background: $darkYellow;
 }
 .main::-webkit-scrollbar {
@@ -192,6 +192,6 @@ export default {
   height: 100%;
   transform: rotateX(180deg);
   width: 100%;
-}
+} */
 
 </style>

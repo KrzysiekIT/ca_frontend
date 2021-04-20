@@ -1,9 +1,10 @@
 <template>
-  <nuxt-link :to="`${options.to}${getDeepValue(info, options.field)}`">
+  <nuxt-link :to="`${options.to}${value}`">
     <div class="link__block"><fa class="result__icon" icon="link" /></div>
   </nuxt-link>
 </template>
 <script>
+import { getDeepValue } from "~/static/helper.js";
 export default {
   props: {
     options: {
@@ -15,16 +16,10 @@ export default {
       required: true
     }
   },
-  methods: {
-    getDeepValue(sourceObject, fields) {
-      let value = sourceObject;
-      const fieldsLength = fields.length;
-      let fieldIndex = 0;
-      for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
-        value = value[fields[fieldIndex]];
-      }
-      return value;
-    }
+  data() {
+    return {
+      value: getDeepValue(this.info, this.options.field)
+    };
   }
 };
 </script>
