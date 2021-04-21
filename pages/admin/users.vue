@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <header class="users__header"></header>
+  <div class="users">
+    <header class="users__header">
+      <button class="users__button users__button--default" @click="users.unshift(userFactory())">Dodaj ucznia</button>
+    </header>
     <table class="users__table">
       <thead>
         <tr>
@@ -22,9 +24,13 @@
               :items="
                 component === 'select-option'
                   ? options.options
-                  : Array.from(new Set((filteredUsers.map(user => {
-                      return getDeepValue(user, options['field']);
-                    }))))
+                  : Array.from(
+                      new Set(
+                        filteredUsers.map(user => {
+                          return getDeepValue(user, options['field']);
+                        })
+                      )
+                    )
               "
               :type="component === 'select-option' ? 'multiple' : ''"
               @set="setFilterValue(filter, 'set', $event, component)"
@@ -63,6 +69,24 @@
   </div>
 </template>
 <script>
+const userFactory = (() => {
+  const max = 200;
+  return () => {
+    return {
+      id: ~~(Math.random() * max),
+      birthYear: null,
+      parent: {
+        fullName: "",
+        email: "",
+        phoneNumber: ""
+      },
+      trainer: 1,
+      day: 1,
+      hour: "00:00",
+      linkSend: false
+    };
+  };
+})();
 export default {
   components: {
     LinkButton: () => import("@/components/table/LinkButton.vue"),
@@ -127,6 +151,7 @@ export default {
   },
   data() {
     return {
+      userFactory,
       highlighted: null,
       fields: [
         {
@@ -260,7 +285,9 @@ export default {
           filter: { active: false, value: "" },
           component: "action-button",
           options: {
-            field: ["linkSend"]
+            field: ["linkSend"],
+            /* toExecute: function() {
+            }, */
           }
         }
       ],
@@ -398,6 +425,32 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.users {
+  max-height: 0;
+}
+.users__header {
+  padding-bottom: 1rem;
+}
+.users__button {
+  border: none;
+  border-radius: $appRadius;
+  color: $white;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  min-width: 8rem;
+  outline: none;
+  padding: 0.625rem;
+}
+.users__button:active {
+  transform: scale(0.95);
+}
+.users__button--default {
+  background-color: $resultNeutralBlue;
+}
+.users__button--default:hover {
+  background-color: darken($resultNeutralBlue, 15%);
+}
 .users__table {
   border: solid 2px $white;
   border-collapse: collapse;

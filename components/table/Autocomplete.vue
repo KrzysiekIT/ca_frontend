@@ -7,7 +7,7 @@
       @keydown.down="onArrowDown"
       @keydown.up="onArrowUp"
       @keydown.enter="onEnter"
-      placeholder="Zacznij wpisywać…"
+      placeholder="Szukaj…"
       class="autocomplete-input"
     />
     <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">
@@ -159,6 +159,7 @@ export default {
   border-radius: 10px;
   padding: 8px;
   font-size: 1rem;
+  width: 100%;
 }
 
 .autocomplete-input:focus {

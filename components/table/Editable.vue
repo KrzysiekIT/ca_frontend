@@ -6,6 +6,7 @@
     @focus="readonly = false"
     @blue="readonly = true"
     v-model="toSend.value"
+    placeholder="Wpisz dane"
   />
 </template>
 <script>
