@@ -74,24 +74,6 @@
   </div>
 </template>
 <script>
-const userFactory = (() => {
-  const max = 200;
-  return () => {
-    return {
-      id: ~~(Math.random() * max),
-      birthYear: null,
-      parent: {
-        fullName: "",
-        email: "",
-        phoneNumber: ""
-      },
-      trainer: 1,
-      day: 1,
-      hour: "00:00",
-      linkSend: false
-    };
-  };
-})();
 export default {
   components: {
     LinkButton: () => import("@/components/table/LinkButton.vue"),
@@ -156,15 +138,42 @@ export default {
   },
   data() {
     return {
-      userFactory,
+      testUsers: null,
       highlighted: null,
+      userBackendModel: {
+        role_id: 4
+      },
+      userFrontendModel: {
+        id: 0,
+        status: 0,
+        startAt: "",
+        name: "",
+        surname: "",
+        birthYear: "",
+        parent: {
+          fullName: "",
+          email: "",
+          phoneNumber: ""
+        },
+        trainerId: "",
+        day: "",
+        hour: "",
+        lindSend: ""
+      },
       fields: [
         {
-          name: "fullName",
-          label: "Imię i nazwisko dziecka",
+          name: "name",
+          label: "Imię",
           filter: { active: true, value: "", selected: false },
           component: "editable",
-          options: { field: ["fullName"] }
+          options: { field: ["name"] }
+        },
+        {
+          name: "surname",
+          label: "Nazwisko",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["surname"] }
         },
         {
           name: "birthYear",
@@ -195,7 +204,7 @@ export default {
           options: { field: ["parent", "phoneNumber"] }
         },
         {
-          name: "trainer",
+          name: "trainerId",
           label: "Trener",
           filter: { active: true, value: "", selected: false },
           component: "select-option",
@@ -207,7 +216,7 @@ export default {
               { value: 2, label: "Lech Kowalski" },
               { value: 1, label: "Marek Dzięcioł" }
             ],
-            field: ["trainer"]
+            field: ["trainerId"]
           }
         },
         {
@@ -281,7 +290,7 @@ export default {
           filter: { active: false, value: "", selected: false },
           component: "calendar-picker",
           options: {
-            field: ["startDate"]
+            field: ["startAt"]
           }
         },
         {
@@ -290,94 +299,13 @@ export default {
           filter: { active: false, value: "" },
           component: "action-button",
           options: {
-            field: ["linkSend"],
+            field: ["linkSend"]
             /* toExecute: function() {
             }, */
           }
         }
       ],
-      users: [
-        {
-          id: 1,
-          status: 2,
-          startDate: "2021-04-17T19:16:07.716Z",
-          fullName: "Adam Ardian",
-          birthYear: 1992,
-          parent: {
-            fullName: "Tata Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: 1,
-          day: 3,
-          hour: "18:00",
-          linkSend: false
-        },
-        {
-          id: 2,
-          status: 2,
-          startDate: "2021-04-17T19:16:07.716Z",
-          fullName: "Bronisław Buczek",
-          birthYear: 1992,
-          parent: {
-            fullName: "Tata Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: 2,
-          day: 3,
-          hour: "18:00",
-          linkSend: true
-        },
-        {
-          id: 3,
-          status: 1,
-          startDate: "2021-04-17T19:16:07.716Z",
-          fullName: "Cecylia Cieć",
-          birthYear: 1995,
-          parent: {
-            fullName: "Mama Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: 3,
-          day: 3,
-          hour: "18:00",
-          linkSend: false
-        },
-        {
-          id: 4,
-          status: 2,
-          startDate: "2010-04-17T19:16:07.716Z",
-          fullName: "Dobrowa Dymonoga",
-          birthYear: 1995,
-          parent: {
-            fullName: "Tata Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: 4,
-          day: 3,
-          hour: "18:00",
-          linkSend: false
-        },
-        {
-          id: 5,
-          status: 3,
-          startDate: "2021-05-17T19:16:07.716Z",
-          fullName: "Jan Janowski",
-          birthYear: 1995,
-          parent: {
-            fullName: "Tata Nowak",
-            email: "mama@nowak.pl",
-            phoneNumber: "609328523"
-          },
-          trainer: 5,
-          day: 3,
-          hour: "18:00",
-          linkSend: true
-        }
-      ]
+      users: null
     };
   },
   methods: {
@@ -458,6 +386,50 @@ export default {
       };
       actions[details.name](details);
     }
+  },
+  async fetch() {
+    const backendStudents = (
+      await this.$store.dispatch("auth/request", {
+        method: "get",
+        url: "students"
+      })
+    ).data;
+    const frontendStudents = backendStudents.map(
+      ({
+        id,
+        name,
+        surname,
+        birth_year,
+        parent_full_name,
+        parent_email,
+        parent_phone_number,
+        status,
+        start_at,
+        groups_trainer_id,
+        groups_lesson_day,
+        groups_lesson_hour,
+        link_sent
+      }) => {
+        return {
+          id: id,
+          status: status ?? 0,
+          startAt: start_at ?? "",
+          name: name ?? "",
+          surname: surname ?? "",
+          birthYear: birth_year ?? "",
+          parent: {
+            fullName: parent_full_name ?? "",
+            email: parent_email ?? "",
+            phoneNumber: parent_phone_number ?? ""
+          },
+          trainerId: groups_trainer_id ?? "",
+          day: groups_lesson_day ?? "",
+          hour: groups_lesson_hour ?? "",
+          lindSend: link_sent ?? ""
+        };
+      }
+    );
+    this.users = frontendStudents;
   }
 };
 </script>
