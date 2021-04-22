@@ -3,7 +3,7 @@
     <v-date-picker
       v-model="toSend.value"
       :masks="masks"
-      @input="$emit('action', toSend)"
+      @input="changeDateFormatAndEmit()"
     >
       <template v-slot="{ inputValue, inputEvents }">
         <input :value="inputValue" v-on="inputEvents" class="date__input" />
@@ -38,6 +38,16 @@ export default {
         value: getDeepValue(this.info, this.options.field)
       }
     };
+  },
+  methods: {
+    changeDateFormatAndEmit() {
+      const newDate = this.toSend.value
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+      this.toSend.value = newDate;
+      this.$emit("action", this.toSend);
+    }
   }
 };
 </script>
