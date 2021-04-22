@@ -155,9 +155,12 @@ export default {
           email: "",
           phoneNumber: ""
         },
-        trainerId: "",
-        day: "",
-        hour: "",
+        group: {
+          id: 0,
+          trainerId: 0,
+          day: "",
+          hour: ""
+        },
         lindSend: ""
       },
       fields: [
@@ -204,10 +207,27 @@ export default {
           options: { field: ["parent", "phoneNumber"] }
         },
         {
-          name: "trainerId",
-          label: "Trener",
+          name: "groupId",
+          label: "Grupa",
           filter: { active: true, value: "", selected: false },
           component: "select-option",
+          options: {
+            options: [
+              { value: 2, label: "pt. 11:15" },
+              { value: 1, label: "cz. 18:00" }
+            ],
+            field: ["group", "id"]
+          }
+        },
+        {
+          name: "groupTrainerId",
+          label: "Trener",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: {
+            field: ["group", "trainerId"]
+          }
+          /* component: "select-option",
           options: {
             options: [
               { value: 5, label: "Galik Anonimik" },
@@ -217,13 +237,17 @@ export default {
               { value: 1, label: "Marek Dzięcioł" }
             ],
             field: ["trainerId"]
-          }
+          } */
         },
         {
-          name: "day",
+          name: "groupDay",
           label: "Dzień zajęć",
           filter: { active: true, value: "", selected: false },
-          component: "select-option",
+          component: "editable",
+          options: {
+            field: ["group", "day"]
+          }
+          /* component: "select-option",
           options: {
             options: [
               { value: 1, label: "poniedziałek" },
@@ -235,13 +259,17 @@ export default {
               { value: 7, label: "niedziela" }
             ],
             field: ["day"]
-          }
+          } */
         },
         {
-          name: "hour",
+          name: "groupHour",
           label: "Godzina zajęć",
           filter: { active: true, value: "" },
-          component: "select-option",
+          component: "editable",
+          options: {
+            field: ["group", "hour"]
+          }
+          /* component: "select-option",
           options: {
             options: [
               { value: "00:00", label: "00:00" },
@@ -253,7 +281,7 @@ export default {
               { value: "23:00", label: "23:00" }
             ],
             field: ["hour"]
-          }
+          } */
         },
         {
           name: "presences",
@@ -363,9 +391,9 @@ export default {
           await this.patchUser(userId, { [this.mapFields(fields)]: newValue });
           value[fields[fieldIndex]] = newValue;
         } else {
-          await this.patchUser(userId, {
+          /* await this.patchUser(userId, {
             [this.mapFields(fields)]: value[fields[fieldIndex]]
-          });
+          }); */
           value = value[fields[fieldIndex]];
         }
       }
@@ -405,6 +433,7 @@ export default {
         parent_phone_number,
         status,
         start_at,
+        group_id,
         groups_trainer_id,
         groups_lesson_day,
         groups_lesson_hour,
@@ -422,9 +451,12 @@ export default {
             email: parent_email ?? "",
             phoneNumber: parent_phone_number ?? ""
           },
-          trainerId: groups_trainer_id ?? "",
-          day: groups_lesson_day ?? "",
-          hour: groups_lesson_hour ?? "",
+          group: {
+            id: group_id ?? 0,
+            trainerId: groups_trainer_id ?? 0,
+            day: groups_lesson_day ?? 0,
+            hour: groups_lesson_hour ?? 0
+          },
           lindSend: link_sent ?? ""
         };
       }
@@ -473,6 +505,7 @@ export default {
   border: solid 2px $white;
   padding: 0.5rem;
   text-align: center;
+  min-width: 6rem;
 }
 .users__table-th {
   border: solid 2px $white;
