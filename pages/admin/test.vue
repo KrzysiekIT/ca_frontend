@@ -87,11 +87,9 @@ export default {
           id: 6
         },
         create: {
-          email: "@a",
           password: "abc",
           name: "test",
           surname: "",
-          phone: "111111",
           role_id: "1",
           created_at: "2018-01-21 00:00:00"
         },
