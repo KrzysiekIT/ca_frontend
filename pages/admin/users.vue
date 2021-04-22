@@ -8,7 +8,7 @@
         Dodaj ucznia
       </button>
     </header>
-    <table class="users__table">
+    <table class="users__table" v-if="filteredUsers">
       <thead>
         <tr>
           <th
