@@ -41,13 +41,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .editable__input {
-  font-size: 100%;
   background-color: transparent;
   border: none;
   color: $white;
+  font-size: 100%;
   height: 100%;
   text-align: center;
   text-overflow: ellipsis;
+  width: 6rem;
   white-space: nowrap;
 }
 .editable__input:focus {
