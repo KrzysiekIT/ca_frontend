@@ -1,7 +1,12 @@
 <template>
   <div class="users">
     <header class="users__header">
-      <button class="users__button users__button--default" @click="users.unshift(userFactory())">Dodaj ucznia</button>
+      <button
+        class="users__button users__button--default"
+        @click="addUser(userBackendModel)"
+      >
+        Dodaj ucznia
+      </button>
     </header>
     <table class="users__table">
       <thead>
@@ -376,6 +381,25 @@ export default {
     };
   },
   methods: {
+    async addUser(userBackendModel) {
+      const newUserId = (
+        await this.$store.dispatch("auth/request", {
+          method: "post",
+          url: "students",
+          data: { values: userBackendModel }
+        })
+      ).data[1].id;
+      const newUser = JSON.parse(JSON.stringify(this.userFrontendModel));
+      newUser.id = newUserId;
+      this.users.unshift(newUser);
+    },
+    async patchUser(userId, change) {
+      await this.$store.dispatch("auth/request", {
+        method: "patch",
+        url: `students/${userId}`,
+        data: { newValues: change }
+      });
+    },
     setFilterValue(filter, action, value, component) {
       if (action === "set" && component === "select-option") {
         filter.selected = true;
@@ -393,14 +417,27 @@ export default {
       }
       return value;
     },
-    changeDeepValue(sourceObject, fields, newValue) {
+    mapFields(fields) {
+      const joinedFields = fields.join("_");
+      const mappedField = joinedFields
+        .split(/(?=[A-Z])/)
+        .join("_")
+        .toLowerCase();
+      return mappedField;
+    },
+    async changeDeepValue(sourceObject, fields, newValue) {
       let value = sourceObject;
+      const userId = sourceObject.id;
       const fieldsLength = fields.length;
       let fieldIndex = 0;
       for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
         if (fieldIndex === fieldsLength - 1) {
+          await this.patchUser(userId, { [this.mapFields(fields)]: newValue });
           value[fields[fieldIndex]] = newValue;
         } else {
+          await this.patchUser(userId, {
+            [this.mapFields(fields)]: value[fields[fieldIndex]]
+          });
           value = value[fields[fieldIndex]];
         }
       }
