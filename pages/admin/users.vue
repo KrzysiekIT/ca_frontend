@@ -48,18 +48,14 @@
       <tbody>
         <tr
           v-for="(user, userIndex) in filteredUsers"
-          :key="'user' + user.id"
+          :key="'user' + user.id + userIndex"
           @click="highlight(userIndex)"
           class="user__table-row"
           :class="
             highlighted === userIndex ? 'user__table-row--hightligted' : ''
           "
         >
-          <td
-            v-for="(row, fieldIndex) in fields"
-            :key="'td' + fieldIndex"
-            class="users__table-td"
-          >
+          <td v-for="row in fields" :key="row.name" class="users__table-td">
             <component
               :is="row.component"
               :options="row.options"
@@ -103,6 +99,9 @@ export default {
       let filterIndex = 0;
       for (filterIndex; filterIndex < filtersLength; filterIndex++) {
         newUsers = newUsers.filter(user => {
+          if (!user.id) {
+            return false;
+          }
           let deepValue;
           deepValue = getDeepValue(user, filters[filterIndex]["field"]);
           if (
@@ -322,14 +321,69 @@ export default {
           }
         },
         {
-          name: "linkSend",
+          name: "linkSent",
           label: "Link wysłany",
           filter: { active: false, value: "" },
           component: "action-button",
           options: {
-            field: ["linkSend"]
-            /* toExecute: function() {
-            }, */
+            action: "changeValue",
+            field: ["linkSent"],
+            toExecute: "sendEmail",
+            activeState: 0,
+            states: {
+              active: {
+                disabled: false,
+                icon: "paper-plane",
+                classModifier: "active",
+                animation: false
+              },
+              loading: {
+                disabled: true,
+                icon: "spinner",
+                classModifier: "loading",
+                animation: true
+              },
+              disabled: {
+                disabled: true,
+                icon: "check",
+                classModifier: "success",
+                animation: false
+              }
+            },
+            newValue: 1
+          }
+        },
+        {
+          name: "linkSent",
+          label: "Usuń",
+          filter: { active: false, value: "" },
+          component: "action-button",
+          options: {
+            action: "removeUser",
+            field: [],
+            toExecute: "removeUser",
+            activeState: 1,
+            states: {
+              active: {
+                disabled: false,
+                icon: "user-minus",
+                classModifier: "remove",
+                animation: false
+              },
+              loading: {
+                disabled: true,
+                icon: "spinner",
+                classModifier: "loading",
+                animation: true
+              },
+              disabled: {
+                disabled: false,
+                icon: "user-minus",
+                classModifier: "remove",
+                animation: false
+              }
+            },
+            newValue: null
           }
         }
       ],
@@ -410,6 +464,9 @@ export default {
             options.field,
             options.value
           );
+        },
+        removeUser: ({ row }) => {
+          this.users.splice(row, 1);
         }
       };
       actions[details.name](details);
@@ -457,7 +514,7 @@ export default {
             day: groups_lesson_day ?? 0,
             hour: groups_lesson_hour ?? 0
           },
-          lindSend: link_sent ?? ""
+          linkSent: link_sent ?? ""
         };
       }
     );

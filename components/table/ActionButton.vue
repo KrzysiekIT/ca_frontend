@@ -1,14 +1,15 @@
 <template>
   <button
     class="action__button"
-    :class="toSend.value ? 'action__button--disabed' : 'action__button--active'"
+    :class="`action__button--${options.states[state].classModifier}`"
     @click="action()"
-    :disabled="toSend.value"
+    :disabled="options.states[state].disabed"
   >
     <fa
       class="result__icon"
-      :icon="toSend.value ? 'check' : 'paper-plane'"
-      :disabled="toSend.value"
+      :icon="options.states[state].icon"
+      :disabled="options.states[state].disabed"
+      :pulse="options.states[state].animation"
     />
   </button>
 </template>
@@ -32,18 +33,35 @@ export default {
   data() {
     return {
       toSend: {
-        name: "changeValue",
+        name: this.options.action,
         field: this.options.field,
         row: this.row,
         value: getDeepValue(this.info, this.options.field)
-      }
+      },
+      state:
+        !!getDeepValue(this.info, this.options.field) ===
+        !!this.options.activeState
+          ? "active"
+          : "disabled"
     };
   },
   methods: {
-    action() {
-      console.log(`Wysyłam do ${this.toSend.value}! :)`);
-      this.toSend.value = true;
+    async action() {
+      this.state = "loading";
+      await this[this.options.toExecute]();
+      this.state = "disabled";
+      this.toSend.value = this.options.newValue;
       this.$emit("action", this.toSend);
+    },
+    async sendEmail() {
+      console.log("FAKE EMAIL SENT.");
+    },
+    async removeUser() {
+      const userId = this.info.id;
+      await this.$store.dispatch("auth/request", {
+        method: "delete",
+        url: `users/${userId}`
+      });
     }
   }
 };
@@ -62,5 +80,14 @@ export default {
 }
 .action__button--disabed {
   color: $green;
+}
+.action__button--success {
+  color: $green;
+}
+.action__button--remove {
+  color: $resultMistake;
+}
+.action__button--remove:hover {
+  cursor: pointer;
 }
 </style>

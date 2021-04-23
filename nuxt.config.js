@@ -23,7 +23,7 @@ export default {
   plugins: [
     { src: "~/api/init.js" },
     { src: "~/plugins/video-embed.js", mode: "client" },
-    { src: '~plugins/v-calendar.js', ssr: false }
+    { src: "~plugins/v-calendar.js", ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -34,7 +34,17 @@ export default {
   fontawesome: {
     component: "fa",
     icons: {
-      solid: ["faRedo", "faArrowLeft", "faArrowRight", "faQuestion", "faLink", "faPaperPlane", "faCheck"]
+      solid: [
+        "faRedo",
+        "faArrowLeft",
+        "faArrowRight",
+        "faQuestion",
+        "faLink",
+        "faPaperPlane",
+        "faCheck",
+        "faSpinner",
+        "faUserMinus"
+      ]
     }
   },
 
