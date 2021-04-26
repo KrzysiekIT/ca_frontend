@@ -1,5 +1,6 @@
 <template>
   <div class="users">
+    {{ filteredUsers[0] }}
     <header class="users__header">
       <button
         class="users__button users__button--default"
@@ -28,7 +29,7 @@
             <autocomplete
               :items="
                 component === 'select-option'
-                  ? options.options
+                  ? selectOptions[options.options]
                   : Array.from(
                       new Set(
                         filteredUsers.map(user => {
@@ -55,12 +56,18 @@
             highlighted === userIndex ? 'user__table-row--hightligted' : ''
           "
         >
-          <td v-for="(row, rowIndex) in fields" :key="row.name+rowIndex" class="users__table-td">
+          <td
+            v-for="(row, rowIndex) in fields"
+            :key="row.name + rowIndex"
+            class="users__table-td"
+          >
             <component
               :is="row.component"
               :options="row.options"
               :info="user"
               :row="userIndex"
+              :selectOptions="selectOptions[row.options.options]"
+              :key="getDeepValue(user, row.options['field'])"
               @action="handleAction"
             />
           </td>
@@ -76,7 +83,8 @@ export default {
     ActionButton: () => import("@/components/table/ActionButton.vue"),
     SelectOption: () => import("@/components/table/SelectOption.vue"),
     CalendarPicker: () => import("@/components/table/CalendarPicker.vue"),
-    Editable: () => import("@/components/table/Editable.vue")
+    Editable: () => import("@/components/table/Editable.vue"),
+    NoEditable: () => import("@/components/table/NoEditable.vue")
   },
   computed: {
     filters() {
@@ -108,18 +116,18 @@ export default {
             filters[filterIndex]["component"] === "select-option" &&
             !filters[filterIndex]["selected"]
           ) {
-            deepValue = filters[filterIndex]["options"].find(
-              option => option.value === deepValue
-            ).label;
+            deepValue = this.selectOptions[
+              filters[filterIndex]["options"]
+            ].find(option => option.value === deepValue).label;
           } else if (filters[filterIndex]["selected"]) {
-            deepValue = filters[filterIndex]["options"].find(
-              option => option.value === deepValue
-            );
+            deepValue = this.selectOptions[
+              filters[filterIndex]["options"]
+            ].find(option => option.value === deepValue);
           }
           if (filters[filterIndex]["selected"]) {
             const stay =
               deepValue.value ===
-              filters[filterIndex].options.find(
+              this.selectOptions[filters[filterIndex]["options"]].find(
                 option => option.value === filters[filterIndex].value.value
               ).value;
             return stay;
@@ -137,6 +145,24 @@ export default {
   },
   data() {
     return {
+      selectOptions: {
+        statuses: [
+          { value: 4, label: "Blokada" },
+          { value: 3, label: "Nieaktywny" },
+          { value: 2, label: "Pauza" },
+          { value: 1, label: "Aktywny" }
+        ],
+        groups: [],
+        days: [
+          { value: 1, label: "poniedziałek" },
+          { value: 2, label: "wtorek" },
+          { value: 3, label: "środa" },
+          { value: 4, label: "czwartek" },
+          { value: 5, label: "piątek" },
+          { value: 6, label: "sobota" },
+          { value: 7, label: "niedziela" }
+        ]
+      },
       testUsers: null,
       highlighted: null,
       userBackendModel: {
@@ -157,8 +183,9 @@ export default {
         group: {
           id: 0,
           trainerId: 0,
-          day: "",
-          hour: ""
+          lessonDay: "",
+          hour: "",
+          trainerLabel: ""
         },
         lindSend: ""
       },
@@ -211,32 +238,19 @@ export default {
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
-            options: [
-              { value: 2, label: "pt. 11:15" },
-              { value: 1, label: "cz. 18:00" }
-            ],
-            field: ["group", "id"]
+            options: "groups",
+            field: ["group", "id"],
+            base: "group"
           }
         },
         {
-          name: "groupTrainerId",
+          name: "trainerLabel",
           label: "Trener",
           filter: { active: true, value: "", selected: false },
-          component: "editable",
+          component: "no-editable",
           options: {
-            field: ["group", "trainerId"]
+            field: ["group", "trainerLabel"]
           }
-          /* component: "select-option",
-          options: {
-            options: [
-              { value: 5, label: "Galik Anonimik" },
-              { value: 4, label: "Jan Nowak" },
-              { value: 3, label: "Michał Anioł" },
-              { value: 2, label: "Lech Kowalski" },
-              { value: 1, label: "Marek Dzięcioł" }
-            ],
-            field: ["trainerId"]
-          } */
         },
         {
           name: "groupDay",
@@ -244,21 +258,8 @@ export default {
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: {
-            field: ["group", "day"]
+            field: ["group", "lessonDay"]
           }
-          /* component: "select-option",
-          options: {
-            options: [
-              { value: 1, label: "poniedziałek" },
-              { value: 2, label: "wtorek" },
-              { value: 3, label: "środa" },
-              { value: 4, label: "czwartek" },
-              { value: 5, label: "piątek" },
-              { value: 6, label: "sobota" },
-              { value: 7, label: "niedziela" }
-            ],
-            field: ["day"]
-          } */
         },
         {
           name: "groupHour",
@@ -266,21 +267,8 @@ export default {
           filter: { active: true, value: "" },
           component: "editable",
           options: {
-            field: ["group", "hour"]
+            field: ["group", "lessonHour"]
           }
-          /* component: "select-option",
-          options: {
-            options: [
-              { value: "00:00", label: "00:00" },
-              { value: "05:00", label: "05:00" },
-              { value: "18:00", label: "18:00" },
-              { value: "19:00", label: "19:00" },
-              { value: "21:00", label: "21:00" },
-              { value: "22:00", label: "22:00" },
-              { value: "23:00", label: "23:00" }
-            ],
-            field: ["hour"]
-          } */
         },
         {
           name: "presences",
@@ -302,12 +290,7 @@ export default {
           filter: { active: false, value: "", selected: false },
           component: "select-option",
           options: {
-            options: [
-              { value: 4, label: "Blokada" },
-              { value: 3, label: "Nieaktywny" },
-              { value: 2, label: "Pauza" },
-              { value: 1, label: "Aktywny" }
-            ],
+            options: "statuses",
             field: ["status"]
           }
         },
@@ -360,7 +343,7 @@ export default {
           component: "action-button",
           options: {
             action: "removeUser",
-            field: [],
+            field: ["id"],
             toExecute: "removeUser",
             activeState: 1,
             states: {
@@ -435,7 +418,7 @@ export default {
         .toLowerCase();
       return mappedField;
     },
-    async changeDeepValue(sourceObject, fields, newValue) {
+    async changeDeepValue(sourceObject, fields, newValue, base, options) {
       let value = sourceObject;
       const userId = sourceObject.id;
       const fieldsLength = fields.length;
@@ -443,18 +426,22 @@ export default {
       for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
         if (fieldIndex === fieldsLength - 1) {
           await this.patchUser(userId, { [this.mapFields(fields)]: newValue });
-          value[fields[fieldIndex]] = newValue;
+          if (base) {
+            const newValueObject = this.selectOptions[options].find(
+              ({ value }) => value === newValue
+            );
+            sourceObject[base] = newValueObject;
+            value[fields[fieldIndex]] = newValue;
+          } else {
+            value[fields[fieldIndex]] = newValue;
+          }
         } else {
-          /* await this.patchUser(userId, {
-            [this.mapFields(fields)]: value[fields[fieldIndex]]
-          }); */
           value = value[fields[fieldIndex]];
         }
       }
     },
     highlight(rowIndex) {
       this.highlighted = rowIndex;
-      //this.highlighted = this.highlighted === rowIndex ? null : rowIndex;
     },
     handleAction(details) {
       const actions = {
@@ -462,7 +449,9 @@ export default {
           this.changeDeepValue(
             this.users[options.row],
             options.field,
-            options.value
+            options.value,
+            options.base,
+            options.options
           );
         },
         removeUser: ({ row }) => {
@@ -473,12 +462,44 @@ export default {
     }
   },
   async fetch() {
-    const backendStudents = (
-      await this.$store.dispatch("auth/request", {
+    const toFetch = [
+      this.$store.dispatch("auth/request", {
         method: "get",
         url: "students"
+      }),
+      this.$store.dispatch("auth/request", {
+        method: "get",
+        url: "groups"
       })
-    ).data;
+    ];
+    const apiReponses = await Promise.all(toFetch);
+    let [backendStudents, groups] = apiReponses;
+    backendStudents = backendStudents.data;
+    groups = groups.data;
+    this.selectOptions.groups = groups.map(
+      ({
+        id,
+        label,
+        trainer_id,
+        lesson_day,
+        lesson_hour,
+        trainers_name,
+        trainers_surname
+      }) => {
+        return {
+          id,
+          value: id,
+          label,
+          trainerId: trainer_id,
+          lessonDay: this.selectOptions.days.find(
+            day => lesson_day === day.value
+          ).label,
+          lessonHour: lesson_hour,
+          trainerLabel: `${trainers_name} ${trainers_surname}`
+        };
+      }
+    );
+
     const frontendStudents = backendStudents.map(
       ({
         id,
@@ -491,9 +512,6 @@ export default {
         status,
         start_at,
         group_id,
-        groups_trainer_id,
-        groups_lesson_day,
-        groups_lesson_hour,
         link_sent
       }) => {
         return {
@@ -508,12 +526,7 @@ export default {
             email: parent_email ?? "",
             phoneNumber: parent_phone_number ?? ""
           },
-          group: {
-            id: group_id ?? 0,
-            trainerId: groups_trainer_id ?? 0,
-            day: groups_lesson_day ?? 0,
-            hour: groups_lesson_hour ?? 0
-          },
+          group: this.selectOptions.groups.find(({ id }) => id === group_id),
           linkSent: link_sent ?? ""
         };
       }

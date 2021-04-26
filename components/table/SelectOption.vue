@@ -1,7 +1,7 @@
 <template>
   <select @change="$emit('action', toSend)" v-model="toSend.value">
     <option
-      v-for="({ value, label }, index) in options.options"
+      v-for="({ value, label }, index) in selectOptions"
       :key="'' + index"
       :value="value"
     >
@@ -15,6 +15,10 @@ export default {
   props: {
     options: {
       type: Object,
+      required: true
+    },
+    selectOptions: {
+      type: Array,
       required: true
     },
     info: {
@@ -31,6 +35,8 @@ export default {
       toSend: {
         name: "changeValue",
         field: this.options.field,
+        base: this.options.base,
+        options: this.options.options,
         row: this.row,
         value: getDeepValue(this.info, this.options.field)
       }
