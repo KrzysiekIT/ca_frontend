@@ -1,13 +1,9 @@
 <template>
   <div class="users">
-    <header class="users__header">
-      <add-button
-        :baseTable="users"
-        :models="{ frontend: userFrontendModel, backend: userBackendModel }"
-        addUrl="students"
-        label="Dodaj ucznia"
-      />
-    </header>
+    <data-header
+      :baseTable="users"
+      :models="{ frontend: userFrontendModel, backend: userBackendModel }"
+    />
     <table class="users__table" v-if="filteredUsers">
       <thead>
         <tr>
