@@ -1,6 +1,5 @@
 <template>
   <div class="users">
-    {{ filteredUsers[0] }}
     <header class="users__header">
       <button
         class="users__button users__button--default"
