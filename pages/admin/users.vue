@@ -55,7 +55,7 @@
             highlighted === userIndex ? 'user__table-row--hightligted' : ''
           "
         >
-          <td v-for="row in fields" :key="row.name" class="users__table-td">
+          <td v-for="(row, rowIndex) in fields" :key="row.name+rowIndex" class="users__table-td">
             <component
               :is="row.component"
               :options="row.options"
