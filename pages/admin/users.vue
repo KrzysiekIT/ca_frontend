@@ -1,12 +1,12 @@
 <template>
   <div class="users">
     <header class="users__header">
-      <button
-        class="users__button users__button--default"
-        @click="addUser(userBackendModel)"
-      >
-        Dodaj ucznia
-      </button>
+      <add-button
+        :baseTable="users"
+        :models="{ frontend: userFrontendModel, backend: userBackendModel }"
+        addUrl="students"
+        label="Dodaj ucznia"
+      />
     </header>
     <table class="users__table" v-if="filteredUsers">
       <thead>
@@ -169,24 +169,25 @@ export default {
       },
       userFrontendModel: {
         id: 0,
-        status: 0,
-        startAt: "",
+        status: 1,
+        startAt: "2017-12-01T20:00:00.000Z",
         name: "",
         surname: "",
-        birthYear: "",
         parent: {
           fullName: "",
           email: "",
           phoneNumber: ""
         },
         group: {
-          id: 0,
-          trainerId: 0,
+          id: 1,
+          value: 1,
+          label: "",
+          trainerId: 3,
           lessonDay: "",
-          hour: "",
+          lessonHour: "",
           trainerLabel: ""
         },
-        lindSend: ""
+        linkSent: 1
       },
       fields: [
         {
@@ -540,26 +541,6 @@ export default {
 }
 .users__header {
   padding-bottom: 1rem;
-}
-.users__button {
-  border: none;
-  border-radius: $appRadius;
-  color: $white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-left: 0.5rem;
-  min-width: 8rem;
-  outline: none;
-  padding: 0.625rem;
-}
-.users__button:active {
-  transform: scale(0.95);
-}
-.users__button--default {
-  background-color: $resultNeutralBlue;
-}
-.users__button--default:hover {
-  background-color: darken($resultNeutralBlue, 15%);
 }
 .users__table {
   border: solid 2px $white;
