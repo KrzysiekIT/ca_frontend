@@ -1,74 +1,7 @@
 <template>
   <div class="users">
-    <data-header
-      :baseTable="users"
-      :models="{ frontend: userFrontendModel, backend: userBackendModel }"
-    />
-    <table class="users__table" v-if="filteredUsers">
-      <thead>
-        <tr>
-          <th
-            v-for="({ label }, index) in fields"
-            :key="'th' + index"
-            class="users__table-th"
-          >
-            {{ label }}
-          </th>
-        </tr>
-        <tr>
-          <th
-            v-for="({ filter, options, component }, index) in fields"
-            :key="'filter' + index"
-            class="users__table-th"
-          >
-            <autocomplete
-              :items="
-                component === 'select-option'
-                  ? selectOptions[options.options]
-                  : Array.from(
-                      new Set(
-                        filteredUsers.map(user => {
-                          return getDeepValue(user, options['field']);
-                        })
-                      )
-                    )
-              "
-              :type="component === 'select-option' ? 'multiple' : ''"
-              @set="setFilterValue(filter, 'set', $event, component)"
-              @input="setFilterValue(filter, 'input', $event, component)"
-              v-if="filter.active"
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(user, userIndex) in filteredUsers"
-          :key="'user' + user.id + userIndex"
-          @click="highlight(userIndex)"
-          class="user__table-row"
-          :class="
-            highlighted === userIndex ? 'user__table-row--hightligted' : ''
-          "
-        >
-          <td
-            v-for="(row, rowIndex) in fields"
-            :key="row.name + rowIndex"
-            class="users__table-td"
-          >
-            <component
-              :is="row.component"
-              :options="row.options"
-              :info="user"
-              :row="userIndex"
-              :selectOptions="selectOptions[row.options.options]"
-              :key="getDeepValue(user, row.options['field'])"
-              @action="handleAction"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <data-header :baseTable="users" :models="models" />
+    <data-table :fields="fields" :selectOptions="selectOptions" :data="users" />
   </div>
 </template>
 <script>
@@ -158,32 +91,32 @@ export default {
           { value: 7, label: "niedziela" }
         ]
       },
-      testUsers: null,
-      highlighted: null,
-      userBackendModel: {
-        role_id: 4
-      },
-      userFrontendModel: {
-        id: 0,
-        status: 1,
-        startAt: "2017-12-01T20:00:00.000Z",
-        name: "",
-        surname: "",
-        parent: {
-          fullName: "",
-          email: "",
-          phoneNumber: ""
+      models: {
+        frontend: {
+          id: 0,
+          status: 1,
+          startAt: "2017-12-01T20:00:00.000Z",
+          name: "",
+          surname: "",
+          parent: {
+            fullName: "",
+            email: "",
+            phoneNumber: ""
+          },
+          group: {
+            id: 1,
+            value: 1,
+            label: "",
+            trainerId: 3,
+            lessonDay: "",
+            lessonHour: "",
+            trainerLabel: ""
+          },
+          linkSent: 1
         },
-        group: {
-          id: 1,
-          value: 1,
-          label: "",
-          trainerId: 3,
-          lessonDay: "",
-          lessonHour: "",
-          trainerLabel: ""
-        },
-        linkSent: 1
+        backend: {
+          role_id: 4
+        }
       },
       fields: [
         {
@@ -338,9 +271,9 @@ export default {
           filter: { active: false, value: "" },
           component: "action-button",
           options: {
-            action: "removeUser",
+            action: "remove",
             field: ["id"],
-            toExecute: "removeUser",
+            toExecute: "remove",
             activeState: 1,
             states: {
               active: {
@@ -368,94 +301,6 @@ export default {
       ],
       users: null
     };
-  },
-  methods: {
-    async addUser(userBackendModel) {
-      const newUserId = (
-        await this.$store.dispatch("auth/request", {
-          method: "post",
-          url: "students",
-          data: { values: userBackendModel }
-        })
-      ).data[1].id;
-      const newUser = JSON.parse(JSON.stringify(this.userFrontendModel));
-      newUser.id = newUserId;
-      this.users.unshift(newUser);
-    },
-    async patchUser(userId, change) {
-      await this.$store.dispatch("auth/request", {
-        method: "patch",
-        url: `students/${userId}`,
-        data: { newValues: change }
-      });
-    },
-    setFilterValue(filter, action, value, component) {
-      if (action === "set" && component === "select-option") {
-        filter.selected = true;
-      } else {
-        filter.selected = false;
-      }
-      filter["value"] = value;
-    },
-    getDeepValue(sourceObject, fields) {
-      let value = sourceObject;
-      const fieldsLength = fields.length;
-      let fieldIndex = 0;
-      for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
-        value = value[fields[fieldIndex]];
-      }
-      return value;
-    },
-    mapFields(fields) {
-      const joinedFields = fields.join("_");
-      const mappedField = joinedFields
-        .split(/(?=[A-Z])/)
-        .join("_")
-        .toLowerCase();
-      return mappedField;
-    },
-    async changeDeepValue(sourceObject, fields, newValue, base, options) {
-      let value = sourceObject;
-      const userId = sourceObject.id;
-      const fieldsLength = fields.length;
-      let fieldIndex = 0;
-      for (fieldIndex; fieldIndex < fieldsLength; fieldIndex++) {
-        if (fieldIndex === fieldsLength - 1) {
-          await this.patchUser(userId, { [this.mapFields(fields)]: newValue });
-          if (base) {
-            const newValueObject = this.selectOptions[options].find(
-              ({ value }) => value === newValue
-            );
-            sourceObject[base] = newValueObject;
-            value[fields[fieldIndex]] = newValue;
-          } else {
-            value[fields[fieldIndex]] = newValue;
-          }
-        } else {
-          value = value[fields[fieldIndex]];
-        }
-      }
-    },
-    highlight(rowIndex) {
-      this.highlighted = rowIndex;
-    },
-    handleAction(details) {
-      const actions = {
-        changeValue: options => {
-          this.changeDeepValue(
-            this.users[options.row],
-            options.field,
-            options.value,
-            options.base,
-            options.options
-          );
-        },
-        removeUser: ({ row }) => {
-          this.users.splice(row, 1);
-        }
-      };
-      actions[details.name](details);
-    }
   },
   async fetch() {
     const toFetch = [

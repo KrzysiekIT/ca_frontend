@@ -56,7 +56,7 @@ export default {
     async sendEmail() {
       console.log("FAKE EMAIL SENT.");
     },
-    async removeUser() {
+    async remove() {
       const userId = this.info.id;
       await this.$store.dispatch("auth/request", {
         method: "delete",

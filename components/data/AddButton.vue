@@ -31,7 +31,7 @@ export default {
           url: this.addUrl,
           data: { values: modelBackend }
         })
-      ).data[1].id;
+      ).data[1][0].id;
       const newRow = JSON.parse(JSON.stringify(this.models.frontend));
       newRow.id = newId;
       this.baseTable.unshift(newRow);
