@@ -1,5 +1,5 @@
 <template>
-  <table class="data__table">
+  <table class="data__table" v-if="filtered">
     <thead>
       <tr>
         <th
