@@ -93,10 +93,10 @@ export default {
     groups = groups.data;
 
     const frontendGroups = groups.map(
-      ({ id, label, trainer_id, lesson_day, lesosn_hour, lesson_link }) => {
+      ({ id, level, label, trainer_id, lesson_day, lesosn_hour, lesson_link }) => {
         return {
           id: id,
-          level: 1,
+          level: level ?? 1,
           label: label ?? "",
           trainerId: trainer_id ?? 3,
           lessonDay: lesson_day ?? "",
