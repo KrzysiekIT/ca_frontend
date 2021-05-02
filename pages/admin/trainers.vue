@@ -21,28 +21,16 @@ export default {
       apiUrl: "groups",
       models: {
         frontend: {
-          id: 0,
-          status: 1,
-          startAt: "2017-12-01T20:00:00.000Z",
-          name: "",
-          surname: "",
-          parent: {
-            fullName: "",
-            email: "",
-            phoneNumber: ""
-          },
-          group: {
-            id: 1,
-            value: 1,
-            label: "",
-            trainerId: 3,
-            lessonDay: "",
-            lessonHour: "",
-            trainerLabel: ""
-          },
-          linkSent: 1
+          level: 1,
+          label: "",
+          trainerId: 3,
+          lessonDay: 1,
+          lesosnHour: "",
+          lessonLink: ""
         },
-        backend: {}
+        backend: {
+          label: ""
+        }
       },
       selectOptions: {
         level: [
@@ -50,7 +38,7 @@ export default {
           { value: 2, label: "Średnia" },
           { value: 1, label: "Młoda" }
         ],
-        groups: [],
+        trainers: [],
         days: [
           { value: 1, label: "poniedziałek" },
           { value: 2, label: "wtorek" },
@@ -63,6 +51,13 @@ export default {
       },
       fields: [
         {
+          name: "name",
+          label: "Nazwa",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["label"] }
+        },
+        {
           name: "level",
           label: "Rodzaj grupy",
           filter: { active: true, value: "", selected: false },
@@ -71,6 +66,16 @@ export default {
             options: "level",
             field: ["level"],
             base: "group"
+          }
+        },
+        {
+          name: "trainer",
+          label: "Trener",
+          filter: { active: true, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "trainers",
+            field: ["trainerId"]
           }
         }
       ],
@@ -81,7 +86,7 @@ export default {
     const toFetch = [
       this.$store.dispatch("auth/request", {
         method: "get",
-        url: "students"
+        url: "trainers"
       }),
       this.$store.dispatch("auth/request", {
         method: "get",
@@ -89,11 +94,30 @@ export default {
       })
     ];
     const apiReponses = await Promise.all(toFetch);
-    let [backendStudents, groups] = apiReponses;
+    let [backendTrainers, groups] = apiReponses;
     groups = groups.data;
+    backendTrainers = backendTrainers.data;
+
+    this.selectOptions.trainers = backendTrainers.map(
+      ({ id, name, surname }) => {
+        return {
+          id,
+          value: id,
+          label: `${name} ${surname}`
+        };
+      }
+    );
 
     const frontendGroups = groups.map(
-      ({ id, level, label, trainer_id, lesson_day, lesosn_hour, lesson_link }) => {
+      ({
+        id,
+        level,
+        label,
+        trainer_id,
+        lesson_day,
+        lesosn_hour,
+        lesson_link
+      }) => {
         return {
           id: id,
           level: level ?? 1,

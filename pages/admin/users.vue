@@ -1,5 +1,5 @@
 <template>
-  <div class="users">
+  <div class="users" v-if="users">
     <data-header :baseTable="users" :models="models" :apiUrl="apiUrl" label="Dodaj ucznia" />
     <data-table :fields="fields" :selectOptions="selectOptions" :data="users" :apiUrl="apiUrl" />
   </div>
