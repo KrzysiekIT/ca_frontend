@@ -77,6 +77,10 @@ export default {
     data: {
       type: Array,
       required: true
+    },
+    apiUrl: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -153,7 +157,7 @@ export default {
     async patch(dataId, change) {
       await this.$store.dispatch("auth/request", {
         method: "patch",
-        url: `students/${dataId}`,
+        url: `${this.apiUrl}/${dataId}`,
         data: { newValues: change }
       });
     },

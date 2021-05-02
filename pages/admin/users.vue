@@ -1,78 +1,14 @@
 <template>
   <div class="users">
-    <data-header :baseTable="users" :models="models" />
-    <data-table :fields="fields" :selectOptions="selectOptions" :data="users" />
+    <data-header :baseTable="users" :models="models" :apiUrl="apiUrl" />
+    <data-table :fields="fields" :selectOptions="selectOptions" :data="users" :apiUrl="apiUrl" />
   </div>
 </template>
 <script>
 export default {
-  components: {
-    LinkButton: () => import("@/components/table/LinkButton.vue"),
-    ActionButton: () => import("@/components/table/ActionButton.vue"),
-    SelectOption: () => import("@/components/table/SelectOption.vue"),
-    CalendarPicker: () => import("@/components/table/CalendarPicker.vue"),
-    Editable: () => import("@/components/table/Editable.vue"),
-    NoEditable: () => import("@/components/table/NoEditable.vue")
-  },
-  computed: {
-    filters() {
-      return this.fields
-        .filter(({ filter }) => filter.active && filter.value)
-        .map(({ filter, options, component }) => {
-          return {
-            field: options.field,
-            options: options.options,
-            value: filter.value,
-            component,
-            selected: filter.selected
-          };
-        });
-    },
-    filteredUsers() {
-      const { filters, users, getDeepValue } = this;
-      let newUsers = users;
-      const filtersLength = this.filters.length;
-      let filterIndex = 0;
-      for (filterIndex; filterIndex < filtersLength; filterIndex++) {
-        newUsers = newUsers.filter(user => {
-          if (!user.id) {
-            return false;
-          }
-          let deepValue;
-          deepValue = getDeepValue(user, filters[filterIndex]["field"]);
-          if (
-            filters[filterIndex]["component"] === "select-option" &&
-            !filters[filterIndex]["selected"]
-          ) {
-            deepValue = this.selectOptions[
-              filters[filterIndex]["options"]
-            ].find(option => option.value === deepValue).label;
-          } else if (filters[filterIndex]["selected"]) {
-            deepValue = this.selectOptions[
-              filters[filterIndex]["options"]
-            ].find(option => option.value === deepValue);
-          }
-          if (filters[filterIndex]["selected"]) {
-            const stay =
-              deepValue.value ===
-              this.selectOptions[filters[filterIndex]["options"]].find(
-                option => option.value === filters[filterIndex].value.value
-              ).value;
-            return stay;
-          } else {
-            deepValue = deepValue;
-            return deepValue
-              .toLowerCase()
-              .trim()
-              .includes(filters[filterIndex]["value"].toLowerCase().trim());
-          }
-        });
-      }
-      return newUsers;
-    }
-  },
   data() {
     return {
+      apiUrl: "students",
       selectOptions: {
         statuses: [
           { value: 4, label: "Blokada" },
@@ -379,27 +315,5 @@ export default {
 <style lang="scss" scoped>
 .users {
   max-height: 0;
-}
-.users__header {
-  padding-bottom: 1rem;
-}
-.users__table {
-  border: solid 2px $white;
-  border-collapse: collapse;
-  min-width: 100%;
-  overflow: scroll;
-}
-.user__table-row--hightligted {
-  background-color: lighten($mainBackground, 10);
-}
-.users__table-td {
-  border: solid 2px $white;
-  padding: 0.5rem;
-  text-align: center;
-  min-width: 6rem;
-}
-.users__table-th {
-  border: solid 2px $white;
-  padding: 0.5rem;
 }
 </style>
