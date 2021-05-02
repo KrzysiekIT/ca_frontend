@@ -210,6 +210,7 @@ export default {
             action: "remove",
             field: ["id"],
             toExecute: "remove",
+            link: "users",
             activeState: 1,
             states: {
               active: {
