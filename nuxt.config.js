@@ -43,7 +43,8 @@ export default {
         "faPaperPlane",
         "faCheck",
         "faSpinner",
-        "faUserMinus"
+        "faUserMinus",
+        "faUsersSlash"
       ]
     }
   },

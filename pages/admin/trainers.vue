@@ -47,7 +47,23 @@ export default {
           { value: 5, label: "piątek" },
           { value: 6, label: "sobota" },
           { value: 7, label: "niedziela" }
-        ]
+        ],
+        hours: (() => {
+          const hours = Array.from(Array(24).keys());
+          const minutes = ["00", "15", "30", "45"];
+          const options = [];
+          let hourIndex = 0;
+          const hoursLength = hours.length;
+          const minutesLength = minutes.length;
+          for (hourIndex; hourIndex < hoursLength; hourIndex++) {
+            let minuteIndex = 0;
+            for (minuteIndex; minuteIndex < minutesLength; minuteIndex++) {
+              const hourToPush = `${hours[hourIndex]}:${minutes[minuteIndex]}`;
+              options.push({ value: hourToPush, label: hourToPush });
+            }
+          }
+          return options;
+        })()
       },
       fields: [
         {
@@ -76,6 +92,78 @@ export default {
           options: {
             options: "trainers",
             field: ["trainerId"]
+          }
+        },
+        {
+          name: "lessonDay",
+          label: "Dzień",
+          filter: { active: true, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "days",
+            field: ["lessonDay"]
+          }
+        },
+        {
+          name: "lessonHour",
+          label: "Godzina",
+          filter: { active: true, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "hours",
+            field: ["lessonHour"]
+          }
+        },
+        {
+          name: "lessonLink",
+          label: "Link",
+          filter: { active: false, value: "", selected: false },
+          component: "editable",
+          options: {
+            field: ["lessonLink"]
+          }
+        },
+        {
+          name: "lessonTool",
+          label: "Tool",
+          filter: { active: false, value: "", selected: false },
+          component: "editable",
+          options: {
+            field: ["lessonTool"]
+          }
+        },
+        {
+          name: "removeUser",
+          label: "Usuń",
+          filter: { active: false, value: "" },
+          component: "action-button",
+          options: {
+            action: "remove",
+            field: ["id"],
+            toExecute: "remove",
+            link: "groups",
+            activeState: 1,
+            states: {
+              active: {
+                disabled: false,
+                icon: "users-slash",
+                classModifier: "remove",
+                animation: false
+              },
+              loading: {
+                disabled: true,
+                icon: "spinner",
+                classModifier: "loading",
+                animation: true
+              },
+              disabled: {
+                disabled: false,
+                icon: "users-slash",
+                classModifier: "remove",
+                animation: false
+              }
+            },
+            newValue: null
           }
         }
       ],
@@ -115,7 +203,8 @@ export default {
         label,
         trainer_id,
         lesson_day,
-        lesosn_hour,
+        lesson_hour,
+        lesson_tool,
         lesson_link
       }) => {
         return {
@@ -124,8 +213,9 @@ export default {
           label: label ?? "",
           trainerId: trainer_id ?? 3,
           lessonDay: lesson_day ?? "",
-          lesosnHour: lesosn_hour ?? "",
-          lessonLink: lesson_link ?? ""
+          lessonHour: lesson_hour ?? "",
+          lessonLink: lesson_link ?? "",
+          lessonTool: lesson_tool ?? ""
         };
       }
     );
