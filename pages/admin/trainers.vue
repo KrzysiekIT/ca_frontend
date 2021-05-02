@@ -1,6 +1,11 @@
 <template>
-  <div class="groups">
-    <data-header :baseTable="groups" :models="models" :apiUrl="apiUrl" label="Dodaj grupę" />
+  <div class="groups" v-if="groups">
+    <data-header
+      :baseTable="groups"
+      :models="models"
+      :apiUrl="apiUrl"
+      label="Dodaj grupę"
+    />
     <data-table
       :fields="fields"
       :selectOptions="selectOptions"
@@ -56,7 +61,20 @@ export default {
           { value: 7, label: "niedziela" }
         ]
       },
-      fields: []
+      fields: [
+        {
+          name: "level",
+          label: "Rodzaj grupy",
+          filter: { active: true, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "level",
+            field: ["level"],
+            base: "group"
+          }
+        }
+      ],
+      groups: null
     };
   },
   async fetch() {
@@ -72,35 +90,18 @@ export default {
     ];
     const apiReponses = await Promise.all(toFetch);
     let [backendStudents, groups] = apiReponses;
+    groups = groups.data;
 
     const frontendGroups = groups.map(
-      ({
-        id,
-        name,
-        surname,
-        birth_year,
-        parent_full_name,
-        parent_email,
-        parent_phone_number,
-        status,
-        start_at,
-        group_id,
-        link_sent
-      }) => {
+      ({ id, label, trainer_id, lesson_day, lesosn_hour, lesson_link }) => {
         return {
           id: id,
-          status: status ?? 0,
-          startAt: start_at ?? "",
-          name: name ?? "",
-          surname: surname ?? "",
-          birthYear: birth_year ?? "",
-          parent: {
-            fullName: parent_full_name ?? "",
-            email: parent_email ?? "",
-            phoneNumber: parent_phone_number ?? ""
-          },
-          group: this.selectOptions.groups.find(({ id }) => id === group_id),
-          linkSent: link_sent ?? ""
+          level: 1,
+          label: label ?? "",
+          trainerId: trainer_id ?? 3,
+          lessonDay: lesson_day ?? "",
+          lesosnHour: lesosn_hour ?? "",
+          lessonLink: lesson_link ?? ""
         };
       }
     );
