@@ -1,6 +1,6 @@
 <template>
-  <div class="users">
-    <data-header :baseTable="users" :models="models" :apiUrl="apiUrl" />
+  <div class="users" v-if="users">
+    <data-header :baseTable="users" :models="models" :apiUrl="apiUrl" label="Dodaj ucznia" />
     <data-table :fields="fields" :selectOptions="selectOptions" :data="users" :apiUrl="apiUrl" />
   </div>
 </template>
@@ -210,6 +210,7 @@ export default {
             action: "remove",
             field: ["id"],
             toExecute: "remove",
+            link: "users",
             activeState: 1,
             states: {
               active: {

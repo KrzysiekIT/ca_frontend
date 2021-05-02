@@ -60,7 +60,7 @@ export default {
       const userId = this.info.id;
       await this.$store.dispatch("auth/request", {
         method: "delete",
-        url: `users/${userId}`
+        url: `${this.options.link}/${userId}`
       });
     }
   }
