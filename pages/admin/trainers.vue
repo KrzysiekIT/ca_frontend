@@ -1,6 +1,6 @@
 <template>
   <div class="groups">
-    <data-header :baseTable="groups" :models="models" :apiUrl="apiUrl" />
+    <data-header :baseTable="groups" :models="models" :apiUrl="apiUrl" label="Dodaj grupę" />
     <data-table
       :fields="fields"
       :selectOptions="selectOptions"
