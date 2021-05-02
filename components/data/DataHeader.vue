@@ -3,8 +3,8 @@
     <add-button
       :baseTable="baseTable"
       :models="models"
-      addUrl="students"
-      label="Dodaj ucznia"
+      :addUrl="apiUrl"
+      :label="label"
     />
   </header>
 </template>
@@ -18,7 +18,15 @@ export default {
     models: {
       type: Object,
       required: true
-    }
+    },
+    apiUrl: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
   }
 };
 </script>
