@@ -77,10 +77,7 @@ export default {
       return (numberToSign < 0 ? "" : "+") + numberToSign;
     },
     sendResult(toSend) {
-      this.socket.emit("message", toSend, res => {
-        console.log(
-          "Wysyłałem event 'message' z obiektem, w odpowiedzi dostałem"
-        );
+      this.socket.emit("game", toSend, res => {
         console.log(res);
       });
     },

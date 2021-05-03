@@ -8,8 +8,7 @@
 export default {
   mounted() {
     this.socket = this.$nuxtSocket({});
-    this.socket.on("message", (message, cb) => {
-      console.log("Odebrano  event 'message'");
+    this.socket.on("game", (message, cb) => {
       const userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
