@@ -61,10 +61,15 @@
         </ul>
       </section>
       <section class="header--end">
-        <img src="~/assets/images/money.svg" alt="Sad icon" height="64" /><img
+        <img
+          src="~/assets/images/money.svg"
+          alt="Sad icon"
+          class="header__image--end"
+        />
+        <img
           src="~/assets/images/sad.svg"
           alt="Sad icon"
-          height="64"
+          class="header__image--end"
         />
       </section>
     </header>
@@ -108,13 +113,18 @@ export default {
 .header--logo {
   height: 8rem;
 }
+$headerEndWidth: 10rem;
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - #{$navMenuWidth + $logoIconWidth});
+  min-width: calc(100% - #{calc($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
-  width: 10rem;
+  display: flex;
+  width: $headerEndWidth;
+}
+.header__image--end {
+  height: 4rem;
 }
 .header--upper {
   display: flex;

@@ -101,10 +101,11 @@ export default {
 .header--logo {
   height: 8rem;
 }
+$headerEndWidth: 10rem;
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - #{$navMenuWidth + $logoIconWidth});
+  min-width: calc(100% - #{calc($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
   width: 10rem;

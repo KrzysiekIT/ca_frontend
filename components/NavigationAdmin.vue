@@ -19,7 +19,7 @@
               class="navigation__link"
               :to="localePath(`/admin/${link}${sublink.link}`)"
             >
-              {{ `- ${sublink.label} `}}
+              {{ `-${sublink.label} ` }}
             </nuxt-link>
           </li>
         </ul>
@@ -96,8 +96,9 @@ export default {
   padding: 1rem 0 0 0;
 }
 .navigation__link {
+  align-items: center;
   color: $white;
-  display: inline-block;
+  display: flex;
   text-decoration: none;
   transition: all 0.5s;
 }

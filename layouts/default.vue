@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-/*   mounted() {
+  /*   mounted() {
     this.socket = this.$nuxtSocket({});
     this.socket.emit("message", { id: "abc123" }, res => {
       console.log("Wysyłałem event 'message' z obiektem, w odpowiedzi dostałem");
@@ -29,6 +29,24 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+}
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 959px) and (max-width: 1200px) {
+  html {
+    font-size: 16px;
+  }
 }
 
 *,
