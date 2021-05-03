@@ -26,13 +26,32 @@
           {{ assignSign(sample) }}
         </div>
         <hr class="abacus__line" />
-        <input @blur="checkResult($event, samples)" class="abacus__input" />
+        <input
+          @blur="acceptResult($event, samples, index)"
+          class="abacus__input"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
+  created() {
+    if (process.client) {
+      this.socket = this.$nuxtSocket({});
+      this.sendResult({
+        studentId: this.user.id,
+        game: "anzan",
+        message: "anzan-start",
+        samples: this.allSamples
+      });
+    }
+  },
+  computed: {
+    user() {
+      return (this.$store.state.auth || {}).user || null;
+    }
+  },
   data() {
     return {
       allSamples: [
@@ -49,12 +68,38 @@ export default {
         [-3, 2, 4, 5],
         [-3, 1, 4, 5],
         [3, 1, 7, 8]
-      ]
+      ],
+      results: []
     };
   },
   methods: {
     assignSign(numberToSign) {
       return (numberToSign < 0 ? "" : "+") + numberToSign;
+    },
+    sendResult(toSend) {
+      this.socket.emit("message", toSend, res => {
+        console.log(
+          "Wysyłałem event 'message' z obiektem, w odpowiedzi dostałem"
+        );
+        console.log(res);
+      });
+    },
+    setResult(value, index) {
+      this.results[index] = value;
+    },
+    acceptResult(event, samples, exampleIndex) {
+      const result = +event.target.value;
+      this.setResult(result, exampleIndex);
+      this.sendResult({
+        studentId: this.user.id,
+        game: "anzan",
+        message: "anzan-result",
+        result: {
+          row: exampleIndex,
+          result
+        }
+      });
+      this.checkResult(event, samples);
     },
     checkResult(event, samples) {
       const sum = samples.reduce(

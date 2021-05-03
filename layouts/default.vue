@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  mounted() {
+/*   mounted() {
     this.socket = this.$nuxtSocket({});
     this.socket.emit("message", { id: "abc123" }, res => {
       console.log("Wysyłałem event 'message' z obiektem, w odpowiedzi dostałem");
@@ -15,7 +15,7 @@ export default {
       console.log("Odebrano  event 'message'");
       console.log(message);
     });
-  }
+  } */
 };
 </script>
 <style lang="scss">
