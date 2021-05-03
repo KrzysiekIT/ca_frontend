@@ -71,6 +71,7 @@ export default {
   align-items: center;
   display: flex;
   font-size: 1.5rem;
+  flex-wrap: wrap;
 }
 .abacus__label {
   margin-right: 1rem;

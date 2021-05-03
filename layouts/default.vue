@@ -31,19 +31,37 @@ html {
   box-sizing: border-box;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 550px) {
+  html {
+    font-size: 6px;
+  }
+}
+
+@media only screen and (min-width: 550px) and (max-width: 700px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 800px) {
   html {
     font-size: 10px;
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 959px) {
+@media only screen and (min-width: 800px) and (max-width: 1000px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1200px) {
   html {
     font-size: 14px;
   }
 }
 
-@media only screen and (min-width: 959px) and (max-width: 1200px) {
+@media only screen and (min-width: 1200px) and (max-width: 1400px) {
   html {
     font-size: 16px;
   }

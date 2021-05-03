@@ -31,7 +31,6 @@
               </a>
             </li>
           </ul>
-          <div class="spacer"></div>
         </div>
         <ul class="user--list">
           <li class="user--list-item">
@@ -106,18 +105,19 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .header--logo-box {
   width: $logoIconWidth;
 }
 .header--logo {
-  height: 8rem;
+  width: 10rem;
 }
 $headerEndWidth: 10rem;
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - #{calc($headerEndWidth + $logoIconWidth)});
+  min-width: calc(100% - #{($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
   display: flex;

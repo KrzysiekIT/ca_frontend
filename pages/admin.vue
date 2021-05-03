@@ -105,7 +105,7 @@ $headerEndWidth: 10rem;
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - #{calc($headerEndWidth + $logoIconWidth)});
+  min-width: calc(100% - #{($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
   display: flex;
