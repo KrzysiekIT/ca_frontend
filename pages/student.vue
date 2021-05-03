@@ -113,6 +113,17 @@ export default {
 .header--logo {
   width: 10rem;
 }
+@media only screen and (max-width: 800px) {
+  .header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .header--logo-box {
+    display: flex;
+    justify-content: center;
+  }
+}
 $headerEndWidth: 10rem;
 .header--middle {
   display: flex;
@@ -130,6 +141,11 @@ $headerEndWidth: 10rem;
   display: flex;
   padding: 0 5rem 0 5rem;
 }
+@media only screen and (max-width: 800px) {
+  .header--upper {
+    justify-content: center;
+  }
+}
 .user--box {
   align-items: center;
   display: flex;
@@ -145,8 +161,16 @@ $headerEndWidth: 10rem;
   list-style: none;
   padding-top: 1rem;
 }
-.user--list li {
-  display: flex;
+@media only screen and (max-width: 800px) {
+  .user--list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .user--list-item {
+    margin: 0;
+    display: inline-block;
+  }
 }
 .user--image__camera {
   height: 1rem;
@@ -173,6 +197,11 @@ $headerEndWidth: 10rem;
   list-style: none;
   padding-left: 5rem;
 }
+@media only screen and (max-width: 800px) {
+  .lang--list {
+    padding-left: 1rem;
+  }
+}
 .lang--list-item {
   align-self: center;
 }
@@ -191,5 +220,11 @@ $headerEndWidth: 10rem;
   border: 0.125rem solid #fff;
   min-width: calc(100% - #{$navMenuWidth});
   padding: 2rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .main {
+    min-width: 100%;
+  }
 }
 </style>

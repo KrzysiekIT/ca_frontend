@@ -97,6 +97,11 @@
   </nav>
 </template>
 <style lang="scss" scoped>
+@media only screen and (max-width: 800px) {
+  .navigation {
+    display: none;
+  }
+}
 .navigation {
   padding: 2rem 2rem 2rem 0;
   font-size: 2rem;
