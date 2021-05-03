@@ -108,7 +108,8 @@ $headerEndWidth: 10rem;
   min-width: calc(100% - #{calc($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
-  width: 10rem;
+  display: flex;
+  width: $headerEndWidth;
 }
 .header--upper {
   display: flex;
