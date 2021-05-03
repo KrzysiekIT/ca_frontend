@@ -1,6 +1,10 @@
 <template>
   <div>
-    <header class="header">
+    <slide-menu
+      @openMenu="handleOpenMenu"
+      :closeOnNavigation="true"
+      ref="slide-menu"
+    >
       <div class="header--logo-box">
         <img
           src="~/assets/images/logo.png"
@@ -8,6 +12,9 @@
           class="header--logo"
         />
       </div>
+      <NavigationAdmin />
+    </slide-menu>
+    <header class="header">
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -62,7 +69,6 @@
       </section>
     </header>
     <div class="page--middle">
-      <NavigationAdmin />
       <main class="main">
         <!-- <section class="main__flip"> --><nuxt-child /><!-- </section> -->
       </main>
@@ -86,6 +92,12 @@ export default {
       this.$store.dispatch("auth/reset").then(() => {
         this.$router.push("/");
       });
+    },
+    handleOpenMenu() {
+      setTimeout(() => {
+        this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
+          "30rem";
+      }, 0);
     }
   }
 };
@@ -195,5 +207,4 @@ $headerEndWidth: 10rem;
   transform: rotateX(180deg);
   width: 100%;
 } */
-
 </style>

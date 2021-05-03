@@ -223,8 +223,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.groups {
-  max-height: 0;
-}
-</style>
+<style lang="scss" scoped></style>

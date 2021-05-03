@@ -314,7 +314,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.users {
-  max-height: 0;
-}
 </style>

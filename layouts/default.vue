@@ -83,4 +83,8 @@ html {
   width: 16rem;
   height: 9rem;
 }
+
+.bm-menu {
+  padding-top: 0 !important;
+}
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <header class="header">
+    <slide-menu
+      @openMenu="handleOpenMenu"
+      :closeOnNavigation="true"
+      ref="slide-menu"
+    >
       <div class="header--logo-box">
         <img
           src="~/assets/images/logo.png"
@@ -8,6 +12,9 @@
           class="header--logo"
         />
       </div>
+      <NavigationStudent />
+    </slide-menu>
+    <header class="header">
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -73,7 +80,6 @@
       </section>
     </header>
     <div class="page--middle">
-      <NavigationStudent />
       <main class="main">
         <nuxt-child />
       </main>
@@ -93,6 +99,12 @@ export default {
     }
   },
   methods: {
+    handleOpenMenu() {
+      setTimeout(() => {
+        this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
+          "30rem";
+      }, 0);
+    },
     logOut() {
       this.$store.dispatch("auth/reset").then(() => {
         this.$router.push("/");
@@ -113,22 +125,10 @@ export default {
 .header--logo {
   width: 10rem;
 }
-@media only screen and (max-width: 800px) {
-  .header {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .header--logo-box {
-    display: flex;
-    justify-content: center;
-  }
-}
 $headerEndWidth: 10rem;
 .header--middle {
   display: flex;
   flex-direction: column;
-  min-width: calc(100% - #{($headerEndWidth + $logoIconWidth)});
 }
 .header--end {
   display: flex;
@@ -140,11 +140,6 @@ $headerEndWidth: 10rem;
 .header--upper {
   display: flex;
   padding: 0 5rem 0 5rem;
-}
-@media only screen and (max-width: 800px) {
-  .header--upper {
-    justify-content: center;
-  }
 }
 .user--box {
   align-items: center;
@@ -160,17 +155,6 @@ $headerEndWidth: 10rem;
 .user--list {
   list-style: none;
   padding-top: 1rem;
-}
-@media only screen and (max-width: 800px) {
-  .user--list {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  .user--list-item {
-    margin: 0;
-    display: inline-block;
-  }
 }
 .user--image__camera {
   height: 1rem;
@@ -197,11 +181,6 @@ $headerEndWidth: 10rem;
   list-style: none;
   padding-left: 5rem;
 }
-@media only screen and (max-width: 800px) {
-  .lang--list {
-    padding-left: 1rem;
-  }
-}
 .lang--list-item {
   align-self: center;
 }
@@ -218,7 +197,7 @@ $headerEndWidth: 10rem;
   /* background-color: #fff; */
   border-radius: 4rem;
   border: 0.125rem solid #fff;
-  min-width: calc(100% - #{$navMenuWidth});
+  min-width: 100%;
   padding: 2rem;
 }
 
