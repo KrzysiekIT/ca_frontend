@@ -17,7 +17,8 @@
     "nuxt-i18n": "^6.20.2",
     "nuxt-socket-io": "^1.1.17",
     "v-calendar": "^2.3.0",
-    "v-video-embed": "^1.0.8"
+    "v-video-embed": "^1.0.8",
+    "vue-burger-menu": "^2.0.5"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

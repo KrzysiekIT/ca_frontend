@@ -14,6 +14,7 @@
                 src="~/assets/images/user_white.svg"
                 alt="User icon white"
                 height="32"
+                class="navigation__image"
               />
               Konto ucznia
             </nuxt-link>
@@ -32,6 +33,7 @@
                 src="~/assets/images/abacus.png"
                 alt="Abacus icon"
                 height="32"
+                class="navigation__image"
               />
               Abacus
             </nuxt-link>
@@ -45,6 +47,7 @@
                 src="~/assets/images/anzan.png"
                 alt="Anzan icon"
                 height="32"
+                class="navigation__image"
               />
               Anzan
             </nuxt-link>
@@ -74,6 +77,7 @@
                 src="~/assets/images/fast_reading.png"
                 alt="Abacus icon"
                 height="32"
+                class="navigation__image"
               />
               Szybkie czytanie
             </nuxt-link>
@@ -87,6 +91,7 @@
                 src="~/assets/images/movies.png"
                 alt="Movies icon"
                 height="32"
+                class="navigation__image"
               />
               Filmy
             </nuxt-link>
@@ -97,11 +102,6 @@
   </nav>
 </template>
 <style lang="scss" scoped>
-@media only screen and (max-width: 800px) {
-  .navigation {
-    display: none;
-  }
-}
 .navigation {
   padding: 2rem 2rem 2rem 0;
   font-size: 2rem;
@@ -126,5 +126,8 @@
 }
 .navigation__link:hover {
   transform: scale(1.1);
+}
+.navigation__image {
+  margin-right: 0.5rem;
 }
 </style>
