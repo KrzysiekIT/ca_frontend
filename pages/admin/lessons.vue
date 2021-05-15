@@ -31,6 +31,10 @@ export default {
         .map(game => game.studentId)
         .indexOf(message.studentId);
       const userFound = userIndex !== -1 ? true : false;
+      let theSameGame = true;
+      if (!userFound || this.games[userIndex].game !== message.game) {
+        theSameGame = false;
+      }
 
       if (userIndex === -1) {
         userIndex = this.games.length;
@@ -42,11 +46,10 @@ export default {
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
-            results: new Array(message.samples.length),
-            reload: false
+            results: new Array(message.samples.length)
           });
         } else if (message.action === "result") {
-          if (!userFound) {
+          if (!userFound || !theSameGame) {
             this.sendResult("game", {
               studentId: message.studentId,
               game: "abacus",
@@ -64,10 +67,14 @@ export default {
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
-            results: message.results,
-            reload: false
+            results: message.results
           });
         }
+      } else if (message.game) {
+        this.$set(this.games, userIndex, {
+          studentId: message.studentId,
+          game: message.game
+        });
       }
 
       console.log(message);
