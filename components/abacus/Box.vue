@@ -110,6 +110,7 @@ $sampleWidth: 4rem;
 .abacus__box {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .abacus__samples {
   padding: 0.25rem;

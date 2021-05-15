@@ -3,6 +3,7 @@
     <div>LIVE GAME</div>
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
+        <h2 class="games__student u-margin-small">{{game.studentId}} Jan Kowalski</h2>
         <abacus-box
           :exercises="game.exercises"
           :results="game.results"
@@ -77,5 +78,8 @@ export default {
 .games__game {
   border: $tableBorder;
   width: 50%;
+}
+.games__student {
+  text-align: center;
 }
 </style>

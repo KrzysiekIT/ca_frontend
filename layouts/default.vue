@@ -87,4 +87,8 @@ html {
 .bm-menu {
   padding-top: 0 !important;
 }
+
+.u-margin-small {
+  margin: 1rem 0.25rem;
+}
 </style>
