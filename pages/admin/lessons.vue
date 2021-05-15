@@ -5,6 +5,7 @@
       <div class="games__game" v-for="game in games" :key="game.studentId">
         <h2 class="games__student u-margin-small">
           <span>{{ game.studentId }} Jan Kowalski</span>
+          <br />
           <small>{{ game.game }}</small>
         </h2>
         <abacus-box
