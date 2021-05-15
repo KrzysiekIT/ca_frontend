@@ -76,7 +76,7 @@ export default {
       this.sendResult("game", {
         studentId: this.user.id,
         game: "abacus",
-        message: "result",
+        action: "result",
         result: {
           row: exampleIndex,
           result

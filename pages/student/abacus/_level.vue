@@ -32,7 +32,7 @@ export default {
       this.sendResult("game", {
         studentId: this.user.id,
         game: "abacus",
-        message: "start",
+        action: "start",
         samples: this.allSamples
       });
     }

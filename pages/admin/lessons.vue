@@ -26,7 +26,7 @@ export default {
       const userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
-      if (message.game ==="abacus" && message.message === "start") {
+      if (message.game ==="abacus" && message.action === "start") {
         if (userIndex === -1) {
           this.games.push({
             studentId: message.studentId,
@@ -45,7 +45,7 @@ export default {
             reload: false
           });
         }
-      } else if (message.game ==="abacus" && message.message === "result") {
+      } else if (message.game ==="abacus" && message.action === "result") {
         this.reloadGame(userIndex);
         this.$set(
           this.games[userIndex].results,
