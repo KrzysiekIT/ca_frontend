@@ -13,7 +13,7 @@
         <span v-if="sample!==0">
           {{ assignSign(sample) }}
         </span>
-        <br v-else>
+        <div v-else><br></div>
       </div>
       <hr class="abacus__line" />
       <input
