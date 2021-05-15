@@ -12,7 +12,7 @@
           :exercises="game.exercises"
           :results="game.results"
           :mode="'admin'"
-          :key="game.reload"
+          v-if="game.ready"
         ></abacus-box>
       </div>
     </div>
@@ -46,7 +46,8 @@ export default {
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
-            results: new Array(message.samples.length)
+            results: new Array(message.samples.length),
+            ready: true
           });
         } else if (message.action === "result") {
           if (!userFound || !theSameGame) {
@@ -67,13 +68,21 @@ export default {
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
-            results: message.results
+            results: message.results,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
           });
         }
       } else if (message.game) {
         this.$set(this.games, userIndex, {
           studentId: message.studentId,
-          game: message.game
+          game: message.game,
+          ready: false
         });
       }
 

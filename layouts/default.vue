@@ -88,6 +88,13 @@ html {
   padding-top: 0 !important;
 }
 
+.bm-burger-button {
+  height: 1.5rem;
+  width: 1.8rem;
+  left: 1.8rem;
+  top: 1.8rem;
+}
+
 .u-margin-small {
   margin: 1rem 0.25rem;
 }
