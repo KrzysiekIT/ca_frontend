@@ -12,8 +12,22 @@
           :exercises="game.exercises"
           :results="game.results"
           :mode="'admin'"
-          v-if="game.ready"
+          v-if="game.ready && game.game === 'abacus'"
         ></abacus-box>
+        <div class="games__video">
+          <video-embed
+            :src="game.link"
+            v-if="game.ready && game.game === 'movies'"
+          ></video-embed>
+        </div>
+        <div class="games__reading">
+          <iframe
+            :src="game.link"
+            :title="game.title"
+            v-if="game.ready && game.game === 'fast-reading'"
+            class="embed-responsive-item"
+          ></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -78,6 +92,40 @@ export default {
             ready: false
           });
         }
+      } else if (message.game === "fast-reading") {
+        if (message.action === "lesson-selected") {
+          console.log(message);
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
+      } else if (message.game === "movies") {
+        if (message.action === "lesson-selected") {
+          console.log(message);
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
       } else if (message.game) {
         this.$set(this.games, userIndex, {
           studentId: message.studentId,
@@ -114,5 +162,9 @@ export default {
 }
 .games__student {
   text-align: center;
+}
+.games__video, .games__reading {
+  display: flex;
+  justify-content: center;
 }
 </style>

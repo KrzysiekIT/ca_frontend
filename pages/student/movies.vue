@@ -4,6 +4,7 @@
       class="movies__movie-box"
       v-for="(video, index) in videos"
       :key="'video' + index"
+      @mouseover="sendMessage(index)"
     >
       <h2 class="movies__title">{{ video.title }}</h2>
       <video-embed :src="video.link"></video-embed>
@@ -26,6 +27,7 @@ export default {
   },
   data() {
     return {
+      lastIndex: -1,
       videos: [
         {
           title: "Be happy",
@@ -81,6 +83,20 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    sendMessage(index) {
+      if (index === this.lastIndex) {
+        return;
+      }
+      this.lastIndex = index;
+      this.sendResult("game", {
+        studentId: this.user.id,
+        game: "movies",
+        action: "lesson-selected",
+        file: this.videos[index]
+      });
+    }
   }
 };
 </script>

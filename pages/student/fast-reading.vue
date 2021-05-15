@@ -8,7 +8,13 @@
       <h2 class="fast-reading__title">
         {{ getNumberWithTrailingSpace(++index) }}
       </h2>
-      <a class="fast-reading__link" :href="pdf.link">{{ pdf.title }}</a>
+      <a
+        class="fast-reading__link"
+        :href="pdf.link"
+        target="_blank"
+        @click="sendMessage(index)"
+        >{{ pdf.title }}</a
+      >
     </div>
   </div>
 </template>
@@ -31,60 +37,68 @@ export default {
       pdfs: [
         {
           title: "Be happy",
-          link: "https://www.youtube.com/watch?v=ZbZSe6N_BXs"
+          link: "http://localhost:41205/file/test.pdf"
         },
         {
           title: "Wake me up",
-          link: "https://www.youtube.com/watch?v=pIgZ7gMze7A"
+          link: "http://localhost:41205/file/test.pdf"
         },
         {
           title: "DOTA",
-          link: "https://www.youtube.com/watch?v=qTsaS1Tm-Ic"
+          link: "http://localhost:41205/file/test.pdf"
         },
         {
           title: "Sugar",
-          link: "https://www.youtube.com/watch?v=09R8_2nJtjg"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "YMCA",
-          link: "https://www.youtube.com/watch?v=CS9OO0S5w2k"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "All Start",
-          link: "https://www.youtube.com/watch?v=CS9OO0S5w2k"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Livin' La Vida Loca",
-          link: "https://www.youtube.com/watch?v=p47fEXGabaY"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Juanes - La Camisa Negra",
-          link: "https://www.youtube.com/watch?v=kRt2sRyup6A"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Party Rock Anthem",
-          link: "https://www.youtube.com/watch?v=KQ6zr6kCPj8"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Coca Cola",
-          link: "https://www.youtube.com/watch?v=gdjFeiiJaPI"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Uptown Funk",
-          link: "https://www.youtube.com/watch?v=OPf0YbXqDm0"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "Hips Don't Lie",
-          link: "https://www.youtube.com/watch?v=DUT5rEU6pqM"
+          link: "https://api.ngo.pl/media/get/108219"
         },
         {
           title: "They Don’t Care About Us",
-          link: "https://www.youtube.com/watch?v=QNJL6nfu__Q"
+          link: "https://api.ngo.pl/media/get/108219"
         }
       ]
     };
   },
   methods: {
+    sendMessage(index) {
+      this.sendResult("game", {
+        studentId: this.user.id,
+        game: "fast-reading",
+        action: "lesson-selected",
+        file: this.pdfs[index]
+      });
+    },
     getNumberWithTrailingSpace(numberToAdd) {
       if (numberToAdd < 10) {
         return "0" + numberToAdd;
