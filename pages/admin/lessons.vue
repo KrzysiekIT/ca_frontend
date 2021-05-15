@@ -27,21 +27,17 @@ export default {
   mixins: [socket],
   mounted() {
     this.socket.on("game", (message, cb) => {
-      console.log(message);
-      const userIndex = this.games
+      let userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
-      if (message.game === "abacus" && message.action === "start") {
-        if (userIndex === -1) {
-          this.games.push({
-            studentId: message.studentId,
-            game: message.game,
-            exercises: message.samples,
-            results: new Array(message.samples.length),
-            reload: false
-          });
-        } else {
-          this.reloadGame(userIndex);
+      const userFound = userIndex !== -1 ? true : false;
+
+      if (userIndex === -1) {
+        userIndex = this.games.length;
+      }
+
+      if (message.game === "abacus") {
+        if (message.action === "start") {
           this.$set(this.games, userIndex, {
             studentId: message.studentId,
             game: message.game,
@@ -49,31 +45,32 @@ export default {
             results: new Array(message.samples.length),
             reload: false
           });
-        }
-      } else if (message.game === "abacus" && message.action === "result") {
-        if (userIndex === -1) {
-          this.sendResult("game", {
+        } else if (message.action === "result") {
+          if (!userFound) {
+            this.sendResult("game", {
+              studentId: message.studentId,
+              game: "abacus",
+              action: "info-needed"
+            });
+          } else {
+            this.$set(
+              this.games[userIndex].results,
+              message.result.row,
+              message.result.result
+            );
+          }
+        } else if (message.action === "info") {
+          this.$set(this.games, userIndex, {
             studentId: message.studentId,
-            game: "abacus",
-            action: "info-needed"
+            game: message.game,
+            exercises: message.samples,
+            results: message.results,
+            reload: false
           });
-        } else {
-          this.reloadGame(userIndex);
-          this.$set(
-            this.games[userIndex].results,
-            message.result.row,
-            message.result.result
-          );
         }
-      } else if (message.game === "abacus" && message.action === "info") {
-        this.games.push({
-          studentId: message.studentId,
-          game: message.game,
-          exercises: message.samples,
-          results: message.results,
-          reload: false
-        });
       }
+
+      console.log(message);
       console.log(this.games);
     });
   },
