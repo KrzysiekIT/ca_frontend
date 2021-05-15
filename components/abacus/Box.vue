@@ -10,7 +10,10 @@
         v-for="(sample, index) in samples"
         :key="'sample' + index"
       >
-        {{ assignSign(sample) }}
+        <span v-if="sample!==0">
+          {{ assignSign(sample) }}
+        </span>
+        <br v-else>
       </div>
       <hr class="abacus__line" />
       <input
