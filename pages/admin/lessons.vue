@@ -3,31 +3,34 @@
     <div>LIVE GAME</div>
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
-        <h2 class="games__student u-margin-small">{{game.studentId}} Jan Kowalski</h2>
+        <h2 class="games__student u-margin-small">
+          <span>{{ game.studentId }} Jan Kowalski</span>
+          <small>{{ game.game }}</small>
+        </h2>
         <abacus-box
           :exercises="game.exercises"
           :results="game.results"
           :mode="'admin'"
           :key="game.reload"
-        ></abacus-box
-        >
+        ></abacus-box>
       </div>
     </div>
   </div>
 </template>
 <script>
+import socket from "~/mixins/sockets.js";
 export default {
   components: {
     AbacusBox: () => import("@/components/abacus/Box.vue")
   },
+  mixins: [socket],
   mounted() {
-    this.socket = this.$nuxtSocket({});
     this.socket.on("game", (message, cb) => {
-      console.log(message)
+      console.log(message);
       const userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
-      if (message.game ==="abacus" && message.action === "start") {
+      if (message.game === "abacus" && message.action === "start") {
         if (userIndex === -1) {
           this.games.push({
             studentId: message.studentId,
@@ -46,13 +49,29 @@ export default {
             reload: false
           });
         }
-      } else if (message.game ==="abacus" && message.action === "result") {
-        this.reloadGame(userIndex);
-        this.$set(
-          this.games[userIndex].results,
-          message.result.row,
-          message.result.result
-        );
+      } else if (message.game === "abacus" && message.action === "result") {
+        if (userIndex === -1) {
+          this.sendResult("game", {
+            studentId: message.studentId,
+            game: "abacus",
+            action: "info-needed"
+          });
+        } else {
+          this.reloadGame(userIndex);
+          this.$set(
+            this.games[userIndex].results,
+            message.result.row,
+            message.result.result
+          );
+        }
+      } else if (message.game === "abacus" && message.action === "info") {
+        this.games.push({
+          studentId: message.studentId,
+          game: message.game,
+          exercises: message.samples,
+          results: message.results,
+          reload: false
+        });
       }
       console.log(this.games);
     });

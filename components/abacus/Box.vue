@@ -46,6 +46,24 @@ export default {
       validator: userType => ["student", "admin"].includes(userType)
     }
   },
+  mounted() {
+    this.socket = this.$nuxtSocket({});
+    this.socket.on("game", (message, cb) => {
+      if (
+        message.game === "abacus" &&
+        message.action === "info-needed" &&
+        message.studentId === this.user.id
+      ) {
+        this.sendResult("game", {
+          studentId: this.user.id,
+          game: "abacus",
+          action: "info",
+          samples: this.exercises,
+          results: this.results
+        });
+      }
+    });
+  },
   data() {
     return {
       settings: {
