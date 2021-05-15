@@ -8,7 +8,8 @@
           :results="game.results"
           :mode="'admin'"
           :key="game.reload"
-        ></abacus-box>
+        ></abacus-box
+        >
       </div>
     </div>
   </div>
@@ -24,14 +25,23 @@ export default {
       const userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
-      if (userIndex === -1) {
-        if (message.message === "anzan-start") {
+      if (message.message === "anzan-start") {
+        if (userIndex === -1) {
           this.games.push({
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
             results: new Array(message.samples.length),
-            reaload: false
+            reload: false
+          });
+        } else {
+          this.reloadGame(userIndex);
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: new Array(message.samples.length),
+            reload: false
           });
         }
       } else if (message.message === "anzan-result") {
