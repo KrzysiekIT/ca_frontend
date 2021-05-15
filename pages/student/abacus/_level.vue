@@ -31,8 +31,8 @@ export default {
     if (process.client) {
       this.sendResult("game", {
         studentId: this.user.id,
-        game: "anzan",
-        message: "anzan-start",
+        game: "abacus",
+        message: "start",
         samples: this.allSamples
       });
     }

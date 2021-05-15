@@ -2,7 +2,7 @@
   <form
     @submit="
       $emit('changeState', {
-        state: 'anzan-result',
+        state: 'result',
         options: { correct }
       })
     "

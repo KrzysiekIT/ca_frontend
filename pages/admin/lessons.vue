@@ -22,10 +22,11 @@ export default {
   mounted() {
     this.socket = this.$nuxtSocket({});
     this.socket.on("game", (message, cb) => {
+      console.log(message)
       const userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
-      if (message.message === "anzan-start") {
+      if (message.game ==="abacus" && message.message === "start") {
         if (userIndex === -1) {
           this.games.push({
             studentId: message.studentId,
@@ -44,7 +45,7 @@ export default {
             reload: false
           });
         }
-      } else if (message.message === "anzan-result") {
+      } else if (message.game ==="abacus" && message.message === "result") {
         this.reloadGame(userIndex);
         this.$set(
           this.games[userIndex].results,

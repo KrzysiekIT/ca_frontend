@@ -75,8 +75,8 @@ export default {
       this.setResult(result, exampleIndex);
       this.sendResult("game", {
         studentId: this.user.id,
-        game: "anzan",
-        message: "anzan-result",
+        game: "abacus",
+        message: "result",
         result: {
           row: exampleIndex,
           result
