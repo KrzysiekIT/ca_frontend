@@ -57,4 +57,7 @@ html {
   justify-content: flex-end;
   text-transform: uppercase;
 }
+.u-margin-small {
+  margin: 1rem 0.25rem;
+}
 </style>

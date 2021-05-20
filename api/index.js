@@ -3,6 +3,6 @@ export default {
   auth: {
     me: () => axios.get("auth/me"),
     login: data => axios.post("auth/login", data),
-    request: (options) => axios(options)
+    request: options => axios(options)
   }
 };

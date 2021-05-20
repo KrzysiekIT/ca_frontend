@@ -17,15 +17,11 @@
     <button type="submit" class="login--button">
       Login
     </button>
-    <a class="login--link" href="#">Zapomniałeś hasła?</a>
+    <nuxt-link class="login--link" to="login/reset">Zapomniałeś hasła?</nuxt-link>
   </form>
 </template>
 <script>
 export default {
-  middleware: "auth",
-  meta: {
-    auth: { authority: 3 }
-  },
   layout: "login",
   data() {
     return {
