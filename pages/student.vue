@@ -24,18 +24,31 @@
               class="user--image"
             />
             <figcaption class="user--label">
-              Uczeń <strong>Jan Kowalski</strong>
+              {{$t('general.student')}} <strong>Jan Kowalski</strong>
             </figcaption>
           </figure>
           <ul class="lang--list">
             <li class="lang--list-item">
-              <a href="#" title="Zmień język">
+              <button
+                class="lang__button"
+                @click="$i18n.setLocale(locale.code)"
+                v-for="locale in availableLocales"
+                :key="locale.code"
+                :title="$t('general.change_language')"
+              >
                 <img
                   src="~/assets/images/flag_usa.svg"
                   alt="USA flag"
                   class="lang--image"
+                  v-if="locale.code === 'pl'"
                 />
-              </a>
+                <img
+                  src="~/assets/images/flag_poland.svg"
+                  alt="Poland flag"
+                  class="lang--image"
+                  v-if="locale.code === 'en'"
+                />
+              </button>
             </li>
           </ul>
         </div>
@@ -46,7 +59,7 @@
               alt="Camera icon"
               class="user--image__camera"
             /><label
-              ><span class="user--link">Zajęcia</span
+              ><span class="user--link">{{$t('general.lessons')}}</span
               ><a class="user--href" href="#" target="_blank"
                 >link.do.zajec.pl</a
               ></label
@@ -58,7 +71,7 @@
               alt="Camera icon"
               class="user--image__camera"
             /><label
-              ><span class="user--link">Odrabianie zajęc</span
+              ><span class="user--link">{{$t('general.lessons_reschedule')}}</span
               ><a class="user--href" href="#" target="_blank"
                 >link.do.zajec.pl</a
               ></label
@@ -96,6 +109,9 @@ export default {
   computed: {
     user() {
       return (this.$store.state.auth || {}).user || null;
+    },
+    availableLocales() {
+      return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale);
     }
   },
   methods: {
@@ -186,6 +202,23 @@ $headerEndWidth: 10rem;
 }
 .lang--image {
   height: 1.5rem;
+}
+.lang__button {
+  background-color: transparent;
+  border-radius: 50%;
+  padding: 0;
+  border: none;
+  transition: all 0.5s;
+}
+.lang__button:hover {
+  cursor: pointer;
+  box-shadow: 0 1rem 2rem rgba($white, 0.5);
+  transform: translateY(-4px);
+}
+.lang__button:active {
+  cursor: pointer;
+  box-shadow: 0 2rem 4rem rgba($white, 0.5);
+  transform: translateY(-2px);
 }
 .spacer {
   width: 12rem;

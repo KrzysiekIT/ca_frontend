@@ -3,7 +3,7 @@
     <ul class="navigation__first-ul">
       <li>
         <img src="~/assets/images/home.svg" alt="Home icon" height="28" />
-        Strona główna
+        {{$t('general.main_page')}}
         <ul>
           <li>
             <nuxt-link
@@ -16,13 +16,13 @@
                 height="32"
                 class="navigation__image"
               />
-              Konto ucznia
+              {{$t('general.student_account')}}
             </nuxt-link>
           </li>
         </ul>
       </li>
       <li>
-        Trening
+        {{$t('general.training')}}
         <ul>
           <li>
             <nuxt-link
@@ -35,7 +35,7 @@
                 height="32"
                 class="navigation__image"
               />
-              Abacus
+              {{$t('general.abacus')}}
             </nuxt-link>
           </li>
           <li>
@@ -49,7 +49,7 @@
                 height="32"
                 class="navigation__image"
               />
-              Anzan
+              {{$t('general.anzan')}}
             </nuxt-link>
           </li>
           <li>
@@ -58,7 +58,7 @@
               alt="Supermind icon"
               height="32"
             />
-            Gry Super Mind
+            {{$t('general.supermind')}}
           </li>
           <li>
             <img
@@ -66,7 +66,7 @@
               alt="Supermemory icon"
               height="32"
             />
-            Super Pamięć
+            {{$t('general.supermemory')}}
           </li>
           <li>
             <nuxt-link
@@ -79,7 +79,7 @@
                 height="32"
                 class="navigation__image"
               />
-              Szybkie czytanie
+              {{$t('general.fast_reading')}}
             </nuxt-link>
           </li>
           <li>
@@ -93,7 +93,7 @@
                 height="32"
                 class="navigation__image"
               />
-              Filmy
+              {{$t('general.movies')}}
             </nuxt-link>
           </li>
         </ul>
