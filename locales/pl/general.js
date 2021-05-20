@@ -1,4 +1,21 @@
 module.exports = {
-    welcome: "Witajcie w akademii mistrzów"
-  };
-  
+  welcome: "Witajcie w akademii mistrzów",
+  student: "Uczeń",
+  change_language: "Zmień język",
+  lessons: "Zajęcia",
+  lessons_reschedule: "Odrabianie zajęć",
+  main_page: "Strona główna",
+  student_account: "Konto ucznia",
+  training: "Trening",
+  abacus: "Abacus",
+  anzan: "Anzan",
+  supermind: "Gry Super Mind",
+  supermemory: "Super Pamięć",
+  fast_reading: "Szybkie czytanie",
+  movies: "Filmy",
+  trainer: "Trener",
+  contact: "Kontakt",
+  lesson_day: "Termin zajęć",
+  status: "Status",
+  lesson: "Lekcja"
+};

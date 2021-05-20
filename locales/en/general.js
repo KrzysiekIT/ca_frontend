@@ -1,3 +1,21 @@
 module.exports = {
-  welcome: "Welcome to champions academy"
+  welcome: "Welcome to champions academy",
+  student: "Student",
+  change_language: "Change language",
+  lessons: "Lessons",
+  lessons_reschedule: "Rescheduled lessons",
+  main_page: "Main page",
+  student_account: "User account",
+  training: "Training",
+  abacus: "Abacus",
+  anzan: "Anzan",
+  supermind: "Super Mind Games",
+  supermemory: "Super Pamięć",
+  fast_reading: "Fast reading",
+  movies: "Movies",
+  trainer: "Trainer",
+  contact: "Contact",
+  lesson_day: "Lessons day",
+  status: "Status",
+  lesson: "Lesson"
 };

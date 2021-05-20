@@ -2,15 +2,15 @@
   <div class="account">
     <div class="account__header">
       <div>
-        <span class="account__header-label">Termin zajęć</span>
+        <span class="account__header-label">{{$t('general.lesson_day')}}</span>
         <strong class="account__header-label--inline">Czwartek 18:00</strong>
       </div>
       <div>
-        <span class="account__header-label">Trener</span>
+        <span class="account__header-label">{{$t('general.trainer')}}</span>
         <strong class="account__header-label--inline">Imię Nazwisko</strong>
       </div>
       <div>
-        <span class="account__header-label">Kontakt</span>
+        <span class="account__header-label">{{$t('general.contact')}}</span>
         <strong class="account__header-label--inline">500 600 500</strong>
       </div>
     </div>
@@ -19,7 +19,7 @@
         <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
         <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
         <div>
-          <span class="payments__label">STATUS</span>
+          <span class="payments__label">{{$t('general.status')}}</span>
           <strong
             class="payments__label-value payments__label-value--suspended"
           >
@@ -32,7 +32,7 @@
             alt="User icon white"
             height="32"
           />
-          <span>KONTO UCZNIA</span>
+          <span>{{$t('general.student_account')}}</span>
         </div>
       </section>
       <section class="account__box--inner year">
@@ -61,7 +61,7 @@
                 v-for="lessonInMonthNumber in maxMonthAttendance"
                 :key="'lesson' + lessonInMonthNumber"
               >
-                Lekcja {{ lessonInMonthNumber }}
+                Lekcja{{$t('general.lesson')}} {{ lessonInMonthNumber }}
               </th>
             </tr>
           </thead>

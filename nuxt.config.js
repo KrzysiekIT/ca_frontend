@@ -62,6 +62,7 @@ export default {
     ]
   },
   i18n: {
+    strategy: "no_prefix",
     lazy: true,
     langDir: "locales/",
     locales: [
