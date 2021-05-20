@@ -1,19 +1,21 @@
 <template>
   <div>
-    <slide-menu
-      @openMenu="handleOpenMenu"
-      :closeOnNavigation="true"
-      ref="slide-menu"
-    >
-      <div class="header--logo-box">
-        <img
-          src="~/assets/images/logo.png"
-          alt="Champions academy"
-          class="header--logo"
-        />
-      </div>
-      <NavigationStudent />
-    </slide-menu>
+    <client-only>
+      <slide-menu
+        @openMenu="handleOpenMenu"
+        :closeOnNavigation="true"
+        ref="slide-menu"
+      >
+        <div class="header--logo-box">
+          <img
+            src="~/assets/images/logo.png"
+            alt="Champions academy"
+            class="header--logo"
+          />
+        </div>
+        <NavigationStudent />
+      </slide-menu>
+    </client-only>
     <header class="header" v-if="$route.name !== 'student-terms-first'">
       <section class="header--middle">
         <div class="header--upper">
