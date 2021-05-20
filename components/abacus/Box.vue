@@ -10,7 +10,10 @@
         v-for="(sample, index) in samples"
         :key="'sample' + index"
       >
-        {{ assignSign(sample) }}
+        <span v-if="sample !== 0">
+          {{ assignSign(sample) }}
+        </span>
+        <div v-else><br /></div>
       </div>
       <hr class="abacus__line" />
       <input
@@ -43,6 +46,24 @@ export default {
       validator: userType => ["student", "admin"].includes(userType)
     }
   },
+  mounted() {
+    this.socket = this.$nuxtSocket({});
+    this.socket.on("game", (message, cb) => {
+      if (
+        message.game === "abacus" &&
+        message.action === "info-needed" &&
+        message.studentId === this.user.id
+      ) {
+        this.sendResult("game", {
+          studentId: this.user.id,
+          game: "abacus",
+          action: "info",
+          samples: this.exercises,
+          results: this.results
+        });
+      }
+    });
+  },
   data() {
     return {
       settings: {
@@ -72,8 +93,8 @@ export default {
       this.setResult(result, exampleIndex);
       this.sendResult("game", {
         studentId: this.user.id,
-        game: "anzan",
-        message: "anzan-result",
+        game: "abacus",
+        action: "result",
         result: {
           row: exampleIndex,
           result
@@ -107,6 +128,7 @@ $sampleWidth: 4rem;
 .abacus__box {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .abacus__samples {
   padding: 0.25rem;

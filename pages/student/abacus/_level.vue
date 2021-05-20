@@ -31,38 +31,59 @@ export default {
     if (process.client) {
       this.sendResult("game", {
         studentId: this.user.id,
-        game: "anzan",
-        message: "anzan-start",
+        game: "abacus",
+        action: "start",
         samples: this.allSamples
       });
     }
   },
   data() {
     return {
-      allSamples: [
-        [-3, 1, 4, 5],
-        [3, 1, 4, 5],
-        [8, 1, 4, 5],
-        [-3, 1, 6, 5],
-        [-3, 3, 4, 5],
-        [-3, 1, 7, 5],
-        [3, 2, 4, 5],
-        [-3, 1, -9, 5],
-        [-3, 1, 4, 4],
-        [3, 1, 4, 5],
-        [-3, 2, 4, 5],
-        [-3, 1, 4, 5],
-        [3, 1, 7, 8]
-      ],
+      allSamples: this.generateSamples(),
       results: []
     };
   },
   methods: {
-    generateSamples() {
-      const samplesNumber = 50;
-      const sampleLenght = { min: 4, max: 6 };
-      const interval = { min: 100, max: 999 };
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     },
+    checkProbability(probability) {
+      return !!probability && Math.random() <= probability;
+    },
+    generateSamples() {
+      const samplesNumber = 14;
+      const sampleLenght = { min: 4, max: 6 };
+      const interval = { min: 1, max: 9 };
+      const negativeProbability = 0.3;
+      const samples = [];
+      let sampleIndex = 0;
+      for (sampleIndex; sampleIndex < samplesNumber; sampleIndex++) {
+        let numberInSampleIndex = 0;
+        const sample = [];
+        const currentSampleLenght = this.getRandomInt(
+          sampleLenght.min,
+          sampleLenght.max + 1
+        );
+        for (
+          numberInSampleIndex;
+          numberInSampleIndex < currentSampleLenght;
+          numberInSampleIndex++
+        ) {
+          let randomNumber = this.getRandomInt(interval.min, interval.max + 1);
+          if (this.checkProbability(negativeProbability)) {
+            randomNumber *= -1;
+          }
+          sample.push(randomNumber);
+        }
+        while (sample.length < sampleLenght.max) {
+          sample.unshift(0);
+        }
+        samples.push(sample);
+      }
+      return samples;
+    }
   }
 };
 </script>

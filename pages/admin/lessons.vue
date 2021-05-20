@@ -3,45 +3,138 @@
     <div>LIVE GAME</div>
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
+        <h2 class="games__student u-margin-small">
+          <span>{{ game.studentId }} Jan Kowalski</span>
+          <br />
+          <small>{{ game.game }}</small>
+        </h2>
         <abacus-box
           :exercises="game.exercises"
           :results="game.results"
           :mode="'admin'"
-          :key="game.reload"
+          v-if="game.ready && game.game === 'abacus'"
         ></abacus-box>
+        <div class="games__video">
+          <video-embed
+            :src="game.link"
+            v-if="game.ready && game.game === 'movies'"
+          ></video-embed>
+        </div>
+        <div class="games__reading">
+          <iframe
+            :src="game.link"
+            :title="game.title"
+            v-if="game.ready && game.game === 'fast-reading'"
+            class="embed-responsive-item"
+          ></iframe>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import socket from "~/mixins/sockets.js";
 export default {
   components: {
     AbacusBox: () => import("@/components/abacus/Box.vue")
   },
+  mixins: [socket],
   mounted() {
-    this.socket = this.$nuxtSocket({});
     this.socket.on("game", (message, cb) => {
-      const userIndex = this.games
+      let userIndex = this.games
         .map(game => game.studentId)
         .indexOf(message.studentId);
+      const userFound = userIndex !== -1 ? true : false;
+      let theSameGame = true;
+      if (!userFound || this.games[userIndex].game !== message.game) {
+        theSameGame = false;
+      }
+
       if (userIndex === -1) {
-        if (message.message === "anzan-start") {
-          this.games.push({
+        userIndex = this.games.length;
+      }
+
+      if (message.game === "abacus") {
+        if (message.action === "start") {
+          this.$set(this.games, userIndex, {
             studentId: message.studentId,
             game: message.game,
             exercises: message.samples,
             results: new Array(message.samples.length),
-            reaload: false
+            ready: true
+          });
+        } else if (message.action === "result") {
+          if (!userFound || !theSameGame) {
+            this.sendResult("game", {
+              studentId: message.studentId,
+              game: "abacus",
+              action: "info-needed"
+            });
+          } else {
+            this.$set(
+              this.games[userIndex].results,
+              message.result.row,
+              message.result.result
+            );
+          }
+        } else if (message.action === "info") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: message.results,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
           });
         }
-      } else if (message.message === "anzan-result") {
-        this.reloadGame(userIndex);
-        this.$set(
-          this.games[userIndex].results,
-          message.result.row,
-          message.result.result
-        );
+      } else if (message.game === "fast-reading") {
+        if (message.action === "lesson-selected") {
+          console.log(message);
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
+      } else if (message.game === "movies") {
+        if (message.action === "lesson-selected") {
+          console.log(message);
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
+      } else if (message.game) {
+        this.$set(this.games, userIndex, {
+          studentId: message.studentId,
+          game: message.game,
+          ready: false
+        });
       }
+
+      console.log(message);
       console.log(this.games);
     });
   },
@@ -66,5 +159,12 @@ export default {
 .games__game {
   border: $tableBorder;
   width: 50%;
+}
+.games__student {
+  text-align: center;
+}
+.games__video, .games__reading {
+  display: flex;
+  justify-content: center;
 }
 </style>

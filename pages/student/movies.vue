@@ -4,6 +4,7 @@
       class="movies__movie-box"
       v-for="(video, index) in videos"
       :key="'video' + index"
+      @mouseover="sendMessage(index)"
     >
       <h2 class="movies__title">{{ video.title }}</h2>
       <video-embed :src="video.link"></video-embed>
@@ -11,9 +12,22 @@
   </div>
 </template>
 <script>
+import socket from "~/mixins/sockets.js";
+import user from "~/mixins/user.js";
 export default {
+  mixins: [socket, user],
+  created() {
+    if (process.client) {
+      this.sendResult("game", {
+        studentId: this.user.id,
+        game: "movies",
+        action: "lesson-choice"
+      });
+    }
+  },
   data() {
     return {
+      lastIndex: -1,
       videos: [
         {
           title: "Be happy",
@@ -69,6 +83,20 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    sendMessage(index) {
+      if (index === this.lastIndex) {
+        return;
+      }
+      this.lastIndex = index;
+      this.sendResult("game", {
+        studentId: this.user.id,
+        game: "movies",
+        action: "lesson-selected",
+        file: this.videos[index]
+      });
+    }
   }
 };
 </script>
