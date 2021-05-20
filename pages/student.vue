@@ -14,7 +14,7 @@
       </div>
       <NavigationStudent />
     </slide-menu>
-    <header class="header">
+    <header class="header" v-if="$route.name !== 'student-terms-first'">
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">

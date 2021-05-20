@@ -21,3 +21,15 @@ $navMenuWidth: 30rem;
 $logoIconWidth: 20rem;
 $appRadius: 0.5rem;
 $tableBorder: 1px solid $lineColor;
+
+.u-margin-top-small {
+    margin-top: 2rem;
+}
+
+.input {
+    border: $tableBorder;
+    border-radius: $appRadius;
+    background-color: #d8d8d8;
+    padding: 0.5rem;
+    width: 100%;
+}

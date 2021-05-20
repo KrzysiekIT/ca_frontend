@@ -17,5 +17,7 @@ module.exports = {
   contact: "Contact",
   lesson_day: "Lessons day",
   status: "Status",
-  lesson: "Lesson"
+  lesson: "Lesson",
+  terms_of_use: "Terms of use",
+  input_student_data_info: "Fill in the missing data and update then"
 };
