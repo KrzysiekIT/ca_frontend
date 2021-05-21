@@ -14,7 +14,7 @@
         class="login--input"
       />
     </label>
-    <button type="submit" class="login--button">
+    <button type="submit" class="button button--right button--spacious">
       Login
     </button>
     <nuxt-link class="login--link" to="login/reset">Zapomniałeś hasła?</nuxt-link>
@@ -85,21 +85,6 @@ export default {
 .login--label__input {
   display: block;
   padding-bottom: 0.375rem;
-}
-.login--button {
-  border: none;
-  border-radius: $appRadius;
-  background-color: #4472c4;
-  color: #fff;
-  display: flex;
-  font-size: 1.5rem;
-  margin-left: auto;
-  padding: 0.75rem;
-  text-transform: uppercase;
-}
-.login--button:hover {
-  background-color: #4472c4e0;
-  cursor: pointer;
 }
 .login--link {
   color: #3c69bd;

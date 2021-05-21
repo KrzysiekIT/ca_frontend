@@ -5,6 +5,7 @@
         @openMenu="handleOpenMenu"
         :closeOnNavigation="true"
         ref="slide-menu"
+        v-if="$route.name !== 'student-terms-first'"
       >
         <div class="header--logo-box">
           <img
@@ -26,7 +27,7 @@
               class="user--image"
             />
             <figcaption class="user--label">
-              {{$t('general.student')}} <strong>Jan Kowalski</strong>
+              {{ $t("general.student") }} <strong>Jan Kowalski</strong>
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -61,7 +62,7 @@
               alt="Camera icon"
               class="user--image__camera"
             /><label
-              ><span class="user--link">{{$t('general.lessons')}}</span
+              ><span class="user--link">{{ $t("general.lessons") }}</span
               ><a class="user--href" href="#" target="_blank"
                 >link.do.zajec.pl</a
               ></label
@@ -73,7 +74,9 @@
               alt="Camera icon"
               class="user--image__camera"
             /><label
-              ><span class="user--link">{{$t('general.lessons_reschedule')}}</span
+              ><span class="user--link">{{
+                $t("general.lessons_reschedule")
+              }}</span
               ><a class="user--href" href="#" target="_blank"
                 >link.do.zajec.pl</a
               ></label
