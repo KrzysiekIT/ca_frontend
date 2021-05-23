@@ -57,30 +57,13 @@
         </div>
         <ul class="user--list">
           <li class="user--list-item">
-            <img
-              src="~/assets/images/camera.png"
-              alt="Camera icon"
-              class="user--image__camera"
-            /><label
-              ><span class="user--link">{{ $t("general.lessons") }}</span
-              ><a class="user--href" href="#" target="_blank"
-                >link.do.zajec.pl</a
-              ></label
-            >
+            <lesson-link label="Zajęcia" link="link.do.zajec.pl"></lesson-link>
           </li>
           <li class="user--list-item">
-            <img
-              src="~/assets/images/camera.png"
-              alt="Camera icon"
-              class="user--image__camera"
-            /><label
-              ><span class="user--link">{{
-                $t("general.lessons_reschedule")
-              }}</span
-              ><a class="user--href" href="#" target="_blank"
-                >link.do.zajec.pl</a
-              ></label
-            >
+            <lesson-link
+              label="Odrabianie zajęć"
+              link="link.do.zajec.pl"
+            ></lesson-link>
           </li>
         </ul>
       </section>
@@ -176,23 +159,6 @@ $headerEndWidth: 10rem;
 .user--list {
   list-style: none;
   padding-top: 1rem;
-}
-.user--image__camera {
-  height: 1rem;
-  padding-right: 0.25rem;
-}
-.user--link {
-  padding-right: 0.5rem;
-}
-.user--href {
-  background-color: #fff;
-  border-radius: $appRadius;
-  color: $mainBackground;
-  padding: 0 2rem 0 2rem;
-  text-decoration: none;
-}
-.user--href:hover {
-  background-color: #fffe;
 }
 .user--list-item {
   padding: 0.25rem;
