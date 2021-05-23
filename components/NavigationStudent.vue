@@ -2,8 +2,13 @@
   <nav class="navigation">
     <ul class="navigation__first-ul">
       <li>
-        <img src="~/assets/images/home.svg" alt="Home icon" height="28" />
-        {{$t('general.main_page')}}
+        <nuxt-link
+          class="navigation__link"
+          :to="localePath('/student')"
+        >
+          <img src="~/assets/images/home.svg" alt="Home icon" height="28" />
+          {{ $t("general.main_page") }}
+        </nuxt-link>
         <ul>
           <li>
             <nuxt-link
@@ -16,13 +21,13 @@
                 height="32"
                 class="navigation__image"
               />
-              {{$t('general.student_account')}}
+              {{ $t("general.student_account") }}
             </nuxt-link>
           </li>
         </ul>
       </li>
       <li>
-        {{$t('general.training')}}
+        {{ $t("general.training") }}
         <ul>
           <li>
             <nuxt-link
@@ -35,7 +40,7 @@
                 height="32"
                 class="navigation__image"
               />
-              {{$t('general.abacus')}}
+              {{ $t("general.abacus") }}
             </nuxt-link>
           </li>
           <li>
@@ -49,7 +54,7 @@
                 height="32"
                 class="navigation__image"
               />
-              {{$t('general.anzan')}}
+              {{ $t("general.anzan") }}
             </nuxt-link>
           </li>
           <li>
@@ -58,7 +63,7 @@
               alt="Supermind icon"
               height="32"
             />
-            {{$t('general.supermind')}}
+            {{ $t("general.supermind") }}
           </li>
           <li>
             <img
@@ -66,7 +71,7 @@
               alt="Supermemory icon"
               height="32"
             />
-            {{$t('general.supermemory')}}
+            {{ $t("general.supermemory") }}
           </li>
           <li>
             <nuxt-link
@@ -79,7 +84,7 @@
                 height="32"
                 class="navigation__image"
               />
-              {{$t('general.fast_reading')}}
+              {{ $t("general.fast_reading") }}
             </nuxt-link>
           </li>
           <li>
@@ -93,7 +98,7 @@
                 height="32"
                 class="navigation__image"
               />
-              {{$t('general.movies')}}
+              {{ $t("general.movies") }}
             </nuxt-link>
           </li>
         </ul>

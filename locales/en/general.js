@@ -1,5 +1,5 @@
 module.exports = {
-  welcome: "Welcome to champions academy",
+  welcome: "Welcome to the Champions Academy",
   student: "Student",
   change_language: "Change language",
   lessons: "Lessons",
@@ -19,5 +19,12 @@ module.exports = {
   status: "Status",
   lesson: "Lesson",
   terms_of_use: "Terms of use",
-  input_student_data_info: "Fill in the missing data and update then"
+  input_student_data_info: "Fill in the missing data and update then",
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday"
 };

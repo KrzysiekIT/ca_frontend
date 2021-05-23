@@ -27,7 +27,8 @@
               class="user--image"
             />
             <figcaption class="user--label">
-              {{ $t("general.student") }} <strong>Jan Kowalski</strong>
+              {{ $t("general.student") }}
+              <strong>{{ `${user.name} ${user.surname}` }}</strong>
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -199,8 +200,8 @@ $headerEndWidth: 10rem;
 }
 .main {
   /* background-color: #fff; */
-  border-radius: 4rem;
-  border: 0.125rem solid #fff;
+  /* border-radius: 4rem;
+  border: 0.125rem solid #fff; */
   min-width: 100%;
   padding: 2rem;
 }

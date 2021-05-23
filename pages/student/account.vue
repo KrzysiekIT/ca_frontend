@@ -2,16 +2,25 @@
   <div class="account">
     <div class="account__header">
       <div>
-        <span class="account__header-label">{{$t('general.lesson_day')}}</span>
-        <strong class="account__header-label--inline">Czwartek 18:00</strong>
+        <span class="account__header-label">{{
+          $t("general.lesson_day")
+        }}</span>
+        <strong class="account__header-label--inline">
+          {{ `${group.lesson_hour}` }}
+          {{ $t(`general.${days[group.lesson_day]}`) }}
+        </strong>
       </div>
       <div>
-        <span class="account__header-label">{{$t('general.trainer')}}</span>
-        <strong class="account__header-label--inline">Imię Nazwisko</strong>
+        <span class="account__header-label">{{ $t("general.trainer") }}</span>
+        <strong class="account__header-label--inline">{{
+          `${trainer.name} ${trainer.surname}`
+        }}</strong>
       </div>
       <div>
-        <span class="account__header-label">{{$t('general.contact')}}</span>
-        <strong class="account__header-label--inline">500 600 500</strong>
+        <span class="account__header-label">{{ $t("general.contact") }}</span>
+        <strong class="account__header-label--inline">{{
+          trainer.phone_number
+        }}</strong>
       </div>
     </div>
     <div class="account__box">
@@ -19,7 +28,7 @@
         <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
         <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
         <div>
-          <span class="payments__label">{{$t('general.status')}}</span>
+          <span class="payments__label">{{ $t("general.status") }}</span>
           <strong
             class="payments__label-value payments__label-value--suspended"
           >
@@ -32,7 +41,7 @@
             alt="User icon white"
             height="32"
           />
-          <span>{{$t('general.student_account')}}</span>
+          <span>{{ $t("general.student_account") }}</span>
         </div>
       </section>
       <section class="account__box--inner year">
@@ -61,7 +70,7 @@
                 v-for="lessonInMonthNumber in maxMonthAttendance"
                 :key="'lesson' + lessonInMonthNumber"
               >
-                Lekcja{{$t('general.lesson')}} {{ lessonInMonthNumber }}
+                {{ $t("general.lesson") }} {{ lessonInMonthNumber }}
               </th>
             </tr>
           </thead>
@@ -86,12 +95,23 @@
   </div>
 </template>
 <script>
+import user from "~/mixins/user.js";
 const ATTENDANCE_STATUS = {
   0: "Absent",
   1: "Excused",
   2: "Present"
 };
+const days = {
+  1: "monday",
+  2: "tuesday",
+  3: "wednesday",
+  4: "thursday",
+  5: "friday",
+  6: "saturday",
+  0: "sunday"
+};
 export default {
+  mixins: [user],
   async fetch() {
     const userId = this.$store.state.auth.user.id;
     const presences = await this.$store.dispatch("auth/request", {
@@ -99,6 +119,18 @@ export default {
       url: `presences/${userId}`
     });
     this.attendance = presences.data;
+
+    const group = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `groups/${this.user.group_id}`
+    });
+    this.group = group.data[0];
+
+    const trainer = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `trainers/${this.group.trainer_id}`
+    });
+    this.trainer = trainer.data[0];
   },
   components: {
     Absent: () => import("@/components/attendance/Absent.vue"),
@@ -124,7 +156,10 @@ export default {
     return {
       attendance: [],
       months: 12,
-      ATTENDANCE_STATUS
+      ATTENDANCE_STATUS,
+      days,
+      group: {},
+      trainer: {}
     };
   },
   methods: {

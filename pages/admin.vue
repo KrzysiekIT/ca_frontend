@@ -149,12 +149,23 @@ $headerEndWidth: 10rem;
   display: flex;
 }
 .main {
+  /* background-color: #fff; */
+  min-width: 100%;
+  padding: 2rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .main {
+    min-width: 100%;
+  }
+}
+  /* .main {
   min-width: calc(100% - #{$navMenuWidth});
   overflow: auto;
   padding: 0.5rem;
-  /* transform: rotateX(180deg);
+  transform: rotateX(180deg);
   scrollbar-width: auto;
-  scrollbar-color: $yellow $darkYellow; */
+  scrollbar-color: $yellow $darkYellow;
 }
 /* .main::-webkit-scrollbar-track {
   background: $darkYellow;

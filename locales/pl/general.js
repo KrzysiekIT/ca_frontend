@@ -1,5 +1,5 @@
 module.exports = {
-  welcome: "Witajcie w akademii mistrzów",
+  welcome: "Witaj w akademii mistrzów",
   student: "Uczeń",
   change_language: "Zmień język",
   lessons: "Zajęcia",
@@ -19,5 +19,13 @@ module.exports = {
   status: "Status",
   lesson: "Lekcja",
   terms_of_use: "Warunki kursu",
-  input_student_data_info: "Uzupełnij brakujące dane i dokonaj ich aktualizacji"
+  input_student_data_info:
+    "Uzupełnij brakujące dane i dokonaj ich aktualizacji",
+  monday: "Poniedziałek",
+  tuesday: "Wtorek",
+  wednesday: "Środa",
+  thursday: "Czwartek",
+  friday: "Piątek",
+  saturday: "Sobota",
+  sunday: "Niedziela"
 };

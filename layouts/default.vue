@@ -86,6 +86,7 @@ html {
 
 .bm-menu {
   padding-top: 0 !important;
+  background-color: darken($mainBackground, 5);
 }
 
 .bm-burger-button {

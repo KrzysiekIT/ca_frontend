@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">
-          {{ $t('general.welcome') }}
+        {{ $t("general.welcome") }}
       </h1>
       <div class="links">
         <a href="/login" class="button--green">
@@ -21,7 +21,21 @@
 </template>
 
 <script>
-export default {};
+export default {
+  middleware({ store, redirect }) {
+    const userIsLoggedIn = !!store.state.auth.user;
+    const role = store.state.auth.user.role.name;
+    if (userIsLoggedIn) {
+      if (role === "student") {
+        return redirect("/student");
+      } else {
+        return redirect("/admin");
+      }
+    } else {
+      return redirect("/login");
+    }
+  }
+};
 </script>
 
 <style>
