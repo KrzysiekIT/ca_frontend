@@ -48,5 +48,11 @@ export const actions = {
     resetAuthToken();
     cookies.remove("x-access-token");
     return Promise.resolve();
+  },
+  new_token({ commit }, data) {
+    commit("set_user", data.user);
+    setAuthToken(data.token);
+    cookies.set("x-access-token", data.token, { expires: 7 });
+    return Promise.resolve();
   }
 };
