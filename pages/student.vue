@@ -58,11 +58,11 @@
         </div>
         <ul class="user--list">
           <li class="user--list-item">
-            <lesson-link label="Zajęcia" link="link.do.zajec.pl"></lesson-link>
+            <lesson-link :label="$t('general.lessons')" link="link.do.zajec.pl"></lesson-link>
           </li>
           <li class="user--list-item">
             <lesson-link
-              label="Odrabianie zajęć"
+              :label="$t('general.lessons_reschedule')"
               link="link.do.zajec.pl"
             ></lesson-link>
           </li>
@@ -184,12 +184,12 @@ $headerEndWidth: 10rem;
 }
 .lang__button:hover {
   cursor: pointer;
-  box-shadow: 0 1rem 2rem rgba($white, 0.5);
+  box-shadow: 0 0.5rem 1rem rgba(transparent, 1);
   transform: translateY(-4px);
 }
 .lang__button:active {
   cursor: pointer;
-  box-shadow: 0 2rem 4rem rgba($white, 0.5);
+  box-shadow: 0 1rem 2rem rgba(transparent, 1);
   transform: translateY(-2px);
 }
 .spacer {

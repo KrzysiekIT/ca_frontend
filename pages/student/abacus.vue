@@ -1,5 +1,5 @@
 <template>
-  <nuxt-child></nuxt-child>
+  <nuxt-child :group="group"></nuxt-child>
 </template>
 <script>
 import socket from "~/mixins/sockets.js";
@@ -14,6 +14,19 @@ export default {
         action: "lesson-choice"
       });
     }
+  },
+  async fetch() {
+    const group = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `groups/${this.user.group_id}`
+    });
+    this.group = group.data[0];
+    console.log(this.group);
+  },
+  data() {
+    return {
+      group: {}
+    };
   }
 };
 </script>

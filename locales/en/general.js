@@ -20,11 +20,16 @@ module.exports = {
   lesson: "Lesson",
   terms_of_use: "Terms of use",
   input_student_data_info: "Fill in the missing data and update then",
+  month: "Month",
   monday: "Monday",
   tuesday: "Tuesday",
   wednesday: "Wednesday",
   thursday: "Thursday",
   friday: "Friday",
   saturday: "Saturday",
-  sunday: "Sunday"
+  sunday: "Sunday",
+  show_payments_data: "Show payments data",
+  active: "Active",
+  unactive: "unactive",
+  blocked: "Blocked"
 };

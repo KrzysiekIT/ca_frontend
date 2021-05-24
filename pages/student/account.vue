@@ -24,25 +24,29 @@
       </div>
     </div>
     <div class="account__box">
-      <section class="account__box--inner">
-        <img src="~/assets/images/money.svg" alt="Sad icon" height="64" />
+      <section class="account__box--inner payments">
+        <nuxt-link
+          to="#"
+          class="link"
+          :title="$t('general.show_payments_data')"
+        >
+          <img src="~/assets/images/money.svg" alt="Money icon" height="64"
+        /></nuxt-link>
         <img src="~/assets/images/sad.svg" alt="Sad icon" height="64" />
         <div>
           <span class="payments__label">{{ $t("general.status") }}</span>
-          <strong
-            class="payments__label-value payments__label-value--suspended"
-          >
-            AKTYWNY
-          </strong>
+          <span class="payments__label-value payments__label-value--suspended">
+            {{ $t(`general.${statuses[user.status]}`) }}
+          </span>
         </div>
-        <div class="payments__icon-label">
+        <nuxt-link to="/student/terms" class="link payments__icon-label">
           <img
             src="~/assets/images/terms_of_use.svg"
             alt="User icon white"
             height="32"
           />
-          <span>{{ $t("general.student_account") }}</span>
-        </div>
+          <span class="payments__terms">{{ $t("general.terms_of_use") }}</span>
+        </nuxt-link>
       </section>
       <section class="account__box--inner year">
         <ul class="year__ul">
@@ -63,7 +67,7 @@
         <table class="attendance__table">
           <thead>
             <tr>
-              <th class="attendance__table-td" scope="col">Miesiąc</th>
+              <th class="attendance__table-td" scope="col">{{$t('general.month')}}</th>
               <th
                 class="attendance__table-td"
                 scope="col"
@@ -109,6 +113,11 @@ const days = {
   5: "friday",
   6: "saturday",
   0: "sunday"
+};
+const statuses = {
+  0: "blocked",
+  1: "active",
+  2: "unactive"
 };
 export default {
   mixins: [user],
@@ -159,7 +168,8 @@ export default {
       ATTENDANCE_STATUS,
       days,
       group: {},
-      trainer: {}
+      trainer: {},
+      statuses
     };
   },
   methods: {
@@ -207,19 +217,29 @@ $boxPadding: 0.5rem;
 .account__header-label--inline {
   white-space: nowrap;
 }
-.payments__label-value {
-  padding-left: 1rem;
+.payments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
 }
 .payments__icon-label {
   align-items: center;
+  justify-content: center;
   display: flex;
   padding: $boxPadding;
+}
+.payments__label-value {
+  text-transform: uppercase;
 }
 .payments__label-value--active {
   color: #00cc00;
 }
 .payments__label-value--suspended {
   color: #ffff00;
+}
+.payments__terms {
+  text-transform: uppercase;
 }
 .year__ul {
   list-style-type: none;

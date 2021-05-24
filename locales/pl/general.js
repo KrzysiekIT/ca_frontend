@@ -21,11 +21,16 @@ module.exports = {
   terms_of_use: "Warunki kursu",
   input_student_data_info:
     "Uzupełnij brakujące dane i dokonaj ich aktualizacji",
+  month: "Miesiąc",
   monday: "Poniedziałek",
   tuesday: "Wtorek",
   wednesday: "Środa",
   thursday: "Czwartek",
   friday: "Piątek",
   saturday: "Sobota",
-  sunday: "Niedziela"
+  sunday: "Niedziela",
+  show_payments_data: "Pokaż dane do płatności",
+  active: "Aktywny",
+  unactive: "Nieaktywny",
+  blocked: "Zablokowany"
 };
