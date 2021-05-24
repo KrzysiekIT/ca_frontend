@@ -23,8 +23,8 @@
 <script>
 export default {
   middleware({ store, redirect }) {
-    const userIsLoggedIn = !!store.state.auth.user;
-    const role = store.state.auth.user.role.name;
+    const userIsLoggedIn = !!store?.state?.auth?.user;
+    const role = store?.state?.auth?.user?.role?.name;
     if (userIsLoggedIn) {
       if (role === "student") {
         return redirect("/student");
