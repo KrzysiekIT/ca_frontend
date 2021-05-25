@@ -1,4 +1,8 @@
 export default {
+  server: {
+    host: "0",
+    port: 11111
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "Champions academy",

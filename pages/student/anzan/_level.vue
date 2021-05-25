@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ state }}
     <component
       :is="state.current"
       :options="state.options"
@@ -23,6 +22,15 @@ export default {
         game: "anzan",
         action: "lesson-choice"
       });
+    }
+  },
+  middleware({ store, route, redirect }) {
+    const gameLevel = store.state.group.current[`anzan_level`] ?? 1;
+    const userLevel = store.state.auth.user[`anzan_level`] ?? 1;
+    const currentLevel = route.params["level"];
+    const maxLevel = Math.max(gameLevel, userLevel);
+    if (+currentLevel > maxLevel) {
+      return redirect("/student/anzan");
     }
   },
   components: {

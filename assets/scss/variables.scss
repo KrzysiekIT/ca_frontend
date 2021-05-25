@@ -36,6 +36,8 @@ $gray: #d8d8d8;
 
   &:focus {
     outline: 0.125rem solid $darkYellow;
+    outline: none !important;
+    box-shadow: 0 0 0 0.125rem $darkYellow;
   }
 }
 

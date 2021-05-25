@@ -1,6 +1,7 @@
 <template>
   <section class="terms">
     <header class="terms__header">
+      {{ editableUser }}
       <div class="terms__title terms__title--main">
         <img
           src="~/assets/images/terms_of_use.svg"
@@ -13,7 +14,7 @@
       </p>
     </header>
     <fieldset class="terms__fields">
-      <!-- {{ editablesUser }} -->
+      <!-- {{ editableUser }} -->
       <div class="terms__fields-box">
         <div class="terms__fields-single terms__fields-single--vertical">
           <span class="terms__label terms__label--data">{{
@@ -23,18 +24,18 @@
             <input
               class="terms__input terms__input--short input"
               :placeholder="$t('settings.name')"
-              v-model="editablesUser.name"
+              v-model="editableUser.name"
             />
             <input
               class="terms__input terms__input--short input"
               :placeholder="$t('settings.surname')"
-              v-model="editablesUser.surname"
+              v-model="editableUser.surname"
             />
           </div>
           <input
             class="terms__input terms__input--short input"
             :placeholder="$t('settings.birth_year')"
-            v-model="editablesUser.birth_year"
+            v-model="editableUser.birth_year"
           />
         </div>
         <div class="terms__fields-single terms__fields-single--vertical">
@@ -44,7 +45,7 @@
           <input
             class="terms__input terms__input--medium input"
             :placeholder="$t('settings.name_and_surname')"
-            v-model="editablesUser.parent_full_name"
+            v-model="editableUser.parent_full_name"
           />
         </div>
         <div class="terms__fields-single terms__fields-single--vertical">
@@ -109,21 +110,33 @@ export default {
     )?.data?.[0]?.body;
     this.termsOfUse = termsOfUse.substring(1, termsOfUse.length - 1);
   },
+  computed: {
+    editableUser() {
+      return JSON.parse(JSON.stringify({ ...this.user }));
+    }
+  },
   data() {
     return {
       termsOfUse: "",
-      editablesUser: JSON.parse(JSON.stringify({ ...this.user })),
       accepted: false
     };
   },
   mixins: [user],
   methods: {
     acceptTerms() {
+      const {name, surname, email, birth_year, parent_full_name, street, postal_code, city, parent_phone_number} = this.editableUser
+      const addValues = {name, surname, email, birth_year, parent_full_name, street, postal_code, city, parent_phone_number};
+      console.log(this.editableUser);
       this.$store
         .dispatch("auth/request", {
           method: "patch",
           url: `students/${this.user.id}`,
-          data: { newValues: { terms_accepted: this.accepted ? 1 : 0 } }
+          data: {
+            newValues: {
+              terms_accepted: this.accepted ? 1 : 0,
+              ...addValues
+            }
+          }
         })
         .then(() => {
           this.$store
@@ -131,7 +144,7 @@ export default {
               method: "post",
               url: "auth/refresh"
             })
-            .then((response) => {
+            .then(response => {
               this.$store.dispatch("auth/new_token", response.data);
               this.$router.push("/student");
             });
