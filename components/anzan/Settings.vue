@@ -92,12 +92,19 @@
           +
         </button>
         <div>
-          <input type="checkbox" />dźwięk<app-select
-            :options="['PL', 'EN']"
-            :default="'PL'"
-            class="select"
-            @input="showConsole($event)"
-          />
+          <label class="options__checkbox checkbox checkbox--inline">
+            {{ $t("general.sound") }}
+            <input type="checkbox" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="options__select-box">
+            <app-select
+              :options="['PL', 'EN']"
+              :default="'PL'"
+              class="select"
+              @input="showConsole($event)"
+            />
+          </div>
         </div>
       </div>
     </fieldset>
@@ -123,14 +130,29 @@ input[type="radio"] {
   display: grid;
   grid-template-columns: 50% 50%;
   grid-row: auto auto;
+
+  &__label {
+    font-size: 1.5rem;
+    padding-bottom: 0.5rem;
+    text-decoration: underline;
+  }
 }
 .options__element {
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
+
+  &:nth-child(2n-1) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }
-.options__label {
-  font-size: 1.5rem;
-  padding-bottom: 0.5rem;
-  text-decoration: underline;
+.options__checkbox {
+  margin-top: 2rem;
+}
+.options__select-box {
+  display: inline-block;
+  width: 5rem;
+  margin-left: 0.5rem;
 }
 .options__select-box--level {
   width: 16rem;

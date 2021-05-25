@@ -32,5 +32,6 @@ module.exports = {
   show_payments_data: "Pokaż dane do płatności",
   active: "Aktywny",
   unactive: "Nieaktywny",
-  blocked: "Zablokowany"
+  blocked: "Zablokowany",
+  sound: "Dźwięk"
 };

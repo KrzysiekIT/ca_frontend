@@ -30,6 +30,7 @@ module.exports = {
   sunday: "Sunday",
   show_payments_data: "Show payments data",
   active: "Active",
-  unactive: "unactive",
-  blocked: "Blocked"
+  unactive: "Unactive",
+  blocked: "Blocked",
+  sound: "Sound"
 };

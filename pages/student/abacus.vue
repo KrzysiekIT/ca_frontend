@@ -1,9 +1,9 @@
 <template>
-  <nuxt-child :group="group"></nuxt-child>
+  <nuxt-child></nuxt-child>
 </template>
 <script>
 import socket from "~/mixins/sockets.js";
-import user from "~/mixins/user.js";
+import user from "~/mixins/group.vue";
 export default {
   mixins: [socket, user],
   created() {
@@ -14,19 +14,6 @@ export default {
         action: "lesson-choice"
       });
     }
-  },
-  async fetch() {
-    const group = await this.$store.dispatch("auth/request", {
-      method: "get",
-      url: `groups/${this.user.group_id}`
-    });
-    this.group = group.data[0];
-    console.log(this.group);
-  },
-  data() {
-    return {
-      group: {}
-    };
   }
 };
 </script>

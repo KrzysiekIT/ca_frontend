@@ -77,6 +77,10 @@ $gray: #d8d8d8;
   -ms-user-select: none;
   user-select: none;
 
+  &--inline {
+    display: inline-block;
+  }
+
   input {
     position: absolute;
     opacity: 0;
@@ -101,6 +105,7 @@ $gray: #d8d8d8;
     height: 1.5rem;
     width: 1.5rem;
     background-color: $grayedWhite;
+    border-radius: $appRadius;
 
     &:after {
       content: "";

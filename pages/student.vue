@@ -58,7 +58,10 @@
         </div>
         <ul class="user--list">
           <li class="user--list-item">
-            <lesson-link :label="$t('general.lessons')" link="link.do.zajec.pl"></lesson-link>
+            <lesson-link
+              :label="$t('general.lessons')"
+              :link="group.lesson_link"
+            ></lesson-link>
           </li>
           <li class="user--list-item">
             <lesson-link
@@ -89,11 +92,13 @@
   </div>
 </template>
 <script>
+import group from "~/mixins/group.vue";
 export default {
   middleware: "auth",
   meta: {
     auth: { authority: 8 }
   },
+  mixins: [group],
   layout: "default",
   computed: {
     user() {

@@ -4,6 +4,7 @@
   </div>
 </template>
 <script>
+import soroban from "~/mixins/soroban.js";
 export default {
   beforeMount() {
     setTimeout(() => {
@@ -15,6 +16,7 @@ export default {
       });
     }, 0);
   },
+  mixins: [soroban],
   data() {
     return {
       game: {
@@ -38,7 +40,7 @@ export default {
           ++game.currentIndex;
         }, speed);
         const numberToShow = generatedNumbers[game.currentIndex];
-        const msg = new SpeechSynthesisUtterance(`${numberToShow < 0 ? "minus" : "+"}${numberToShow}`.toLocaleString('pl'));
+        const msg = new SpeechSynthesisUtterance(`${numberToShow < 0 ? "- " : "+"}${numberToShow}`.toLocaleString('pl'));
         msg.lang = "pl-PL";
         //msg.rate = 2;
         window.speechSynthesis.speak(msg);

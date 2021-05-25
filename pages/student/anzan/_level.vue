@@ -1,9 +1,11 @@
 <template>
-  <component
-    :is="state.current"
-    :options="state.options"
-    @changeState="changeState"
-  />
+  <div>{{state}}
+    <component
+      :is="state.current"
+      :options="state.options"
+      @changeState="changeState"
+    />
+  </div>
 </template>
 <script>
 import socket from "~/mixins/sockets.js";
@@ -31,7 +33,7 @@ export default {
       state: {
         current: "anzan-settings",
         options: null
-      }
+      },
     };
   },
   methods: {

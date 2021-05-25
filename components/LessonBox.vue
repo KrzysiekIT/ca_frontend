@@ -35,6 +35,40 @@
     </tbody>
   </table>
 </template>
+<script>
+import user from "~/mixins/user.js";
+import group from "~/mixins/group.vue";
+export default {
+  props: {
+    page: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    borderNumber() {
+      const gameLevel = this.group[`${this.page}_level`];
+      const userLevel = this.user[`${this.page}_level`];
+      return Math.max(gameLevel, userLevel)+1;
+    }
+  },
+  mixins: [user, group],
+  data() {
+    return {
+      height: 6,
+      width: 8
+    };
+  },
+  methods: {
+    currentNumber(levelHeight, width, levelWidth) {
+      return (levelHeight - 1) * width + levelWidth;
+    },
+    isLocked(currentNumber, borderNumber) {
+      return currentNumber < borderNumber ? "unlocked" : "locked";
+    }
+  }
+};
+</script>
 <style lang="scss" scope>
 .level {
   width: 100%;
@@ -70,28 +104,3 @@
   transform: scale(1.1);
 }
 </style>
-<script>
-export default {
-  props: {
-    page: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      height: 6,
-      width: 8,
-      borderNumber: 19
-    };
-  },
-  methods: {
-    currentNumber(levelHeight, width, levelWidth) {
-      return (levelHeight - 1) * width + levelWidth;
-    },
-    isLocked(currentNumber, borderNumber) {
-      return currentNumber < borderNumber ? "unlocked" : "locked";
-    }
-  }
-};
-</script>
