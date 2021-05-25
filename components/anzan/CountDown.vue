@@ -4,7 +4,8 @@
   </div>
 </template>
 <script>
-export default {  beforeMount() {
+export default {
+  beforeMount() {
     setTimeout(() => {
       this.$nextTick(() => {
         const target = this.$refs["anzan-count-down"];
@@ -25,9 +26,16 @@ export default {  beforeMount() {
         setTimeout(() => {
           this.countDown--;
         }, 1000);
+        let audio;
+        if (this.countDown) {
+          audio = new Audio(require('@/assets/sounds/beep_short.mp3'));
+        } else {
+          audio = new Audio(require('@/assets/sounds/beep_long.mp3'));
+        }
+        audio.play();
         return this.countDown ? this.countDown : "GO";
       } else {
-        this.$emit("changeState", {state: "anzan-game-time"});
+        this.$emit("changeState", { state: "anzan-game-time" });
       }
     }
   }

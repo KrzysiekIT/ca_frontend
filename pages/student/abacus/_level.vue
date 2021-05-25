@@ -22,12 +22,18 @@
 <script>
 import socket from "~/mixins/sockets.js";
 import user from "~/mixins/user.js";
+import soroban from "~/mixins/soroban.js";
+import soroban_settings from "~/mixins/soroban_settings.js";
 export default {
-  mixins: [socket, user],
+  mixins: [socket, user, soroban],
   components: {
     AbacusBox: () => import("@/components/abacus/Box.vue")
   },
-  created() {
+  mounted() {
+    this.allSamples = this.generateSample({
+      ...soroban_settings[this.$route.params["level"]],
+      samples: 30
+    });
     if (process.client) {
       this.sendResult("game", {
         studentId: this.user.id,
@@ -39,7 +45,7 @@ export default {
   },
   data() {
     return {
-      allSamples: this.generateSamples(),
+      allSamples: [],
       results: []
     };
   },

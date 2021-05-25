@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       game: {
-        generatedNumbers: [1, 2, 3],
+        generatedNumbers: [1, -211, 3],
         currentIndex: 0,
         speed: 1000
       }
@@ -38,6 +38,10 @@ export default {
           ++game.currentIndex;
         }, speed);
         const numberToShow = generatedNumbers[game.currentIndex];
+        const msg = new SpeechSynthesisUtterance(`${numberToShow < 0 ? "minus" : "+"}${numberToShow}`.toLocaleString('pl'));
+        msg.lang = "pl-PL";
+        //msg.rate = 2;
+        window.speechSynthesis.speak(msg);
         return `${numberToShow < 0 ? "" : "+"}${numberToShow}`;
       } else {
         this.$emit("changeState", {

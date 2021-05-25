@@ -124,7 +124,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$sampleWidth: 4rem;
+$sampleWidth: 12rem;
 .abacus__box {
   display: flex;
   flex-wrap: wrap;
@@ -136,7 +136,7 @@ $sampleWidth: 4rem;
 .abacus__sample {
   font-size: 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   width: $sampleWidth;
 }
 .abacus__line {
@@ -152,7 +152,8 @@ $sampleWidth: 4rem;
   font-size: 2rem;
   width: $sampleWidth;
   outline: none;
-  text-align: center;
+  text-align: right;
+  padding-right: 1rem;
 }
 .abacus__input--ok {
   background-color: $green;
