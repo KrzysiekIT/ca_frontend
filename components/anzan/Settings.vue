@@ -2,7 +2,7 @@
   <div>
     <fieldset class="options">
       <div class="options__element">
-        <div class="options__label">POZIOM</div>
+        <div class="options__label">{{ $t("general.level") }}</div>
         <div class="options__select-box--level">
           <app-select
             :options="[
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="options__element">
-        <div class="options__label">PRĘDKOŚĆ</div>
+        <div class="options__label">{{ $t("general.speed") }}</div>
         <input
           class="options__input options__input--number"
           type="text"
@@ -48,7 +48,7 @@
         </button>
       </div>
       <div class="options__element">
-        <div class="options__label">ZŁOŻONOŚĆ</div>
+        <div class="options__label">{{ $t("general.complexity") }}</div>
         <fieldset class="options__value-box">
           <label
             v-for="(option, index) in complexity.values"
@@ -71,7 +71,7 @@
       </div>
 
       <div class="options__element">
-        <div class="options__label">LICZBA DZIAŁAŃ</div>
+        <div class="options__label">{{ $t("general.opaeration_number") }}</div>
         <input
           class="options__input options__input--number"
           type="text"
@@ -110,7 +110,12 @@
     </fieldset>
     <div class="options__start-box">
       <button
-        @click="$emit('changeState', { state: 'anzan-count-down', options: {...options, settings} })"
+        @click="
+          $emit('changeState', {
+            state: 'anzan-count-down',
+            options: { ...options, settings }
+          })
+        "
         class="options__button options__button--transparent"
       >
         <figure>
@@ -236,6 +241,9 @@ input[type="radio"] {
   background-color: transparent;
   $color: $white;
   font-size: 2rem;
+}
+.options__label {
+  text-transform: uppercase;
 }
 .options__label--start {
   color: $white;

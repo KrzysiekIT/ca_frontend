@@ -22,6 +22,7 @@ module.exports = {
   input_student_data_info:
     "Uzupełnij brakujące dane i dokonaj ich aktualizacji",
   month: "Miesiąc",
+  year: "Rok",
   monday: "Poniedziałek",
   tuesday: "Wtorek",
   wednesday: "Środa",
@@ -33,5 +34,18 @@ module.exports = {
   active: "Aktywny",
   unactive: "Nieaktywny",
   blocked: "Zablokowany",
-  sound: "Dźwięk"
+  sound: "Dźwięk",
+  program_progress: "Stopień realizacji programu",
+  note: "Notatka",
+  level: "Poziom",
+  speed: "Prędkość",
+  complexity: "Złożoność",
+  opaeration_number: "Liczba operacji",
+  answer: "Odpowiedź",
+  check: "Sprawdź",
+  error: "Błąd",
+  again: "Jeszcze raz",
+  show: "Wyświetl",
+  next: "Nastepne",
+  back: "Wstecz"
 };

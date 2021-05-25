@@ -4,7 +4,9 @@
   </div>
 </template>
 <script>
+import abacus from "~/mixins/abacus.vue";
 export default {
+  mixins: [abacus]
   /*   mounted() {
     this.socket = this.$nuxtSocket({});
     this.socket.emit("message", { id: "abc123" }, res => {
@@ -99,5 +101,4 @@ html {
 .u-margin-small {
   margin: 1rem 0.25rem;
 }
-
 </style>

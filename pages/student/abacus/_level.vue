@@ -2,14 +2,14 @@
   <div class="abacus">
     <header class="abacus__header">
       <div class="abacus__header--main">
-        <span class="abacus__label">LEKCJA</span>
+        <span class="abacus__label">{{$t('general.lesson')}}</span>
         <score-box
           :presences="{ present: $route.params['level'], total: 48 }"
         />
-        <mark class="abacus__note">NOTATKA</mark>
+        <mark class="abacus__note">{{$t('general.note')}}</mark>
       </div>
       <div class="abacus__header--sub">
-        <span class="abacus__title">TYTUŁ LEKCJI</span>
+        <span class="abacus__title">{{ getTitle() }}</span>
       </div>
     </header>
     <abacus-box
@@ -24,8 +24,9 @@ import socket from "~/mixins/sockets.js";
 import user from "~/mixins/user.js";
 import soroban from "~/mixins/soroban.js";
 import soroban_settings from "~/mixins/soroban_settings.js";
+import abacus from "~/mixins/abacus.vue";
 export default {
-  mixins: [socket, user, soroban],
+  mixins: [socket, user, soroban, abacus],
   components: {
     AbacusBox: () => import("@/components/abacus/Box.vue")
   },
@@ -57,6 +58,13 @@ export default {
       allSamples: [],
       results: []
     };
+  },
+  methods: {
+    getTitle() {
+      return this.lessonsTitles?.[this.$route.params["level"]]?.[
+        `title_${this.$i18n.locale}`
+      ];
+    }
   }
 };
 </script>
@@ -82,5 +90,6 @@ export default {
 }
 .abacus__title {
   font-size: 1.25rem;
+  text-transform: capitalize;
 }
 </style>

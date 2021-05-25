@@ -1,7 +1,6 @@
 <template>
   <section class="terms">
     <header class="terms__header">
-      {{ editableUser }}
       <div class="terms__title terms__title--main">
         <img
           src="~/assets/images/terms_of_use.svg"

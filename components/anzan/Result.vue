@@ -8,12 +8,12 @@
         v-if="correct"
       />
       <span class="result__title" v-else>
-        BŁĄD
+        {{ $t("general.error") }}
       </span>
     </header>
     <div
       class="result__button-box"
-      v-for="({ icon, toSend, label, modifier }, index) in currentButtons"
+      v-for="({ icon, toSend, label, type, modifier }, index) in currentButtons"
       :key="'button' + index"
     >
       <div :class="`result__icon-box result__icon-box--${icon.modifier}`">
@@ -22,7 +22,7 @@
       <button
         @click="$emit('changeState', { ...toSend, options: options })"
         :class="`result__button result__button--${modifier}`"
-        v-if="label !== 'WYŚWIETL'"
+        v-if="type !== 'other'"
       >
         {{ label }}
       </button>
@@ -65,7 +65,7 @@ export default {
       showResults: false,
       buttons: [
         {
-          label: "JESZCZE RAZ",
+          label: this.$t("general.again"),
           modifier: "correct",
           icon: { name: "redo", modifier: "correct" },
           toSend: {
@@ -75,7 +75,8 @@ export default {
           correct: [false]
         },
         {
-          label: "WYŚWIETL",
+          type: "other",
+          label: this.$t("general.show"),
           modifier: "wrong",
           icon: { name: "question", modifier: "wrong" },
           toSend: {
@@ -84,7 +85,7 @@ export default {
           correct: [false]
         },
         {
-          label: "NASTĘPNE",
+          label: this.$t("general.next"),
           modifier: this.options.correct ? "correct" : "default",
           icon: {
             name: "arrow-right",
@@ -97,7 +98,7 @@ export default {
           correct: [false, true]
         },
         {
-          label: "WSTECZ",
+          label: this.$t("general.back"),
           modifier: "default",
           icon: { name: "arrow-left", modifier: "default" },
           toSend: {

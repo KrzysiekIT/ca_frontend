@@ -8,7 +8,7 @@
     "
     class="result"
   >
-    <span>ODPOWIEDŹ</span>{{correct}}
+    <span>{{$t('general.answer')}}</span>
     <input
       class="result__input"
       type="text"
@@ -16,7 +16,7 @@
       inputmode="numeric"
     />
     <button type="submit" class="result__button">
-      SPRAWDŹ
+      {{$t('general.check')}}
     </button>
   </form>
 </template>

@@ -50,8 +50,8 @@
       </section>
       <section class="account__box--inner year">
         <ul class="year__ul">
-          <li class="year__li">ROK 1</li>
-          <li class="year__li">ROK 2</li>
+          <li class="year__li">{{ $t("general.year") }} 1</li>
+          <li class="year__li">{{ $t("general.year") }} 2</li>
         </ul>
       </section>
       <section class="account__box--inner attendance">
@@ -62,12 +62,14 @@
               total: attendance.length
             }"
           />
-          <div class="attendance__title">STOPIEŃ REALIZACJI PROGRAMU</div>
+          <div class="attendance__title">{{$t('general.program_progress')}}</div>
         </div>
         <table class="attendance__table">
           <thead>
             <tr>
-              <th class="attendance__table-td" scope="col">{{$t('general.month')}}</th>
+              <th class="attendance__table-td" scope="col">
+                {{ $t("general.month") }}
+              </th>
               <th
                 class="attendance__table-td"
                 scope="col"
@@ -245,6 +247,9 @@ $boxPadding: 0.5rem;
   list-style-type: none;
   padding: 0;
 }
+.year__li {
+  text-transform: uppercase;
+}
 .year__li:not(:first-child) {
   padding: 0.75rem 0;
 }
@@ -268,6 +273,7 @@ $boxPadding: 0.5rem;
   display: flex;
   justify-content: center;
   width: 100%;
+  text-transform: uppercase;
 }
 .attendance__table {
   border-collapse: collapse;
