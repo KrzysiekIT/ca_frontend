@@ -13,7 +13,7 @@
             ]"
             :default="'podstawowy'"
             class="select"
-            @input="showConsole($event)"
+            @input="set('level', $event)"
           />
         </div>
         <div class="options__select-box--extension">
@@ -21,7 +21,7 @@
             :options="['1-4', '1-9']"
             :default="'1-9'"
             class="select"
-            @input="showConsole($event)"
+            @input="set('range', $event)"
           />
         </div>
       </div>
@@ -94,7 +94,7 @@
         <div>
           <label class="options__checkbox checkbox checkbox--inline">
             {{ $t("general.sound") }}
-            <input type="checkbox" />
+            <input type="checkbox" v-model="chosen.sound" />
             <span class="checkmark"></span>
           </label>
           <div class="options__select-box">
@@ -102,7 +102,7 @@
               :options="['PL', 'EN']"
               :default="'PL'"
               class="select"
-              @input="showConsole($event)"
+              @input="set('lang', $event)"
             />
           </div>
         </div>
@@ -110,7 +110,7 @@
     </fieldset>
     <div class="options__start-box">
       <button
-        @click="$emit('changeState', { state: 'anzan-count-down' })"
+        @click="$emit('changeState', { state: 'anzan-count-down', options: {...options, settings} })"
         class="options__button options__button--transparent"
       >
         <figure>
@@ -243,6 +243,12 @@ input[type="radio"] {
 </style>
 <script>
 export default {
+  props: {
+    options: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       speed: {
@@ -255,12 +261,32 @@ export default {
         value: 8,
         precision: 1
       },
-      complexity: { values: [1, 10, 100, 1000, 10000, 100000], chosen: 100 }
+      complexity: { values: [1, 10, 100, 1000, 10000, 100000], chosen: 100 },
+      chosen: {
+        lang: "PL",
+        level: "podstawowy",
+        range: "1-4",
+        sound: false
+      }
     };
   },
+  computed: {
+    settings() {
+      return {
+        sound: this.chosen.sound,
+        lang: this.chosen.lang.toLowerCase(),
+        range: this.chosen.range,
+        level: this.chosen.level,
+        speed: this.speed.value,
+        complexity: this.complexity.chosen,
+        operationNumber: this.operationNumber.value,
+        lessonNumber: +this.$route.params.level
+      };
+    }
+  },
   methods: {
-    showConsole(event) {
-      console.log(event);
+    set(property, event) {
+      this.chosen[property] = event;
     },
     changeOptionValue(direction, type) {
       const newValue =

@@ -5,7 +5,16 @@
 </template>
 <script>
 export default {
-  beforeMount() {
+  props: {
+    options: {
+      type: Object,
+      required: true
+    }
+  },
+  mounted() {
+    this.$emit("generate");
+  },
+  /* beforeMount() {
     setTimeout(() => {
       this.$nextTick(() => {
         const target = this.$refs["anzan-count-down"];
@@ -14,7 +23,7 @@ export default {
         target.style.fontSize = newFontSize;
       });
     }, 0);
-  },
+  }, */
   data() {
     return {
       countDown: 3
@@ -26,16 +35,22 @@ export default {
         setTimeout(() => {
           this.countDown--;
         }, 1000);
-        let audio;
-        if (this.countDown) {
-          audio = new Audio(require('@/assets/sounds/beep_short.mp3'));
-        } else {
-          audio = new Audio(require('@/assets/sounds/beep_long.mp3'));
+        const soundEnabled = this.options.settings.sound;
+        if (soundEnabled) {
+          let audio;
+          if (this.countDown) {
+            audio = new Audio(require("@/assets/sounds/beep_short.mp3"));
+          } else {
+            audio = new Audio(require("@/assets/sounds/beep_long.mp3"));
+          }
+          audio.play();
         }
-        audio.play();
         return this.countDown ? this.countDown : "GO";
       } else {
-        this.$emit("changeState", { state: "anzan-game-time" });
+        this.$emit("changeState", {
+          state: "anzan-game-time",
+          options: this.options
+        });
       }
     }
   }
@@ -48,5 +63,6 @@ export default {
   height: 100%;
   justify-content: center;
   width: 100%;
+  font-size: 35vh;
 }
 </style>

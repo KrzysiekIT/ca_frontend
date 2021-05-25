@@ -2,19 +2,19 @@
   <form
     @submit="
       $emit('changeState', {
-        state: 'result',
-        options: { correct }
+        state: 'anzan-result',
+        options: {...options, correct }
       })
     "
     class="result"
   >
-    <span>ODPOWIEDŹ</span>
+    <span>ODPOWIEDŹ</span>{{correct}}
     <input
       class="result__input"
       type="text"
       v-model="yourAnswer"
       inputmode="numeric"
-    />{{ correct }}
+    />
     <button type="submit" class="result__button">
       SPRAWDŹ
     </button>

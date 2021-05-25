@@ -72,11 +72,16 @@
         </ul>
       </section>
       <section class="header--end">
-        <img
-          src="~/assets/images/money.svg"
-          alt="Sad icon"
-          class="header__image--end"
-        />
+        <nuxt-link
+          to="#"
+          class="link"
+          :title="$t('general.show_payments_data')"
+        >
+          <img
+            src="~/assets/images/money.svg"
+            alt="Money icon"
+            class="header__image--end"
+        /></nuxt-link>
         <img
           src="~/assets/images/sad.svg"
           alt="Sad icon"

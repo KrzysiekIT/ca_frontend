@@ -1,12 +1,19 @@
 <template>
   <div class="anzan__game" ref="anzan-game">
-    {{ nextNumber(game) }}
+    {{ nextNumber(options) }}
   </div>
 </template>
 <script>
-import soroban from "~/mixins/soroban.js";
+import user from "~/mixins/user.js";
+import socket from "~/mixins/sockets.js";
 export default {
-  beforeMount() {
+  props: {
+    options: {
+      type: Object,
+      required: true
+    }
+  },
+  /* beforeMount() {
     setTimeout(() => {
       this.$nextTick(() => {
         const target = this.$refs["anzan-game"];
@@ -15,12 +22,22 @@ export default {
         target.style.fontSize = newFontSize;
       });
     }, 0);
+  }, */
+  mounted() {
+    if (process.client) {
+      this.sendResult("game", {
+        studentId: this.user.id,
+        game: "anzan",
+        action: "start",
+        samples: [this.game.generatedNumbers]
+      });
+    }
   },
-  mixins: [soroban],
+  mixins: [user, socket],
   data() {
     return {
       game: {
-        generatedNumbers: [1, -211, 3],
+        generatedNumbers: [1, 2, 3],
         currentIndex: 0,
         speed: 1000
       }
@@ -34,21 +51,34 @@ export default {
       );
     },
     nextNumber(game) {
-      const { generatedNumbers, speed } = game;
-      if (generatedNumbers[game.currentIndex]) {
+      const { generatedNumbers } = game;
+      const speed = game.settings.speed * 1000;
+      if (generatedNumbers[this.game.currentIndex]) {
         setTimeout(() => {
-          ++game.currentIndex;
+          ++this.game.currentIndex;
         }, speed);
-        const numberToShow = generatedNumbers[game.currentIndex];
-        const msg = new SpeechSynthesisUtterance(`${numberToShow < 0 ? "- " : "+"}${numberToShow}`.toLocaleString('pl'));
-        msg.lang = "pl-PL";
-        //msg.rate = 2;
-        window.speechSynthesis.speak(msg);
+        const numberToShow = generatedNumbers[this.game.currentIndex];
+        const soundEnabled = this.options.settings.sound;
+        if (soundEnabled) {
+          const soundLang = this.options.settings.lang;
+          const msg = new SpeechSynthesisUtterance(
+            `${numberToShow < 0 ? "minus " : "+ "}${Math.abs(
+              numberToShow
+            )}`.toLocaleString(soundLang)
+          );
+          msg.lang = `${soundLang}-${soundLang.toUpperCase()}`;
+          //msg.rate = 2;
+          window.speechSynthesis.speak(msg);
+        }
         return `${numberToShow < 0 ? "" : "+"}${numberToShow}`;
       } else {
         this.$emit("changeState", {
           state: "anzan-put-result",
-          options: { answer: this.getArraySum(game.generatedNumbers) }
+          options: {
+            ...this.options,
+            generatedNumbers: generatedNumbers,
+            answer: this.getArraySum(generatedNumbers)
+          }
         });
       }
     }
@@ -62,5 +92,6 @@ export default {
   height: 100%;
   justify-content: center;
   width: 100%;
+  font-size: 35vh;
 }
 </style>

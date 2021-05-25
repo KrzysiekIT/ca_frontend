@@ -47,9 +47,9 @@ export default {
   },
   computed: {
     borderNumber() {
-      const gameLevel = this.group[`${this.page}_level`];
-      const userLevel = this.user[`${this.page}_level`];
-      return Math.max(gameLevel, userLevel)+1;
+      const gameLevel = this.group[`${this.page}_level`] ?? 1;
+      const userLevel = this.user[`${this.page}_level`] ?? 1;
+      return Math.max(gameLevel, userLevel) + 1;
     }
   },
   mixins: [user, group],

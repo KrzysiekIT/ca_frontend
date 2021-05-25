@@ -20,11 +20,22 @@
         <fa class="result__icon" :icon="icon.name" />
       </div>
       <button
-        @click="$emit('changeState', toSend)"
+        @click="$emit('changeState', { ...toSend, options: options })"
         :class="`result__button result__button--${modifier}`"
+        v-if="label !== 'WYŚWIETL'"
       >
         {{ label }}
       </button>
+      <button
+        @click="showResults = true"
+        :class="`result__button result__button--${modifier}`"
+        v-else
+      >
+        {{ label }}
+      </button>
+    </div>
+    <div class="result__numbers" v-if="showResults">
+      {{ options.generatedNumbers.join(", ") }}
     </div>
   </div>
 </template>
@@ -46,15 +57,20 @@ export default {
       );
     }
   },
+  mounted() {
+    window.speechSynthesis.cancel();
+  },
   data() {
     return {
+      showResults: false,
       buttons: [
         {
           label: "JESZCZE RAZ",
           modifier: "correct",
           icon: { name: "redo", modifier: "correct" },
           toSend: {
-            state: "anzan-count-down"
+            state: "anzan-count-down",
+            replay: true
           },
           correct: [false]
         },
@@ -70,9 +86,13 @@ export default {
         {
           label: "NASTĘPNE",
           modifier: this.options.correct ? "correct" : "default",
-          icon: { name: "arrow-right", modifier: this.options.correct ? "correct" : "default" },
+          icon: {
+            name: "arrow-right",
+            modifier: this.options.correct ? "correct" : "default"
+          },
           toSend: {
-            state: "anzan-count-down"
+            state: "anzan-count-down",
+            replay: false
           },
           correct: [false, true]
         },
@@ -165,5 +185,8 @@ export default {
 }
 .result__icon {
   transform: scale(0.85);
+}
+.result__numbers {
+  margin-top: 2rem;
 }
 </style>
