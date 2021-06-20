@@ -51,5 +51,6 @@ module.exports = {
   url: "Url",
   title_polish: "Polish title",
   title_english: "English title",
-  remove: "Remove"
+  remove: "Remove",
+  new_lesson_description: "The first click of a day starts the lesson"
 };

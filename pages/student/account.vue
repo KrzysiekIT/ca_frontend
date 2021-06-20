@@ -62,7 +62,9 @@
               total: attendance.length
             }"
           />
-          <div class="attendance__title">{{$t('general.program_progress')}}</div>
+          <div class="attendance__title">
+            {{ $t("general.program_progress") }}
+          </div>
         </div>
         <table class="attendance__table">
           <thead>
@@ -149,16 +151,6 @@ export default {
     Present: () => import("@/components/attendance/Present.vue")
   },
   computed: {
-    maxMonthAttendance() {
-      const months = this.attendance.map(
-        presence => presence.lessons_month_number
-      );
-      const monthOccurences = [];
-      monthOccurences.length = 12;
-      monthOccurences.fill(0);
-      months.forEach(month => monthOccurences[month]++);
-      return months.length ? Math.max(...months) : 0;
-    },
     numberOfPresences() {
       return this.attendance.filter(presence => presence.status === 2).length;
     }
@@ -166,6 +158,7 @@ export default {
   data() {
     return {
       attendance: [],
+      maxMonthAttendance: 4,
       months: 12,
       ATTENDANCE_STATUS,
       days,
@@ -176,31 +169,20 @@ export default {
   },
   methods: {
     filterMonths(attendance, monthNumber) {
-      const { maxMonthAttendance } = this;
-      attendance = attendance.filter(
-        presence => presence.lessons_month_number === monthNumber
+      const lessonsInMonth = 4;
+      let newAttendance = [...attendance];
+      newAttendance = newAttendance.sort(
+        (a, b) => a.lessons_lesson_number - b.lessons_lesson_number
       );
+      const minLessonNumber = monthNumber * lessonsInMonth - lessonsInMonth;
+      newAttendance = newAttendance.splice(minLessonNumber, lessonsInMonth);
       let lessonNumber = 0;
-      for (lessonNumber; lessonNumber < maxMonthAttendance; lessonNumber++) {
-        if (
-          attendance[lessonNumber]?.lessons_order_in_month ===
-          lessonNumber + 1
-        ) {
-          continue;
-        } else {
-          attendance.splice(lessonNumber, 0, {});
+      for (lessonNumber; lessonNumber < lessonsInMonth; lessonNumber++) {
+        if(!newAttendance[lessonNumber]) {
+          newAttendance.splice(lessonNumber, 0, {});
         }
       }
-      /* if (attendance.length < maxMonthAttendance) {
-        let emptyIndex = attendance.length;
-        attendance.length = maxMonthAttendance;
-        for (emptyIndex; emptyIndex < maxMonthAttendance; emptyIndex++) {
-          attendance[emptyIndex] = {};
-        }
-      } */
-      return attendance.sort(
-        (a, b) => a.lessons_order_in_month - b.lessons_order_in_month
-      );
+      return newAttendance;
     }
   }
 };

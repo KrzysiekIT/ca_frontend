@@ -9,7 +9,7 @@
           <thead>
             <tr>
               <th colspan="0" class="lessons__table-header">
-                <a href="#" class="link lessons__date">
+                <a href="lessons/board" class="link lessons__date" :title="$t('general.new_lesson_description')">
                   <img src="~/assets/images/play.svg" alt="Start" height="24" />
                   Środa 8:00
                 </a>
