@@ -10,5 +10,8 @@ export const mutations = {
   },
   addNewMovie(state, movie) {
     state.movies.push(movie);
+  },
+  removeAt(state, index) {
+    state.movies.splice(index, 1);
   }
 };

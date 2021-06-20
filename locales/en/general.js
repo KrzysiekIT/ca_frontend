@@ -50,5 +50,6 @@ module.exports = {
   add_video: "Add video",
   url: "Url",
   title_polish: "Polish title",
-  title_english: "English title"
+  title_english: "English title",
+  remove: "Remove"
 };

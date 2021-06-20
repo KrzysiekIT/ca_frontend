@@ -41,7 +41,15 @@
       v-for="(video, index) in videos"
       :key="'video' + index"
     >
-      <h2 class="movies__title">{{ video[`description_${$i18n.locale}`] }}</h2>
+      <h2 class="movies__title">
+        {{ video[`description_${$i18n.locale}`]
+        }}<fa
+          class="movies__icon"
+          :title="$t('general.remove')"
+          icon="minus-circle"
+          @click="remove(index)"
+        />
+      </h2>
       <video-embed :src="video.link"></video-embed>
     </div>
   </div>
@@ -96,6 +104,14 @@ export default {
         link: "",
         exercise: "movies"
       };
+    },
+    async remove(index) {
+      await this.$store.dispatch("auth/request", {
+        method: "delete",
+        url: `movies/${this.videos[index].id}`
+      });
+      this.$store.commit("movies/removeAt", index);
+      this.videos.splice(index, 1);
     }
   }
 };
@@ -185,5 +201,10 @@ export default {
 input:focus {
   box-shadow: 0 0 0 0.125rem #d48a0b;
   outline: none;
+}
+.movies__icon {
+  margin-left: 0.25rem;
+  cursor: pointer;
+  color: $red;
 }
 </style>

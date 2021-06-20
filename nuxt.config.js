@@ -49,6 +49,7 @@ export default {
         "faCheck",
         "faSpinner",
         "faUserMinus",
+        "faMinusCircle",
         "faUsersSlash"
       ]
     }

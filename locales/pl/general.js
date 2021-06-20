@@ -51,5 +51,6 @@ module.exports = {
   add_video: "Dodaj film",
   url: "Url",
   title_polish: "Polski tytuł",
-  title_english: "Angielski tytuł"
+  title_english: "Angielski tytuł",
+  remove: "Usuń"
 };
