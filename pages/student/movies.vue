@@ -6,7 +6,7 @@
       :key="'video' + index"
       @mouseover="sendMessage(index)"
     >
-      <h2 class="movies__title">{{ video.title }}</h2>
+      <h2 class="movies__title">{{ video[`description_${$i18n.locale}`] }}</h2>
       <video-embed :src="video.link"></video-embed>
     </div>
   </div>
@@ -16,8 +16,19 @@ import socket from "~/mixins/sockets.js";
 import user from "~/mixins/user.js";
 export default {
   mixins: [socket, user],
-  created() {
+  async created() {
     if (process.client) {
+      if (!this.$store.state.movies.downloaded) {
+        let movies = await this.$store.dispatch("auth/request", {
+          method: "get",
+          url: `movies`
+        });
+        movies = movies.data;
+        this.$store.commit("movies/setNewMovies", movies);
+        this.videos = movies;
+      } else {
+        this.videos = this.$store.state.movies.movies;
+      }
       this.sendResult("game", {
         studentId: this.user.id,
         game: "movies",
@@ -28,60 +39,7 @@ export default {
   data() {
     return {
       lastIndex: -1,
-      videos: [
-        {
-          title: "Be happy",
-          link: "https://www.youtube.com/watch?v=ZbZSe6N_BXs"
-        },
-        {
-          title: "Wake me up",
-          link: "https://www.youtube.com/watch?v=pIgZ7gMze7A"
-        },
-        {
-          title: "DOTA",
-          link: "https://www.youtube.com/watch?v=qTsaS1Tm-Ic"
-        },
-        {
-          title: "Sugar",
-          link: "https://www.youtube.com/watch?v=09R8_2nJtjg"
-        },
-        {
-          title: "YMCA",
-          link: "https://www.youtube.com/watch?v=CS9OO0S5w2k"
-        },
-        {
-          title: "All Start",
-          link: "https://www.youtube.com/watch?v=CS9OO0S5w2k"
-        },
-        {
-          title: "Livin' La Vida Loca",
-          link: "https://www.youtube.com/watch?v=p47fEXGabaY"
-        },
-        {
-          title: "Juanes - La Camisa Negra",
-          link: "https://www.youtube.com/watch?v=kRt2sRyup6A"
-        },
-        {
-          title: "Party Rock Anthem",
-          link: "https://www.youtube.com/watch?v=KQ6zr6kCPj8"
-        },
-        {
-          title: "Coca Cola",
-          link: "https://www.youtube.com/watch?v=gdjFeiiJaPI"
-        },
-        {
-          title: "Uptown Funk",
-          link: "https://www.youtube.com/watch?v=OPf0YbXqDm0"
-        },
-        {
-          title: "Hips Don't Lie",
-          link: "https://www.youtube.com/watch?v=DUT5rEU6pqM"
-        },
-        {
-          title: "They Don’t Care About Us",
-          link: "https://www.youtube.com/watch?v=QNJL6nfu__Q"
-        }
-      ]
+      videos: []
     };
   },
   methods: {
