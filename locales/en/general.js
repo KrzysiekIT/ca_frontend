@@ -46,5 +46,9 @@ module.exports = {
   again: "Try again",
   show: "Show",
   next: "Next",
-  back: "Back"
+  back: "Back",
+  add_video: "Add video",
+  url: "Url",
+  title_polish: "Polish title",
+  title_english: "English title"
 };

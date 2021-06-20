@@ -47,5 +47,9 @@ module.exports = {
   again: "Jeszcze raz",
   show: "Wyświetl",
   next: "Nastepne",
-  back: "Wstecz"
+  back: "Wstecz",
+  add_video: "Dodaj film",
+  url: "Url",
+  title_polish: "Polski tytuł",
+  title_english: "Angielski tytuł"
 };

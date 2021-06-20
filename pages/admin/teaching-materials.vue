@@ -1,11 +1,16 @@
 <template>
-  <section class="tm">
-    <ul class="tm__folders">
-      <li class="tm__folder" v-for="folder in folders" :key="folder.name">
-        <nuxt-link class="link" :to="folder.link">📁 {{ folder.name }}</nuxt-link>
-      </li>
-    </ul>
-  </section>
+  <div>
+    <section class="tm" v-if="$route.name === 'admin-teaching-materials'">
+      <ul class="tm__folders">
+        <li class="tm__folder" v-for="folder in folders" :key="folder.name">
+          <nuxt-link class="link" :to="`teaching-materials/${folder.link}`"
+            >📁 {{ folder.name }}</nuxt-link
+          >
+        </li>
+      </ul>
+    </section>
+    <nuxt-child v-else />
+  </div>
 </template>
 <script>
 export default {
