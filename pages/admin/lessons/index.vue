@@ -1,88 +1,235 @@
 <template>
-  <section class="lessons">
-    <header class="lessons__header">
-      GRUPY
-    </header>
-    <div class="lessons__tables">
-      <div class="lessons__table-box">
-        <table class="lessons__table">
-          <thead>
-            <tr>
-              <th colspan="0" class="lessons__table-header">
-                <a href="lessons/board" class="link lessons__date" :title="$t('general.new_lesson_description')">
-                  <img src="~/assets/images/play.svg" alt="Start" height="24" />
-                  Środa 8:00
-                </a>
-                <lesson-link
-                  label="Zajęcia"
-                  link="link.do.zajec.pl"
-                ></lesson-link>
-                <div>Data zajęć</div>
-              </th>
-            </tr>
-          </thead>
-        </table>
-        <table class="table lessons__table">
-          <thead>
-            <tr>
-              <th
-                class="table__td"
-                v-for="({ type, options }, columnIndex) in columns"
-                :key="'column' + columnIndex"
+  <client-only>
+    <section class="lessons">
+      <header class="lessons__header">GRUPY</header>
+      <div class="lessons__tables">
+        <div class="lessons__table-box" v-for="group in groups" :key="group.id">
+          <table class="lessons__table">
+            <thead>
+              <tr>
+                <th colspan="0" class="lessons__table-header">
+                  <a
+                    :href="`lessons/board/${group.id}`"
+                    class="link lessons__date"
+                    title="Pokaż tablicę trenera"
+                  >
+                    <fa class="result__icon" icon="chalkboard-teacher" />
+                    {{ `${group.lesson_hour}` }}
+                    {{ $t(`general.${days[group.lesson_day]}`) }}
+                  </a>
+                  <button
+                    :title="$t('general.new_lesson_description')"
+                    class="lessons__button"
+                    @click="startNewLesson(group.id)"
+                  >
+                    <img
+                      src="~/assets/images/play.svg"
+                      alt="Start"
+                      height="24"
+                    />
+                  </button>
+                  <lesson-link
+                    label="Zajęcia"
+                    :link="group.lesson_link"
+                  ></lesson-link>
+                  <div>Data zajęć<br />{{ getLastLessonDate(group.id) }}</div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <table class="table lessons__table">
+            <thead>
+              <tr>
+                <th
+                  class="table__td"
+                  v-for="({ type, options }, columnIndex) in columns"
+                  :key="'column' + columnIndex + group.id"
+                >
+                  <component :is="type" :options="options" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="user in getStudents(group.id)"
+                :key="user.id + group.id"
               >
-                <component :is="type" :options="options" />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in newStudents" :key="user.id">
-              <td
-                class="table__td"
-                v-for="({ field, type }, columnIndex) in columns"
-                :key="'column' + columnIndex"
-              >
-                <component
-                  :is="type"
-                  v-if="user[field]"
-                  :options="{ label: user[field] }"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="lessons__table"><tfoot>
-        <tr>
-          <td style="text-align: right">77</td>
-        </tr>
-      </tfoot></table>
+                <td
+                  class="table__td"
+                  :class="
+                    ['present', 'excused', 'absent'].includes(type)
+                      ? 'pointer'
+                      : ''
+                  "
+                  v-for="({ field, type }, columnIndex) in columns"
+                  :key="'column' + columnIndex + group.id"
+                  @click="
+                    ['present', 'excused', 'absent'].includes(type) &&
+                      setAttendance(user, columnIndex)
+                  "
+                >
+                  <component
+                    :is="type"
+                    v-if="user[field]"
+                    :options="{ label: user[field] }"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <table class="lessons__table">
+            <tfoot>
+              <tr>
+                <td style="text-align: right">77</td>
+              </tr>
+            </tfoot>
+          </table> -->
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </client-only>
 </template>
 <script>
+import user from "~/mixins/user.js";
+const days = {
+  1: "monday",
+  2: "tuesday",
+  3: "wednesday",
+  4: "thursday",
+  5: "friday",
+  6: "saturday",
+  0: "sunday"
+};
 export default {
+  mixins: [user],
   components: {
     Absent: () => import("@/components/attendance/Absent.vue"),
     Excused: () => import("@/components/attendance/Excused.vue"),
     Present: () => import("@/components/attendance/Present.vue"),
     SimpleText: () => import("@/components/SimpleText.vue")
   },
-  computed: {
-    newStudents() {
-      const newStudents = this.groups.map((student, index) => {
-        return {
-          index: index + 1,
-          present: student.attendance === 2,
-          absent: student.attendance === 1,
-          excused: student.attendance === 0,
-          ...student
-        };
+  async fetch() {
+    const myGroups = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: "groups/my"
+    });
+    this.groups = myGroups.data;
+    const groupsIds = this.groups.map(group => group.id).join(",");
+    const lastLessons = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `lessons/last/${groupsIds}`
+    });
+    this.lastLessons = lastLessons.data.data;
+
+    const lessonsIds = this.lastLessons.map(lesson => lesson.id).join(",");
+
+    let presences = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `presences/multiplelessons/${lessonsIds}`
+    });
+    presences = presences.data;
+
+    this.presences = presences;
+
+    const students = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `students/multiplegroups/${groupsIds}`
+    });
+    this.students = students.data.map((student, index) => {
+      const newPresences = presences.filter(
+        presence => presence.user_id === student.id
+      );
+      let attendance;
+      if (newPresences[0]) {
+        attendance = newPresences[0].status;
+      } else {
+        attendance = -1;
+      }
+      return {
+        id: student.id,
+        group_id: student.group_id,
+        fullName: `${student.name} ${student.surname}`,
+        attendance: -1,
+        phoneNumber: student.parent_phone_number,
+        email: student.email,
+        index: index + 1,
+        attendance,
+        present: attendance === 2,
+        absent: attendance === 0,
+        excused: attendance === 1
+      };
+    });
+  },
+  methods: {
+    async setAttendance(user, columnIndex) {
+      const columnToStatus = {
+        4: 0,
+        3: 1,
+        2: 2
+      };
+      const filteredPresences = this.presences.filter(
+        presence => presence.user_id === user.id
+      );
+      if (filteredPresences.length < 1) {
+        return;
+      }
+      const studentIndex = this.students.indexOf(user);
+
+      this.$set(this.students, studentIndex, {
+        ...this.students[studentIndex],
+        attendance: columnToStatus[columnIndex],
+        present: columnToStatus[columnIndex] === 2,
+        absent: columnToStatus[columnIndex] === 0,
+        excused: columnToStatus[columnIndex] === 1
       });
-      return newStudents;
+
+      const lastPresence = filteredPresences[0];
+      await this.$store.dispatch("auth/request", {
+        method: "patch",
+        url: `presences/${lastPresence.id}`,
+        data: { newValues: { status: columnToStatus[columnIndex] } }
+      });
+    },
+    async startNewLesson(groupId) {
+      const newLesson = await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: `lessons/new/${groupId}`,
+        data: { date: new Date() }
+      });
+      if (newLesson.status === 200) {
+        this.$fetch();
+      }
+    },
+    getLastLessonDate(groupId) {
+      if (!this.lastLessons) {
+        return;
+      }
+      const filteredLessons = this.lastLessons.filter(
+        lesson => lesson.group_id === groupId
+      );
+      if (filteredLessons.length < 1) {
+        return;
+      }
+      const lastLessonDate = filteredLessons[0].date;
+      const formattedDate = lastLessonDate.substring(0, 10);
+      return formattedDate;
+    },
+    getStudents(groupId) {
+      if (!this.students) {
+        return;
+      }
+      const filteredStudents = this.students.filter(
+        student => student.group_id === groupId
+      );
+      if (filteredStudents.length < 1) {
+        return;
+      }
+      return filteredStudents;
     }
   },
   data() {
     return {
+      days,
       columns: [
         { type: "simple-text", options: { label: "Lp." }, field: "index" },
         { type: "simple-text", options: { label: "Uczeń" }, field: "fullName" },
@@ -96,7 +243,11 @@ export default {
         },
         { type: "simple-text", options: { label: "E-mail" }, field: "email" }
       ],
-      groups: [
+      groups: [],
+      lastLessons: [],
+      students: [],
+      presences: [],
+      users: [
         {
           id: 1,
           fullName: "Jan Nowak",
@@ -152,6 +303,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.lessons__table-box {
+  margin-bottom: 5rem;
+}
 .lessons {
   padding: 2rem 4rem;
   &__table-header {
@@ -169,5 +323,14 @@ export default {
     align-items: center;
     gap: 0.25rem;
   }
+
+  &__button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

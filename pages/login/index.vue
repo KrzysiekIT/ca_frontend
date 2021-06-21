@@ -32,7 +32,7 @@ export default {
       nextPage: {
         superadmin: "/admin",
         admin: "/admin",
-        trainer: "/trainer",
+        trainer: "/admin",
         student: "/student"
       }
     };

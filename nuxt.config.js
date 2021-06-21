@@ -50,7 +50,8 @@ export default {
         "faSpinner",
         "faUserMinus",
         "faMinusCircle",
-        "faUsersSlash"
+        "faUsersSlash",
+        "faChalkboardTeacher",
       ]
     }
   },
