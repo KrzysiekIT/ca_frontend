@@ -121,7 +121,7 @@ export default {
           name: "groupDay",
           label: "Dzień zajęć",
           filter: { active: true, value: "", selected: false },
-          component: "editable",
+          component: "no-editable",
           options: {
             field: ["group", "lessonDay"]
           }
@@ -130,7 +130,7 @@ export default {
           name: "groupHour",
           label: "Godzina zajęć",
           filter: { active: true, value: "" },
-          component: "editable",
+          component: "no-editable",
           options: {
             field: ["group", "lessonHour"]
           }

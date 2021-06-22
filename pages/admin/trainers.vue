@@ -1,15 +1,15 @@
 <template>
-  <div class="groups" v-if="groups">
+  <div class="trainers" v-if="trainers">
     <data-header
-      :baseTable="groups"
+      :baseTable="trainers"
       :models="models"
       :apiUrl="apiUrl"
-      label="Dodaj grupę"
+      label="Dodaj trenera"
     />
     <data-table
       :fields="fields"
       :selectOptions="selectOptions"
-      :data="groups"
+      :data="trainers"
       :apiUrl="apiUrl"
     />
   </div>
@@ -18,27 +18,15 @@
 export default {
   data() {
     return {
-      apiUrl: "groups",
-      models: {
-        frontend: {
-          level: 1,
-          label: "",
-          trainerId: 3,
-          lessonDay: 1,
-          lesosnHour: "",
-          lessonLink: ""
-        },
-        backend: {
-          label: ""
-        }
-      },
+      apiUrl: "trainers",
       selectOptions: {
-        level: [
-          { value: 3, label: "Starsza" },
-          { value: 2, label: "Średnia" },
-          { value: 1, label: "Młoda" }
+        statuses: [
+          { value: 4, label: "Blokada" },
+          { value: 3, label: "Nieaktywny" },
+          { value: 2, label: "Pauza" },
+          { value: 1, label: "Aktywny" }
         ],
-        trainers: [],
+        groups: [],
         days: [
           { value: 1, label: "poniedziałek" },
           { value: 2, label: "wtorek" },
@@ -47,127 +35,95 @@ export default {
           { value: 5, label: "piątek" },
           { value: 6, label: "sobota" },
           { value: 7, label: "niedziela" }
-        ],
-        hours: (() => {
-          const hours = Array.from(Array(24).keys());
-          const minutes = ["00", "15", "30", "45"];
-          const options = [];
-          let hourIndex = 0;
-          const hoursLength = hours.length;
-          const minutesLength = minutes.length;
-          for (hourIndex; hourIndex < hoursLength; hourIndex++) {
-            let minuteIndex = 0;
-            for (minuteIndex; minuteIndex < minutesLength; minuteIndex++) {
-              const hourToPush = `${hours[hourIndex]}:${minutes[minuteIndex]}`;
-              options.push({ value: hourToPush, label: hourToPush });
-            }
-          }
-          return options;
-        })()
+        ]
+      },
+      models: {
+        frontend: {
+          id: 0,
+          status: 1,
+          startAt: "2017-12-01T20:00:00.000Z",
+          name: "",
+          surname: "",
+          parent: {
+            fullName: "",
+            email: "",
+            phoneNumber: ""
+          },
+          group: {
+            id: 1,
+            value: 1,
+            label: "",
+            trainerId: 3,
+            lessonDay: "",
+            lessonHour: "",
+            trainerLabel: ""
+          },
+          linkSent: 1
+        },
+        backend: {
+          role_id: 3
+        }
       },
       fields: [
         {
           name: "name",
-          label: "Nazwa",
+          label: "Imię",
           filter: { active: true, value: "", selected: false },
           component: "editable",
-          options: { field: ["label"] }
+          options: { field: ["name"] }
         },
         {
-          name: "level",
-          label: "Rodzaj grupy",
+          name: "surname",
+          label: "Nazwisko",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["surname"] }
+        },
+        {
+          name: "email",
+          label: "Adres e-mail",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["email"] }
+        },
+        {
+          name: "phoneNumber",
+          label: "Numer telefonu",
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["phoneNumber"] }
+        },
+        {
+          name: "groupId",
+          label: "Grupa",
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
-            options: "level",
-            field: ["level"],
+            options: "groups",
+            field: ["group", "id"],
             base: "group"
           }
         },
         {
-          name: "trainer",
-          label: "Trener",
+          name: "groupDay",
+          label: "Dzień zajęć",
           filter: { active: true, value: "", selected: false },
-          component: "select-option",
+          component: "no-editable",
           options: {
-            options: "trainers",
-            field: ["trainerId"]
+            field: ["group", "lessonDay"]
           }
         },
         {
-          name: "lessonDay",
-          label: "Dzień",
-          filter: { active: true, value: "", selected: false },
-          component: "select-option",
+          name: "groupHour",
+          label: "Godzina zajęć",
+          filter: { active: true, value: "" },
+          component: "no-editable",
           options: {
-            options: "days",
-            field: ["lessonDay"]
-          }
-        },
-        {
-          name: "lessonHour",
-          label: "Godzina",
-          filter: { active: true, value: "", selected: false },
-          component: "select-option",
-          options: {
-            options: "hours",
-            field: ["lessonHour"]
-          }
-        },
-        {
-          name: "lessonLink",
-          label: "Link",
-          filter: { active: false, value: "", selected: false },
-          component: "editable",
-          options: {
-            field: ["lessonLink"]
-          }
-        },
-        {
-          name: "lessonTool",
-          label: "Tool",
-          filter: { active: false, value: "", selected: false },
-          component: "editable",
-          options: {
-            field: ["lessonTool"]
-          }
-        },
-        {
-          name: "removeUser",
-          label: "Usuń",
-          filter: { active: false, value: "" },
-          component: "action-button",
-          options: {
-            action: "remove",
-            field: ["id"],
-            toExecute: "remove",
-            link: "groups",
-            activeState: 1,
-            states: {
-              active: {
-                disabled: false,
-                icon: "users-slash",
-                classModifier: "remove",
-                animation: false
-              },
-              loading: {
-                disabled: true,
-                icon: "spinner",
-                classModifier: "loading",
-                animation: true
-              },
-              disabled: {
-                disabled: false,
-                icon: "users-slash",
-                classModifier: "remove",
-                animation: false
-              }
-            },
-            newValue: null
+            field: ["group", "lessonHour"]
           }
         }
       ],
-      groups: null
+      trainers: null
     };
   },
   async fetch() {
@@ -182,44 +138,69 @@ export default {
       })
     ];
     const apiReponses = await Promise.all(toFetch);
-    let [backendTrainers, groups] = apiReponses;
+    let [backendStudents, groups] = apiReponses;
+    backendStudents = backendStudents.data;
     groups = groups.data;
-    backendTrainers = backendTrainers.data;
-
-    this.selectOptions.trainers = backendTrainers.map(
-      ({ id, name, surname }) => {
-        return {
-          id,
-          value: id,
-          label: `${name} ${surname}`
-        };
-      }
-    );
-
-    const frontendGroups = groups.map(
+    this.selectOptions.groups = groups.map(
       ({
         id,
-        level,
         label,
         trainer_id,
         lesson_day,
         lesson_hour,
-        lesson_tool,
-        lesson_link
+        trainers_name,
+        trainers_surname
       }) => {
         return {
-          id: id,
-          level: level ?? 1,
-          label: label ?? "",
-          trainerId: trainer_id ?? 3,
-          lessonDay: lesson_day ?? "",
-          lessonHour: lesson_hour ?? "",
-          lessonLink: lesson_link ?? "",
-          lessonTool: lesson_tool ?? ""
+          id,
+          value: id,
+          label,
+          trainerId: trainer_id,
+          lessonDay: this.selectOptions.days.find(
+            day => lesson_day === day.value
+          ).label,
+          lessonHour: lesson_hour,
+          trainerLabel: `${trainers_name} ${trainers_surname}`
         };
       }
     );
-    this.groups = frontendGroups;
+
+    const frontendStudents = backendStudents.map(
+      ({
+        id,
+        name,
+        surname,
+        birth_year,
+        parent_full_name,
+        parent_email,
+        parent_phone_number,
+        status,
+        start_at,
+        group_id,
+        link_sent,
+        email,
+        phone_number
+      }) => {
+        return {
+          id: id,
+          status: status ?? 0,
+          startAt: start_at ?? "",
+          name: name ?? "",
+          surname: surname ?? "",
+          birthYear: birth_year ?? "",
+          parent: {
+            fullName: parent_full_name ?? "",
+            email: parent_email ?? "",
+            phoneNumber: parent_phone_number ?? ""
+          },
+          group: this.selectOptions.groups.find(({ id }) => id === group_id),
+          linkSent: link_sent ?? "",
+          email,
+          phoneNumber: phone_number
+        };
+      }
+    );
+    this.trainers = frontendStudents;
   }
 };
 </script>

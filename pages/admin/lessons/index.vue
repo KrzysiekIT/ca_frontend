@@ -109,9 +109,16 @@ export default {
     SimpleText: () => import("@/components/SimpleText.vue")
   },
   async fetch() {
+    let urlToGroup = "groups/my";
+    if (
+      this.user.role.name === "admin" ||
+      this.user.role.name === "superadmin"
+    ) {
+      urlToGroup = "groups";
+    }
     const myGroups = await this.$store.dispatch("auth/request", {
       method: "get",
-      url: "groups/my"
+      url: urlToGroup
     });
     this.groups = myGroups.data;
     const groupsIds = this.groups.map(group => group.id).join(",");

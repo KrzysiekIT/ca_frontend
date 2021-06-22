@@ -83,9 +83,7 @@ export default {
       } else {
         this.results = this.items.filter(item => {
           if (this.type === "multiple") {
-            return item.label
-              .toLowerCase()
-              .startsWith(this.search.toLowerCase());
+            return item.label.toLowerCase().includes(this.search.toLowerCase());
           }
           item += "";
           return item

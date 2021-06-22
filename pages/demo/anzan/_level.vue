@@ -17,9 +17,10 @@ export default {
   created() {
     if (process.client) {
       this.sendResult("game", {
-        studentId: this.$route.params.user_id,
+        studentId: this.$route.query.user_id,
         game: "anzan",
-        action: "lesson-choice"
+        action: "lesson-choice",
+        demoId: this.$route.query.demo_id
       });
     }
   },

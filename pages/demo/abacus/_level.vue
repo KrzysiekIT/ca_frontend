@@ -2,11 +2,11 @@
   <div class="abacus">
     <header class="abacus__header">
       <div class="abacus__header--main">
-        <span class="abacus__label">{{$t('general.lesson')}}</span>
+        <span class="abacus__label">{{ $t("general.lesson") }}</span>
         <score-box
           :presences="{ present: $route.params['level'], total: 48 }"
         />
-        <mark class="abacus__note">{{$t('general.note')}}</mark>
+        <mark class="abacus__note">{{ $t("general.note") }}</mark>
       </div>
       <div class="abacus__header--sub">
         <span class="abacus__title">{{ getTitle() }}</span>
@@ -36,10 +36,11 @@ export default {
     });
     if (process.client) {
       this.sendResult("game", {
-        studentId: this.$route.params.user_id,
+        studentId: this.$route.query.user_id,
         game: "abacus",
         action: "start",
-        samples: this.allSamples
+        samples: this.allSamples,
+        demoId: this.$route.query.demo_id
       });
     }
   },

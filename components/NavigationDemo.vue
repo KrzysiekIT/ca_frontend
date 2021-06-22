@@ -18,7 +18,7 @@
               {{ $t("general.abacus") }}
             </nuxt-link>
           </li>
-          <li>
+          <!-- <li>
             <nuxt-link
               class="navigation__link"
               :to="{ path: localePath('/demo/anzan'), query: $route.query}"
@@ -31,7 +31,7 @@
               />
               {{ $t("general.anzan") }}
             </nuxt-link>
-          </li>
+          </li> -->
           <li>
             <img
               src="~/assets/images/supermind.png"

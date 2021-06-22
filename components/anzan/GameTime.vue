@@ -25,11 +25,18 @@ export default {
   }, */
   mounted() {
     if (process.client) {
+      let userId;
+      if (this.$route.name.startsWith("demo")) {
+        userId = this.$route.query.user_id;
+      } else {
+        userId = this.user.id;
+      }
       this.sendResult("game", {
-        studentId: this.user.id,
+        studentId: userId,
         game: "anzan",
         action: "start",
-        samples: [this.game.generatedNumbers]
+        samples: [this.game.generatedNumbers],
+        demoId: this.$route.query.demo_id
       });
     }
   },

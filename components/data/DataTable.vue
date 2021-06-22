@@ -89,7 +89,8 @@ export default {
     SelectOption: () => import("@/components/table/SelectOption.vue"),
     CalendarPicker: () => import("@/components/table/CalendarPicker.vue"),
     Editable: () => import("@/components/table/Editable.vue"),
-    NoEditable: () => import("@/components/table/NoEditable.vue")
+    NoEditable: () => import("@/components/table/NoEditable.vue"),
+    Payment: () => import("@/components/table/Payment.vue")
   },
   data() {
     return {
