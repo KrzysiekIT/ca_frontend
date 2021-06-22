@@ -52,5 +52,6 @@ module.exports = {
   title_polish: "Polish title",
   title_english: "English title",
   remove: "Remove",
-  new_lesson_description: "The first click of a day starts the lesson"
+  new_lesson_description: "The first click of a day starts the lesson",
+  introductory_classes: "Introductory classes"
 };

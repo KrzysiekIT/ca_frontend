@@ -53,5 +53,7 @@ module.exports = {
   title_polish: "Polski tytuł",
   title_english: "Angielski tytuł",
   remove: "Usuń",
-  new_lesson_description: "Pierwsze kliknięcie danego dnia powoduje rozpoczęcia lekcji"
+  new_lesson_description:
+    "Pierwsze kliknięcie danego dnia powoduje rozpoczęcia lekcji",
+  introductory_classes: "Zajęcia wstępne"
 };

@@ -17,7 +17,7 @@
           <li v-for="(sublink, index) in sub" :key="'link' + index">
             <nuxt-link
               class="navigation__link"
-              :to="localePath(`/admin/${link}${sublink.link}`)"
+              :to="localePath(`/admin/${sublink.link}`)"
             >
               {{ `-${sublink.label} ` }}
             </nuxt-link>

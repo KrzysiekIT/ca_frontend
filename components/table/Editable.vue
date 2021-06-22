@@ -48,7 +48,6 @@ export default {
   height: 100%;
   text-align: center;
   text-overflow: ellipsis;
-  width: 6rem;
   white-space: nowrap;
 }
 .editable__input:focus {

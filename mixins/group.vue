@@ -9,6 +9,9 @@ export default {
   },
   async created() {
     if (process.client) {
+      if (this.$route.name.startsWith("demo")) {
+        return {};
+      }
       if (!this.$store.state.group.downloaded) {
         let group = await this.$store.dispatch("auth/request", {
           method: "get",

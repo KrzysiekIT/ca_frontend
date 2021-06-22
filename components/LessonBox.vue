@@ -19,7 +19,10 @@
         >
           <nuxt-link
             class="level__link"
-            :to="`${page}/${currentNumber(levelHeight, width, levelWidth)}`"
+            :to="{
+              path: `${page}/${currentNumber(levelHeight, width, levelWidth)}`,
+              query: $route.query
+            }"
             v-if="
               isLocked(
                 currentNumber(levelHeight, width, levelWidth),
@@ -47,6 +50,9 @@ export default {
   },
   computed: {
     borderNumber() {
+      if (this.$route.name.startsWith("demo")) {
+        return 2;
+      }
       const gameLevel = this.group[`${this.page}_level`] ?? 1;
       const userLevel = this.user[`${this.page}_level`] ?? 1;
       return Math.max(gameLevel, userLevel) + 1;

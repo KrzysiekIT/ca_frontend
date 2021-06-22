@@ -63,6 +63,11 @@ $red: #f00;
     padding: 0.25rem 2rem;
   }
 
+  &--yellow {
+    color: $mainBackground;
+    background-color: $yellow;
+  }
+
   &:hover {
     background-color: #4472c4e0;
     cursor: pointer;
