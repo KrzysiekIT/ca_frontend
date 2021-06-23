@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <section class="lessons">
-      <header class="lessons__header">GRUPY</header>
+      <header class="lessons__header">{{$t('general.groups')}}</header>
       <div class="lessons__tables">
         <div class="lessons__table-box" v-for="group in groups" :key="group.id">
           <table class="lessons__table">
@@ -9,9 +9,9 @@
               <tr>
                 <th colspan="0" class="lessons__table-header">
                   <a
-                    :href="`lessons/board/${group.id}`"
+                    :href="`lessons/board?id=${group.id}`"
                     class="link lessons__date"
-                    title="Pokaż tablicę trenera"
+                    :title="$t('general.show_trainer_board')"
                   >
                     <fa class="result__icon" icon="chalkboard-teacher" />
                     {{ `${group.lesson_hour}` }}
@@ -29,10 +29,10 @@
                     />
                   </button>
                   <lesson-link
-                    label="Zajęcia"
+                    :label="$t('general.lessons')"
                     :link="group.lesson_link"
                   ></lesson-link>
-                  <div>Data zajęć<br />{{ getLastLessonDate(group.id) }}</div>
+                  <div>{{$t('general.lesson_day')}}<br />{{ getLastLessonDate(group.id) }}</div>
                 </th>
               </tr>
             </thead>
@@ -239,16 +239,16 @@ export default {
       days,
       columns: [
         { type: "simple-text", options: { label: "Lp." }, field: "index" },
-        { type: "simple-text", options: { label: "Uczeń" }, field: "fullName" },
+        { type: "simple-text", options: { label: this.$t('general.student') }, field: "fullName" },
         { type: "present", field: "present" },
         { type: "excused", field: "excused" },
         { type: "absent", field: "absent" },
         {
           type: "simple-text",
-          options: { label: "Telefon" },
+          options: { label: this.$t('general.phone_number') },
           field: "phoneNumber"
         },
-        { type: "simple-text", options: { label: "E-mail" }, field: "email" }
+        { type: "simple-text", options: { label: this.$t('general.email_adress') }, field: "email" }
       ],
       groups: [],
       lastLessons: [],

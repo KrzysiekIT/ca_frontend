@@ -7,7 +7,7 @@
       @keydown.down="onArrowDown"
       @keydown.up="onArrowUp"
       @keydown.enter="onEnter"
-      placeholder="Szukaj…"
+      :placeholder="$t('general.search')"
       class="autocomplete-input"
     />
     <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">

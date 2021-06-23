@@ -9,5 +9,8 @@ export const mutations = {
   setNewGroup(state, newGroup) {
     state.current = newGroup;
     state.downloaded = true;
+  },
+  reset(state) {
+    state.downloaded = false;
   }
 };

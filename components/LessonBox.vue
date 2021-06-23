@@ -16,9 +16,14 @@
           "
           v-for="levelWidth in width"
           :key="'level' + levelWidth"
+          @click="
+            mode === 'admin' &&
+              changeLock(currentNumber(levelHeight, width, levelWidth))
+          "
         >
           <nuxt-link
             class="level__link"
+            :event="mode === 'admin' ? '' : 'click'"
             :to="{
               path: `${page}/${currentNumber(levelHeight, width, levelWidth)}`,
               query: $route.query
@@ -39,26 +44,19 @@
   </table>
 </template>
 <script>
-import user from "~/mixins/user.js";
-import group from "~/mixins/group.vue";
 export default {
   props: {
     page: {
       type: String,
       required: true
+    },
+    mode: {
+      type: String
+    },
+    borderNumber: {
+      type: Number
     }
   },
-  computed: {
-    borderNumber() {
-      if (this.$route.name.startsWith("demo")) {
-        return 2;
-      }
-      const gameLevel = this.group[`${this.page}_level`] ?? 1;
-      const userLevel = this.user[`${this.page}_level`] ?? 1;
-      return Math.max(gameLevel, userLevel) + 1;
-    }
-  },
-  mixins: [user, group],
   data() {
     return {
       height: 6,
@@ -71,6 +69,9 @@ export default {
     },
     isLocked(currentNumber, borderNumber) {
       return currentNumber < borderNumber ? "unlocked" : "locked";
+    },
+    changeLock(level) {
+      this.$emit("changeLock", level);
     }
   }
 };

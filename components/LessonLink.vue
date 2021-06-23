@@ -7,7 +7,7 @@
     />
     <label>
       <span class="lesson-link__label" v-if="label">{{ label }}</span>
-      <a class="lesson-link__href" href="#" target="_blank">
+      <a class="lesson-link__href" :href="link" target="_blank">
         {{ link }}
       </a>
     </label>

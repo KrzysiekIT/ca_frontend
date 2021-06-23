@@ -1,8 +1,8 @@
 <template>
   <div class="users" v-if="users">
-    Pokaż miesiące od
+    {{ $t("general.show_months") }} {{ $t("general.from") }}
     <input type="number" class="payments__input" v-model="monthInterval.from" />
-    do
+    {{ $t("general.to") }}
     <input type="number" v-model="monthInterval.to" class="payments__input" />
     <client-only>
       <data-table
@@ -95,42 +95,42 @@ export default {
       fields: [
         {
           name: "name",
-          label: "Imię",
+          label: this.$t("general.name"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: { field: ["name"] }
         },
         {
           name: "surname",
-          label: "Nazwisko",
+          label: this.$t("general.surname"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: { field: ["surname"] }
         },
         {
           name: "birthYear",
-          label: "Rok urodzenia",
+          label: this.$t("settings.birth_year"),
           filter: { active: false, value: "", selected: false },
           component: "no-editable",
           options: { field: ["birthYear"] }
         },
         {
           name: "parentFullName",
-          label: "Imię i nazwisko rodzica",
+          label: this.$t("general.parent_full_name"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: { field: ["parent", "fullName"] }
         },
         {
           name: "parentEmail",
-          label: "Adres e-mail rodzica",
+          label: this.$t("general.parent_email"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: { field: ["parent", "email"] }
         },
         {
           name: "parentPhoneNumber",
-          label: "Telefon rodzica",
+          label: this.$t("general.parent_phone"),
           filter: { active: false, value: "", selected: false },
           component: "no-editable",
           options: { field: ["parent", "phoneNumber"] }

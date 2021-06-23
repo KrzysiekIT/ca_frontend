@@ -4,7 +4,7 @@
       :baseTable="trainers"
       :models="models"
       :apiUrl="apiUrl"
-      label="Dodaj trenera"
+      :label="$t('general.add_trainer')"
     />
     <data-table
       :fields="fields"
@@ -67,35 +67,35 @@ export default {
       fields: [
         {
           name: "name",
-          label: "Imię",
+          label: this.$t('general.name'),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["name"] }
         },
         {
           name: "surname",
-          label: "Nazwisko",
+          label: this.$t('general.surname'),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["surname"] }
         },
         {
           name: "email",
-          label: "Adres e-mail",
+          label: this.$t('general.email_adress'),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["email"] }
         },
         {
           name: "phoneNumber",
-          label: "Numer telefonu",
+          label: this.$t('general.phone_number'),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["phoneNumber"] }
         },
         {
           name: "groupId",
-          label: "Grupa",
+          label: this.$t('general.group'),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -106,7 +106,7 @@ export default {
         },
         {
           name: "groupDay",
-          label: "Dzień zajęć",
+          label: this.$t('general.lesson_day'),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: {
@@ -115,7 +115,7 @@ export default {
         },
         {
           name: "groupHour",
-          label: "Godzina zajęć",
+          label: this.$t('general.lesson_hour'),
           filter: { active: true, value: "" },
           component: "no-editable",
           options: {

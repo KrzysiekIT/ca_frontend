@@ -6,7 +6,7 @@
     @focus="readonly = false"
     @blue="readonly = true"
     v-model="toSend.value"
-    placeholder="Wpisz dane"
+    :placeholder="$t('general.enter_data')"
   />
 </template>
 <script>

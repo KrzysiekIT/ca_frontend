@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-box">
-      Uczeń:
+      {{$t('general.student')}}:
       <div class="autocomplete-box">
         <autocomplete
           :items="students"

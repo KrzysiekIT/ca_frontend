@@ -4,7 +4,7 @@
       :baseTable="groups"
       :models="models"
       :apiUrl="apiUrl"
-      label="Dodaj grupę"
+      :label="$t('general.add_group')"
     />
     <data-table
       :fields="fields"
@@ -68,14 +68,14 @@ export default {
       fields: [
         {
           name: "name",
-          label: "Nazwa grupy",
+          label: this.$t("general.group_name"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["label"] }
         },
         {
           name: "level",
-          label: "Rodzaj",
+          label: this.$t("general.kind"),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -86,7 +86,7 @@ export default {
         },
         {
           name: "trainer",
-          label: "Trener",
+          label: this.$t("general.trainer"),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -96,7 +96,7 @@ export default {
         },
         {
           name: "lessonDay",
-          label: "Dzień",
+          label: this.$t("general.lesson_day"),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -106,7 +106,7 @@ export default {
         },
         {
           name: "lessonHour",
-          label: "Godzina",
+          label: this.$t("general.lesson_hour"),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -125,7 +125,7 @@ export default {
         },
         {
           name: "lessonTool",
-          label: "Tool",
+          label: this.$t("general.tool"),
           filter: { active: false, value: "", selected: false },
           component: "editable",
           options: {
@@ -134,7 +134,7 @@ export default {
         },
         {
           name: "removeUser",
-          label: "Usuń",
+          label: this.$t("general.remove"),
           filter: { active: false, value: "" },
           component: "action-button",
           options: {

@@ -26,27 +26,52 @@
             />
             <figcaption class="user--label">
               <strong>Admin</strong>
+              <fa
+                class="logout"
+                icon="sign-out-alt"
+                title="Wyloguj"
+                @click="logOut"
+              />
             </figcaption>
           </figure>
           <ul class="lang--list">
             <li class="lang--list-item">
-              <a href="#" title="Zmień język">
+              <button
+                class="lang__button"
+                @click="$i18n.setLocale(locale.code)"
+                v-for="locale in availableLocales"
+                :key="locale.code"
+                :title="$t('general.change_language')"
+              >
                 <img
                   src="~/assets/images/flag_usa.svg"
                   alt="USA flag"
                   class="lang--image"
+                  v-if="locale.code === 'pl'"
                 />
-              </a>
+                <img
+                  src="~/assets/images/flag_poland.svg"
+                  alt="Poland flag"
+                  class="lang--image"
+                  v-if="locale.code === 'en'"
+                />
+              </button>
             </li>
           </ul>
           <div class="spacer"></div>
         </div>
-        <ul class="user--list">
+                <ul class="user--list">
           <li class="user--list-item">
-            <lesson-link label="Zajęcia" link="link.do.zajec.pl"></lesson-link>
+            <lesson-link
+              :label="$t('general.lessons')"
+              :link="group.lesson_link"
+            ></lesson-link>
           </li>
           <li class="user--list-item">
-            <lesson-link label="Odrabianie zajęć" link="link.do.zajec.pl"></lesson-link>
+            <lesson-link
+              :label="$t('general.lessons_reschedule')"
+              link="link.do.zajec.pl"
+            ></lesson-link>
           </li>
         </ul>
       </section>
@@ -59,20 +84,27 @@
   </div>
 </template>
 <script>
+import group from "~/mixins/group.vue";
 export default {
   middleware: "auth",
   meta: {
     auth: { authority: 7 }
   },
+  mixins: [group],
   layout: "default",
   computed: {
     user() {
       return (this.$store.state.auth || {}).user || null;
+    },
+    availableLocales() {
+      return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale);
     }
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/reset").then(() => {
+        this.$store.commit("group/reset");
+        this.$store.commit("movies/reset");
         this.$router.push("/");
       });
     },
@@ -142,6 +174,23 @@ $headerEndWidth: 10rem;
 .lang--image {
   height: 1.5rem;
 }
+.lang__button {
+  background-color: transparent;
+  border-radius: 50%;
+  padding: 0;
+  border: none;
+  transition: all 0.5s;
+}
+.lang__button:hover {
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem rgba(transparent, 1);
+  transform: translateY(-4px);
+}
+.lang__button:active {
+  cursor: pointer;
+  box-shadow: 0 1rem 2rem rgba(transparent, 1);
+  transform: translateY(-2px);
+}
 .spacer {
   width: 12rem;
 }
@@ -159,7 +208,11 @@ $headerEndWidth: 10rem;
     min-width: 100%;
   }
 }
-  /* .main {
+.logout {
+  transform: translateX(2rem);
+  cursor: pointer;
+}
+/* .main {
   min-width: calc(100% - #{$navMenuWidth});
   overflow: auto;
   padding: 0.5rem;

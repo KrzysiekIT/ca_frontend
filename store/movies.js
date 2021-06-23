@@ -13,5 +13,8 @@ export const mutations = {
   },
   removeAt(state, index) {
     state.movies.splice(index, 1);
+  },
+  reset(state) {
+    state.downloaded = false;
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <section class="demo">
-      <header class="demo__header">GRUPY</header>
+      <header class="demo__header">{{ $t("general.groups") }}</header>
       <div class="demo__tables">
         <div class="demo__table-box">
           <!-- <table class="lessons__table">
@@ -83,7 +83,9 @@
                     @click="addLesson"
                   >
                     <fa icon="plus-circle" class="demo__fa-icon" />
-                    <span class="add-text">Dodaj lekcję demo</span>
+                    <span class="add-text">{{
+                      $t("general.add_demo_lesson")
+                    }}</span>
                   </button>
                 </td>
               </tr>
@@ -104,12 +106,12 @@
                     title="Generuj link"
                     @click="generateLink(demoLesson)"
                   >
-                    GENERUJ
+                    {{ $t("general.generate") }}
                   </button>
                   <a
                     class="demo__button-img"
-                    title="Uruchom tablicę trenera"
-                    :href="`demo/${demoLesson.link}`"
+                    :title="$t('general.show_trainer_board')"
+                    :href="`lessons/board?id=${demoLesson.link}`"
                   >
                     <img
                       src="~/assets/images/play.svg"
@@ -117,7 +119,11 @@
                       height="24"
                     />
                   </a>
-                  <button class="demo__button-img" title="Usuń lekcję" @click="removeDemo(demoLesson.id)">
+                  <button
+                    class="demo__button-img"
+                    title="Usuń lekcję"
+                    @click="removeDemo(demoLesson.id)"
+                  >
                     <img
                       src="~/assets/images/stop.svg"
                       alt="Stop"
@@ -129,7 +135,9 @@
             </tbody>
           </table>
           <ol class="demo__list">
-            <span class="demo__list-label">Wygenerowane linki</span>
+            <span class="demo__list-label">{{
+              $t("general.generated_links")
+            }}</span>
             <li
               class="demo__item"
               v-for="demoLesson in generatedLinks"
@@ -232,9 +240,9 @@ export default {
       trainers: [],
       columns: [
         { name: "lp", label: "Lp. " },
-        { name: "datetime", label: "Data i godz." },
-        { name: "trainer", label: "Imię i nazwisko trenera" },
-        { name: "studentNumber", label: "Liczba uczniów" }
+        { name: "datetime", label: this.$t("general.datetime") },
+        { name: "trainer", label: this.$t("general.trainer_full_name") },
+        { name: "studentNumber", label: this.$t("general.number_of_students") }
       ]
     };
   },

@@ -35,16 +35,13 @@ export default {
         setTimeout(() => {
           this.countDown--;
         }, 1000);
-        const soundEnabled = this.options.settings.sound;
-        if (soundEnabled) {
-          let audio;
-          if (this.countDown) {
-            audio = new Audio(require("@/assets/sounds/beep_short.mp3"));
-          } else {
-            audio = new Audio(require("@/assets/sounds/beep_long.mp3"));
-          }
-          audio.play();
+        let audio;
+        if (this.countDown) {
+          audio = new Audio(require("@/assets/sounds/beep_short.mp3"));
+        } else {
+          audio = new Audio(require("@/assets/sounds/beep_long.mp3"));
         }
+        audio.play();
         return this.countDown ? this.countDown : "GO";
       } else {
         this.$emit("changeState", {

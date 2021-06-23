@@ -53,6 +53,7 @@ export default {
         "faUsersSlash",
         "faChalkboardTeacher",
         "faPlusCircle",
+        "faSignOutAlt"
       ]
     }
   },

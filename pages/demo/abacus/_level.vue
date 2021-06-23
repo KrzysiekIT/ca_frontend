@@ -6,7 +6,7 @@
         <score-box
           :presences="{ present: $route.params['level'], total: 48 }"
         />
-        <mark class="abacus__note">{{ $t("general.note") }}</mark>
+        <mark class="abacus__note">{{ note }}</mark>
       </div>
       <div class="abacus__header--sub">
         <span class="abacus__title">{{ getTitle() }}</span>
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       allSamples: [],
-      results: []
+      results: [],
+      note: this.$t("general.note")
     };
   },
   methods: {

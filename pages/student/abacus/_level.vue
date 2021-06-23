@@ -2,11 +2,11 @@
   <div class="abacus">
     <header class="abacus__header">
       <div class="abacus__header--main">
-        <span class="abacus__label">{{$t('general.lesson')}}</span>
+        <span class="abacus__label">{{ $t("general.lesson") }}</span>
         <score-box
           :presences="{ present: $route.params['level'], total: 48 }"
         />
-        <mark class="abacus__note">{{$t('general.note')}}</mark>
+        <mark class="abacus__note">{{ note }}</mark>
       </div>
       <div class="abacus__header--sub">
         <span class="abacus__title">{{ getTitle() }}</span>
@@ -45,6 +45,11 @@ export default {
       samples: 30
     });
     if (process.client) {
+      this.socket.on("game", (message, cb) => {
+        if (message.studentId === this.user.id && message.action === "note") {
+          this.note = message.note;
+        }
+      });
       this.sendResult("game", {
         studentId: this.user.id,
         game: "abacus",
@@ -56,7 +61,8 @@ export default {
   data() {
     return {
       allSamples: [],
-      results: []
+      results: [],
+      note: this.$t("general.note")
     };
   },
   methods: {

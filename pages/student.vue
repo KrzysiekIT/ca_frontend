@@ -29,6 +29,7 @@
             <figcaption class="user--label">
               {{ $t("general.student") }}
               <strong>{{ `${user.name} ${user.surname}` }}</strong>
+              <fa class="logout" icon="sign-out-alt" title="Wyloguj" @click="logOut" />
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -122,6 +123,8 @@ export default {
     },
     logOut() {
       this.$store.dispatch("auth/reset").then(() => {
+        this.$store.commit("group/reset");
+        this.$store.commit("movies/reset");
         this.$router.push("/");
       });
     }
@@ -220,5 +223,9 @@ $headerEndWidth: 10rem;
   .main {
     min-width: 100%;
   }
+}
+.logout {
+  transform: translateX(2rem);
+  cursor: pointer;
 }
 </style>

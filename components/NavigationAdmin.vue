@@ -33,40 +33,40 @@ export default {
     return {
       navigation: [
         {
-          label: "Uczniowie",
+          label: this.$t('general.students'),
           link: "users/",
           img: { file: "users.svg", alt: "users icon white" },
           sub: []
         },
         {
-          label: "Trenerzy",
+          label: this.$t("general.trainers"),
           link: "trainers/",
           img: { file: "trainers.svg", alt: "trainers icon white" },
           sub: []
         },
         {
-          label: "Zajęcia",
+          label: this.$t("general.lessons"),
           link: "lessons/",
           img: { file: "lessons.svg", alt: "lessons icon white" },
           sub: [
-            { label: "Zajęcia demo", link: "demo/" },
-            { label: "Grafiki", link: "schedule/" }
+            { label: this.$t("general.demo_classes"), link: "demo/" },
+            { label: this.$t("general.schedules"), link: "schedule/" }
           ]
         },
         {
-          label: "Obecności",
+          label: this.$t("general.presences"),
           link: "presences/",
           img: { file: "presences.svg", alt: "presences icon white" },
           sub: []
         },
         {
-          label: "Rozliczenia",
+          label: this.$t('general.payments'),
           link: "payments/",
           img: { file: "payments.svg", alt: "payments icon white" },
           sub: []
         },
         {
-          label: "Materiały szkoleniowe",
+          label: this.$t('general.teaching_materials'),
           link: "teaching-materials/",
           img: {
             file: "teaching_materials.svg",
