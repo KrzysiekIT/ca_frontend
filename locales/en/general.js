@@ -2,6 +2,7 @@ module.exports = {
   welcome: "Welcome to the Champions Academy",
   student: "Student",
   students: "Students",
+  users: "Users",
   change_language: "Change language",
   lessons: "Lessons",
   lessons_reschedule: "Rescheduled lessons",
@@ -92,5 +93,6 @@ module.exports = {
   tool: "Tool",
   show_months: "Show months",
   from: "from",
-  to: "to"
+  to: "to",
+  demo: "Demo classes"
 };

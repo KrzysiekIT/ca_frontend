@@ -7,7 +7,7 @@
           <li>
             <nuxt-link
               class="navigation__link"
-              :to="{ path: localePath('/demo/abacus'), query: $route.query}"
+              :to="{ path: localePath('/demo/abacus'), query: $route.query }"
             >
               <img
                 src="~/assets/images/abacus.png"
@@ -37,6 +37,7 @@
               src="~/assets/images/supermind.png"
               alt="Supermind icon"
               height="32"
+              class="navigation__image"
             />
             {{ $t("general.supermind") }}
           </li>
@@ -45,13 +46,17 @@
               src="~/assets/images/supermemory.png"
               alt="Supermemory icon"
               height="32"
+              class="navigation__image"
             />
             {{ $t("general.supermemory") }}
           </li>
           <li>
             <nuxt-link
               class="navigation__link"
-              :to="{ path: localePath('/demo/fast-reading'), query: $route.query}"
+              :to="{
+                path: localePath('/demo/fast-reading'),
+                query: $route.query
+              }"
             >
               <img
                 src="~/assets/images/fast_reading.png"

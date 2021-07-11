@@ -17,6 +17,7 @@
     <button type="submit" class="button button--right button--spacious">
       Login
     </button>
+    <span class="login__info login__info--bad" v-if="alert">Niepoprawne dane</span>
     <nuxt-link class="login--link" to="login/reset">Zapomniałeś hasła?</nuxt-link>
   </form>
 </template>
@@ -94,5 +95,13 @@ export default {
 input:focus {
   box-shadow: 0 0 0 0.125rem #d48a0b;
   outline: none;
+}
+.login__info {
+  display: block;
+  margin: 1rem 0;
+  font-size: 1.25rem;
+}
+.login__info--bad {
+  color: $red;
 }
 </style>

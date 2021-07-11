@@ -10,6 +10,7 @@
             :src="require(`~/assets/images/${img.file}`)"
             :alt="img.alt"
             height="32"
+            class="navigation__image"
           />
           {{ label }}
         </nuxt-link>
@@ -33,7 +34,7 @@ export default {
     return {
       navigation: [
         {
-          label: this.$t('general.students'),
+          label: this.$t("general.students"),
           link: "users/",
           img: { file: "users.svg", alt: "users icon white" },
           sub: []
@@ -50,7 +51,7 @@ export default {
           img: { file: "lessons.svg", alt: "lessons icon white" },
           sub: [
             { label: this.$t("general.demo_classes"), link: "demo/" },
-            { label: this.$t("general.schedules"), link: "schedule/" }
+            { label: this.$t("general.schedules"), link: "schedules/" }
           ]
         },
         {
@@ -60,13 +61,13 @@ export default {
           sub: []
         },
         {
-          label: this.$t('general.payments'),
+          label: this.$t("general.payments"),
           link: "payments/",
           img: { file: "payments.svg", alt: "payments icon white" },
           sub: []
         },
         {
-          label: this.$t('general.teaching_materials'),
+          label: this.$t("general.teaching_materials"),
           link: "teaching-materials/",
           img: {
             file: "teaching_materials.svg",
@@ -104,5 +105,8 @@ export default {
 }
 .navigation__link:hover {
   transform: scale(1.1);
+}
+.navigation__image {
+  margin-right: 0.5rem;
 }
 </style>

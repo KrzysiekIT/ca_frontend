@@ -2,11 +2,13 @@
   <nav class="navigation">
     <ul class="navigation__first-ul">
       <li>
-        <nuxt-link
-          class="navigation__link"
-          :to="localePath('/student')"
-        >
-          <img src="~/assets/images/home.svg" alt="Home icon" height="28" />
+        <nuxt-link class="navigation__link" :to="localePath('/student')">
+          <img
+            src="~/assets/images/home.svg"
+            alt="Home icon"
+            height="28"
+            class="navigation__image"
+          />
           {{ $t("general.main_page") }}
         </nuxt-link>
         <ul>

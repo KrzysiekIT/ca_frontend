@@ -60,7 +60,7 @@
           </ul>
           <div class="spacer"></div>
         </div>
-                <ul class="user--list">
+        <ul class="user--list">
           <li class="user--list-item">
             <lesson-link
               :label="$t('general.lessons')"
@@ -75,6 +75,9 @@
           </li>
         </ul>
       </section>
+    </header>
+    <header class="page--middle-header">
+      {{ $t(`general.${currentRouteName}`) }}
     </header>
     <div class="page--middle">
       <main class="main">
@@ -98,6 +101,11 @@ export default {
     },
     availableLocales() {
       return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale);
+    },
+    currentRouteName() {
+      const splittedRouteName = this.$route.name.split("-");
+      splittedRouteName.shift()
+      return splittedRouteName.join("_");
     }
   },
   methods: {
@@ -196,6 +204,7 @@ $headerEndWidth: 10rem;
 }
 .page--middle {
   display: flex;
+  flex-direction: column;
 }
 .main {
   /* background-color: #fff; */
@@ -211,6 +220,11 @@ $headerEndWidth: 10rem;
 .logout {
   transform: translateX(2rem);
   cursor: pointer;
+}
+.page--middle-header {
+  padding-left: 2rem;
+  padding-top: 1rem;
+  display: flex;
 }
 /* .main {
   min-width: calc(100% - #{$navMenuWidth});

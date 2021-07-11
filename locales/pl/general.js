@@ -2,6 +2,7 @@ module.exports = {
   welcome: "Witaj w akademii mistrzów",
   student: "Uczeń",
   students: "Uczniowe",
+  users: "Uczniowe",
   change_language: "Zmień język",
   lessons: "Zajęcia",
   lessons_reschedule: "Odrabianie zajęć",
@@ -94,5 +95,6 @@ module.exports = {
   tool: "Narzędzie",
   show_months: "Pokaż miesiące",
   from: "od",
-  to: "do"
+  to: "do",
+  demo: "Lekcje demo"
 };
