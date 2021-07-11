@@ -1,5 +1,6 @@
 <template>
   <div class="users" v-if="users">
+    {{ new Date().toISOString() }}
     <div class="users_buttons">
       <data-header
         :baseTable="users"
@@ -34,6 +35,17 @@ export default {
       });
       this.refresh = !this.refresh;
     }
+  },
+  created() {
+    const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    const localISOTime = new Date(Date.now() - tzoffset)
+      .toISOString()
+      .slice(0, -1);
+    this.models.frontend.startAt = localISOTime;
+    this.models.backend.start_at = new Date(Date.now() - tzoffset)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
   },
   data() {
     return {
@@ -81,7 +93,8 @@ export default {
           linkSent: 1
         },
         backend: {
-          role_id: 4
+          role_id: 4,
+          start_at: "2017-12-01 20:00:00"
         }
       },
       fields: [
