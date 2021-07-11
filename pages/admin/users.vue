@@ -1,21 +1,40 @@
 <template>
   <div class="users" v-if="users">
-    <data-header
-      :baseTable="users"
-      :models="models"
-      :apiUrl="apiUrl"
-      :label="$t('general.add_student')"
-    />
+    <div class="users_buttons">
+      <data-header
+        :baseTable="users"
+        :models="models"
+        :apiUrl="apiUrl"
+        :label="$t('general.add_student')"
+      />
+      <button
+        @click="resetFilters"
+        class="users__button-clear button-clear button-clear--default"
+      >
+        {{ $t("general.reset_filters") }}
+      </button>
+    </div>
     <data-table
       :fields="fields"
       :selectOptions="selectOptions"
       :data="users"
       :apiUrl="apiUrl"
+      :refresh="refresh"
     />
   </div>
 </template>
 <script>
 export default {
+  methods: {
+    resetFilters() {
+      this.fields.forEach(({ filter }) => {
+        if (filter.active) {
+          filter.value = "";
+        }
+      });
+      this.refresh = !this.refresh;
+    }
+  },
   data() {
     return {
       apiUrl: "students",
@@ -37,6 +56,7 @@ export default {
           { value: 7, label: "niedziela" }
         ]
       },
+      refresh: false,
       models: {
         frontend: {
           id: 0,
@@ -129,7 +149,7 @@ export default {
         },
         {
           name: "groupDay",
-          label: this.$t('general.lesson_day'),
+          label: this.$t("general.lesson_day"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: {
@@ -138,7 +158,7 @@ export default {
         },
         {
           name: "groupHour",
-          label: this.$t('general.lesson_hour'),
+          label: this.$t("general.lesson_hour"),
           filter: { active: true, value: "" },
           component: "no-editable",
           options: {
@@ -147,21 +167,21 @@ export default {
         },
         {
           name: "presences",
-          label: this.$t('general.presences'),
+          label: this.$t("general.presences"),
           filter: { active: false, value: "", selected: false },
           component: "link-button",
           options: { to: "presences/", field: ["id"] }
         },
         {
           name: "payments",
-          label: this.$t('general.payments'),
+          label: this.$t("general.payments"),
           filter: { active: false, value: "", selected: false },
           component: "link-button",
           options: { to: "payments/", field: ["id"] }
         },
         {
           name: "status",
-          label: this.$t('general.student_status'),
+          label: this.$t("general.student_status"),
           filter: { active: false, value: "", selected: false },
           component: "select-option",
           options: {
@@ -171,7 +191,7 @@ export default {
         },
         {
           name: "date",
-          label: this.$t('general.start_date'),
+          label: this.$t("general.start_date"),
           filter: { active: false, value: "", selected: false },
           component: "calendar-picker",
           options: {
@@ -180,7 +200,7 @@ export default {
         },
         {
           name: "linkSent",
-          label: this.$t('general.link_sent'),
+          label: this.$t("general.link_sent"),
           filter: { active: false, value: "" },
           component: "action-button",
           options: {
@@ -210,7 +230,7 @@ export default {
             },
             newValue: 1
           }
-        },
+        }
         /* {
           name: "linkSent",
           label: this.$t('general.remove'),
@@ -323,4 +343,33 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.users_buttons {
+  display: flex;
+  align-items: center;
+}
+.users__button-clear {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.button-clear {
+  border: none;
+  border-radius: $appRadius;
+  color: $white;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  min-width: 8rem;
+  outline: none;
+  padding: 0.625rem;
+}
+.button-clear:active {
+  transform: scale(0.95);
+}
+.button-clear--default {
+  background-color: $red;
+}
+.button-clear--default:hover {
+  background-color: darken($red, 15%);
+}
+</style>

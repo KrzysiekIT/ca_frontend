@@ -65,6 +65,7 @@ module.exports = {
   introductory_classes: "Introductory classes",
   demo_classes: "Demo classes",
   add_student: "Add student",
+  reset_filters: "Reset filters",
   name: "Name",
   surname: "Surname",
   parent_full_name: "Parent full name",

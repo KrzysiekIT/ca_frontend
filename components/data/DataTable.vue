@@ -17,6 +17,7 @@
           class="data__table-th"
         >
           <autocomplete
+            :key="refresh + index"
             :items="
               component === 'select-option'
                 ? selectOptions[options.options]
@@ -81,6 +82,9 @@ export default {
     apiUrl: {
       type: String,
       required: true
+    },
+    refresh: {
+      type: Boolean
     }
   },
   components: {

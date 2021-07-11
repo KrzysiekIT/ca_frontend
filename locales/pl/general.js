@@ -67,6 +67,7 @@ module.exports = {
   introductory_classes: "Zajęcia wstępne",
   demo_classes: "Zajęcia demo",
   add_student: "Dodaj ucznia",
+  reset_filters: "Resetuj filtry",
   name: "Imię",
   surname: "Nazwisko",
   parent_full_name: "Imię i nazwisko rodzica",
