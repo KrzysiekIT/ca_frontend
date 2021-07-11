@@ -75,7 +75,7 @@
 <style lang="scss" scoped>
 .navigation {
   padding: 2rem 2rem 2rem 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   min-height: calc(100vh - 10rem);
   min-width: $navMenuWidth;
 }
@@ -100,5 +100,6 @@
 }
 .navigation__image {
   margin-right: 0.5rem;
+  transform: scale(1.3);
 }
 </style>
