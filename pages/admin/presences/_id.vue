@@ -1,15 +1,17 @@
 <template>
   <div>
     <div class="search-box">
-      {{$t('general.student')}}:
-      <div class="autocomplete-box">
+      {{ $t("general.student") }}: 
+      <div class="autocomplete-box" v-if="!currentId">
         <autocomplete
           :items="students"
           type="multiple"
           @set="getAttendances($event)"
         />
       </div>
+      <div v-else>{{ currentStudent && currentStudent.name }} {{ currentStudent && currentStudent.surname }}</div>
     </div>
+    <div></div>
     <div class="account__box">
       <section class="account__box--inner year">
         <ul class="year__ul">
@@ -45,6 +47,24 @@ export default {
       return { ...student, label: `${student.name} ${student.surname}` };
     });
   },
+  async created() {
+    this.currentId = this.$route.params.id;
+    if (this.currentId) {
+      this.getAttendances({ id: this.currentId });
+      const students = await this.$store.dispatch("auth/request", {
+        method: "get",
+        url: "students"
+      });
+      this.$store
+        .dispatch("auth/request", {
+          method: "get",
+          url: `students/${this.currentId}`
+        })
+        .then(res => {
+          this.currentStudent = res.data[0];
+        });
+    }
+  },
   computed: {
     numberOfPresences() {
       return this.attendance.filter(presence => presence.status === 2).length;
@@ -53,7 +73,9 @@ export default {
   data() {
     return {
       attendance: [],
-      students: []
+      students: [],
+      currentId: null,
+      currentStudent: null
     };
   },
   methods: {

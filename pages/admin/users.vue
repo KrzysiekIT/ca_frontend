@@ -1,6 +1,5 @@
 <template>
   <div class="users" v-if="users">
-    {{ new Date().toISOString() }}
     <div class="users_buttons">
       <data-header
         :baseTable="users"
