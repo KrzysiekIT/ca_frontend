@@ -190,7 +190,7 @@ export default {
       }
     );
 
-    const frontendStudents = backendStudents.map(
+    let frontendStudents = backendStudents.map(
       ({
         id,
         name,
@@ -230,6 +230,10 @@ export default {
       frontendStudents[studentIndex][`m${payment.order_number}`] =
         payment.amount;
     });
+
+    if (this.$route.params.id) {
+      frontendStudents = frontendStudents.filter((user) => user.id === + this.$route.params.id);
+    }
 
     this.users = frontendStudents;
   }
