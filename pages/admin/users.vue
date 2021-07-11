@@ -211,7 +211,7 @@ export default {
             newValue: 1
           }
         },
-        {
+        /* {
           name: "linkSent",
           label: this.$t('general.remove'),
           filter: { active: false, value: "" },
@@ -244,7 +244,7 @@ export default {
             },
             newValue: null
           }
-        }
+        } */
       ],
       users: null
     };
