@@ -1,15 +1,18 @@
 <template>
-  <form @submit.prevent="submit" class="login--form">
-    <h2 class="u-margin-small">Reset hasła</h2>
-    <label class="login--label">
-      <span class="login--label__input">Adres email</span>
-      <input label="Email" v-model="email" class="login--input" />
-    </label>
-    <p class="reset__message" v-if="alert">{{ alert.message }}</p>
-    <button type="submit" class="login--button">
-      Wyślij link resetujący
-    </button>
-  </form>
+  <div>
+    <form @submit.prevent="submit" class="login--form">
+      <h2 class="u-margin-small">Reset hasła</h2>
+      <label class="login--label">
+        <span class="login--label__input">Adres email</span>
+        <input label="Email" v-model="email" class="login--input" />
+      </label>
+      <p class="reset__message" v-if="alert">{{ alert.message }}</p>
+      <button type="submit" class="login--button">
+        Wyślij link resetujący
+      </button>
+    </form>
+    <nuxt-link class="login__back" to="/login">Powrót</nuxt-link>
+  </div>
 </template>
 <script>
 export default {
@@ -99,5 +102,9 @@ input:focus {
   text-align: right;
   margin-top: 1rem;
   color: $resultCorrect;
+}
+.login__back {
+  text-decoration: none;
+  color: #4472c4;
 }
 </style>

@@ -95,5 +95,6 @@ module.exports = {
   show_months: "Show months",
   from: "from",
   to: "to",
-  demo: "Demo classes"
+  demo: "Demo classes",
+  back: "Back"
 };

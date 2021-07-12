@@ -97,5 +97,6 @@ module.exports = {
   show_months: "Pokaż miesiące",
   from: "od",
   to: "do",
-  demo: "Lekcje demo"
+  demo: "Lekcje demo",
+  back: "Cofnij"
 };
