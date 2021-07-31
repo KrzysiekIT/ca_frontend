@@ -58,6 +58,8 @@ module.exports = {
   next: "Nastepne",
   back: "Wstecz",
   add_video: "Dodaj film",
+  add_folder: "Dodaj folder",
+  add_file: "Dodaj plik",
   url: "Url",
   title_polish: "Polski tytuł",
   title_english: "Angielski tytuł",
@@ -98,5 +100,8 @@ module.exports = {
   from: "od",
   to: "do",
   demo: "Lekcje demo",
-  back: "Cofnij"
+  back: "Cofnij",
+  label: "Nazwa",
+  file: "Plik",
+  new_filename: "Nowa nazwa pliku"
 };

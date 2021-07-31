@@ -57,6 +57,8 @@ module.exports = {
   next: "Next",
   back: "Back",
   add_video: "Add video",
+  add_folder: "Add folder",
+  add_file: "Add File",
   url: "Url",
   title_polish: "Polish title",
   title_english: "English title",
@@ -96,5 +98,8 @@ module.exports = {
   from: "from",
   to: "to",
   demo: "Demo classes",
-  back: "Back"
+  back: "Back",
+  label: "Name",
+  file: "File",
+  new_filename: "New filename"
 };

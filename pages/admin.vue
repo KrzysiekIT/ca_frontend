@@ -77,7 +77,7 @@
       </section>
     </header>
     <header class="page--middle-header">
-      {{ $t(`general.${currentRouteName}`) }}
+      {{ currentRouteName && $t(`general.${currentRouteName}`) }}
     </header>
     <div class="page--middle">
       <main class="main">
@@ -222,6 +222,7 @@ $headerEndWidth: 10rem;
   cursor: pointer;
 }
 .page--middle-header {
+  font-size: 2rem;
   padding-left: 2rem;
   padding-top: 1rem;
   display: flex;
