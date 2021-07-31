@@ -3,7 +3,9 @@
     <section class="tm">
       <div class="movies__button-box">
         <label class="login--label">
-          <span class="login--label__input">{{ $t("general.new_filename") }}:</span>
+          <span class="login--label__input"
+            >{{ $t("general.new_filename") }}:</span
+          >
           <input class="login--input" v-model="newFile.name" />
         </label>
         <label class="login--label">
@@ -15,11 +17,15 @@
           />
         </label>
         <label class="login--label">
-          <span class="login--label__input">{{ $t("general.title_polish") }}:</span>
+          <span class="login--label__input"
+            >{{ $t("general.title_polish") }}:</span
+          >
           <input class="login--input" v-model="newFile.description_pl" />
         </label>
         <label class="login--label">
-          <span class="login--label__input">{{ $t("general.title_english") }}:</span>
+          <span class="login--label__input"
+            >{{ $t("general.title_english") }}:</span
+          >
           <input class="login--input" v-model="newFile.description_en" />
         </label>
         <div class="movies__add-button-box">
@@ -30,10 +36,7 @@
       </div>
       <ul class="tm__files">
         <li class="tm__file" v-for="(file, index) in files" :key="file.id">
-          <a
-            class="link"
-            :href="`http://localhost:41205/file/${file.name}`"
-            target="_blank"
+          <a class="link" :href="`${apiUrl}/file/${file.name}`" target="_blank"
             >🔗 {{ file[`description_${$i18n.locale}`] }}</a
           ><fa
             class="tm__icon"
@@ -72,13 +75,14 @@ export default {
         name: "",
         file: null
       },
-      files: []
+      files: [],
+      apiUrl: process.env.API_URL
     };
   },
   methods: {
     handleFileChange(evt) {
       this.newFile.file = evt.target.files[0];
-      console.log(this.newFile.file)
+      console.log(this.newFile.file);
     },
     async addFile() {
       const bodyFormData = new FormData();

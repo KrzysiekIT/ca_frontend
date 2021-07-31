@@ -35,7 +35,7 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ["@nuxtjs/fontawesome"],
+  buildModules: ["@nuxtjs/fontawesome", "@nuxtjs/dotenv"],
   fontawesome: {
     component: "fa",
     icons: {
@@ -65,7 +65,7 @@ export default {
     sockets: [
       {
         name: "main",
-        url: "http://localhost:41206"
+        url: process.env.SOCKET_URL
       }
     ]
   },
