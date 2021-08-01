@@ -101,5 +101,7 @@ module.exports = {
   back: "Back",
   label: "Name",
   file: "File",
-  new_filename: "New filename"
+  new_filename: "New filename",
+  name_and_surname: "Name and surname",
+  type_of_group: "Type of group"
 };

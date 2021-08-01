@@ -2,6 +2,7 @@
   <table class="data__table" v-if="filtered">
     <thead>
       <tr>
+        <th class="data__table-th" v-if="showNumbers">Lp.</th>
         <th
           v-for="({ label }, index) in fields"
           :key="'th' + index"
@@ -11,6 +12,7 @@
         </th>
       </tr>
       <tr>
+        <th class="data__table-th" v-if="showNumbers"></th>
         <th
           v-for="({ filter, options, component }, index) in fields"
           :key="'filter' + index"
@@ -45,6 +47,7 @@
         class="data__table-row"
         :class="highlighted === dataIndex ? 'data__table-row--hightligted' : ''"
       >
+        <td class="data__table-td" v-if="showNumbers">{{ dataIndex + 1 }}</td>
         <td
           v-for="(row, rowIndex) in fields"
           :key="row.name + rowIndex"
@@ -67,6 +70,10 @@
 <script>
 export default {
   props: {
+    showNumbers: {
+      type: Boolean,
+      default: false
+    },
     fields: {
       type: Array,
       required: true
