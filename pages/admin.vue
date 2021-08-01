@@ -60,7 +60,7 @@
           </ul>
           <div class="spacer"></div>
         </div>
-        <ul class="user--list">
+        <!-- <ul class="user--list">
           <li class="user--list-item">
             <lesson-link
               :label="$t('general.lessons')"
@@ -73,7 +73,7 @@
               link="link.do.zajec.pl"
             ></lesson-link>
           </li>
-        </ul>
+        </ul> -->
       </section>
     </header>
     <header class="page--middle-header">

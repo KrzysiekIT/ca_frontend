@@ -103,5 +103,8 @@ module.exports = {
   file: "File",
   new_filename: "New filename",
   name_and_surname: "Name and surname",
-  type_of_group: "Type of group"
+  type_of_group: "Type of group",
+  oops: "Something went wrong",
+  activate_message: "An email with login details has been sent",
+  loading: "Loading…"
 };

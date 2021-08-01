@@ -324,6 +324,7 @@ export default {
       ({
         id,
         name,
+        email,
         surname,
         birth_year,
         parent_full_name,
@@ -338,6 +339,7 @@ export default {
           id: id,
           status: status ?? 0,
           startAt: start_at ?? "",
+          email: email ?? "",
           name: name ?? "",
           surname: surname ?? "",
           birthYear: birth_year ?? "",

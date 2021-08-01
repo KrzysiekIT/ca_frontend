@@ -54,7 +54,11 @@ export default {
       this.$emit("action", this.toSend);
     },
     async sendEmail() {
-      console.log("FAKE EMAIL SENT.");
+      console.log("FAKE EMAIL SENT.", this.info.id);
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: `activation-links/user/${this.info.id}`
+      });
     },
     async remove() {
       const userId = this.info.id;
@@ -74,6 +78,7 @@ export default {
   color: $white;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 .action__button--active:hover {
   cursor: pointer;

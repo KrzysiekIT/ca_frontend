@@ -105,5 +105,8 @@ module.exports = {
   file: "Plik",
   new_filename: "Nowa nazwa pliku",
   name_and_surname: "Imię i nazwisko",
-  type_of_group: "Rodzaj grupy"
+  type_of_group: "Rodzaj grupy",
+  oops: "Coś poszło nie tak",
+  activate_message: "Email z danymi do logowania został wysłany",
+  loading: "Ładowanie…"
 };
