@@ -57,7 +57,7 @@ export default {
       results: [],
       search: "",
       isLoading: false,
-      arrowCounter: 0
+      arrowCounter: -1
     };
   },
 
@@ -113,6 +113,10 @@ export default {
       }
     },
     onEnter() {
+      if (this.arrowCounter === -1) {
+        this.isOpen = false;
+        return;
+      }
       if (this.type === "multiple") {
         this.search = this.results[this.arrowCounter].label;
       } else {

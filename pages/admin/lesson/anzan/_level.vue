@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import socket from "~/mixins/sockets.js";
 import soroban from "~/mixins/soroban.js";
 import soroban_settings from "~/mixins/soroban_settings.js";
 export default {

@@ -75,6 +75,7 @@ export default {
           startAt: "2017-12-01T20:00:00.000Z",
           name: "",
           surname: "",
+          status: 3,
           parent: {
             fullName: "",
             email: "",
@@ -93,6 +94,7 @@ export default {
         },
         backend: {
           role_id: 4,
+          status: 3,
           start_at: "2017-12-01 20:00:00"
         }
       },

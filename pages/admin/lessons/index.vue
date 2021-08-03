@@ -1,7 +1,64 @@
 <template>
   <client-only>
     <section class="lessons">
-      <header class="lessons__header">{{$t('general.groups')}}</header>
+      <ul class="activities">
+        <li class="activities__item">
+          <nuxt-link
+            class="activities__link"
+            :to="localePath('/admin/lesson/abacus')"
+          >
+            <img
+              src="~/assets/images/abacus.png"
+              alt="Abacus icon"
+              class="activities__image"
+            />
+          </nuxt-link>
+        </li>
+        <li class="activities__item">
+          <nuxt-link
+            class="activities__link"
+            :to="localePath('/admin/lesson/anzan')"
+          >
+            <img
+              src="~/assets/images/anzan.png"
+              alt="Anzan icon"
+              class="activities__image"
+            />
+          </nuxt-link>
+        </li>
+        <li class="activities__item">
+          <img
+            src="~/assets/images/supermemory.png"
+            alt="Supermemory icon"
+              class="activities__image"
+          />
+        </li>
+        <li class="activities__item">
+          <nuxt-link
+            class="activities__link"
+            :to="localePath('/admin/lesson/fast-reading')"
+          >
+            <img
+              src="~/assets/images/fast_reading.png"
+              alt="Abacus icon"
+              class="activities__image"
+            />
+          </nuxt-link>
+        </li>
+        <li class="activities__item">
+          <nuxt-link
+            class="activities__link"
+            :to="localePath('/admin/lesson/movies')"
+          >
+            <img
+              src="~/assets/images/movies.png"
+              alt="Movies icon"
+              class="activities__image"
+            />
+          </nuxt-link>
+        </li>
+      </ul>
+      <header class="lessons__header">{{ $t("general.groups") }}</header>
       <div class="lessons__tables">
         <div class="lessons__table-box" v-for="group in groups" :key="group.id">
           <table class="lessons__table">
@@ -32,7 +89,11 @@
                     :label="$t('general.lessons')"
                     :link="group.lesson_link"
                   ></lesson-link>
-                  <div>{{$t('general.lesson_day')}}<br />{{ getLastLessonDate(group.id) }}</div>
+                  <div>
+                    {{ $t("general.lesson_day") }}<br />{{
+                      getLastLessonDate(group.id)
+                    }}
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -239,16 +300,24 @@ export default {
       days,
       columns: [
         { type: "simple-text", options: { label: "Lp." }, field: "index" },
-        { type: "simple-text", options: { label: this.$t('general.student') }, field: "fullName" },
+        {
+          type: "simple-text",
+          options: { label: this.$t("general.student") },
+          field: "fullName"
+        },
         { type: "present", field: "present" },
         { type: "excused", field: "excused" },
         { type: "absent", field: "absent" },
         {
           type: "simple-text",
-          options: { label: this.$t('general.phone_number') },
+          options: { label: this.$t("general.phone_number") },
           field: "phoneNumber"
         },
-        { type: "simple-text", options: { label: this.$t('general.email_adress') }, field: "email" }
+        {
+          type: "simple-text",
+          options: { label: this.$t("general.email_adress") },
+          field: "email"
+        }
       ],
       groups: [],
       lastLessons: [],
@@ -310,6 +379,23 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.activities {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  
+  &__item {
+    padding: 0;
+    margin: 0;
+  }
+
+  &__image {
+    height: 3.2rem;
+  }
+}
 .lessons__table-box {
   margin-bottom: 5rem;
 }

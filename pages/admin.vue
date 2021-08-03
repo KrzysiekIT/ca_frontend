@@ -77,7 +77,7 @@
       </section>
     </header>
     <header class="page--middle-header">
-      {{ currentRouteName && $t(`general.${currentRouteName}`) }}
+      {{ getRouteName(currentRouteName) }}
     </header>
     <div class="page--middle">
       <main class="main">
@@ -104,11 +104,23 @@ export default {
     },
     currentRouteName() {
       const splittedRouteName = this.$route.name.split("-");
-      splittedRouteName.shift()
+      splittedRouteName.shift();
       return splittedRouteName.join("_");
     }
   },
   methods: {
+    getRouteName(currentRouteName) {
+      if(currentRouteName==="presences_id") {
+        return this.$t(`general.presences`)
+      }
+      if(currentRouteName==="payments_id") {
+        return this.$t(`general.payments`)
+      }
+      if(currentRouteName.startsWith("teaching_materials")) {
+        return this.$t(`general.teaching_materials`)
+      }
+      return currentRouteName && this.$t(`general.${currentRouteName}`);
+    },
     logOut() {
       this.$store.dispatch("auth/reset").then(() => {
         this.$store.commit("group/reset");

@@ -108,5 +108,6 @@ module.exports = {
   type_of_group: "Rodzaj grupy",
   oops: "Coś poszło nie tak",
   activate_message: "Email z danymi do logowania został wysłany",
-  loading: "Ładowanie…"
+  loading: "Ładowanie…",
+  role: "Rola"
 };

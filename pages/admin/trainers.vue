@@ -35,6 +35,11 @@ export default {
           { value: 5, label: "piątek" },
           { value: 6, label: "sobota" },
           { value: 7, label: "niedziela" }
+        ],
+        roles: [
+          { value: 1, label: "superadmin" },
+          { value: 2, label: "admin" },
+          { value: 3, label: "trener" }
         ]
       },
       models: {
@@ -44,6 +49,7 @@ export default {
           startAt: "2017-12-01T20:00:00.000Z",
           name: "",
           surname: "",
+          roleId: 3,
           parent: {
             fullName: "",
             email: "",
@@ -67,35 +73,35 @@ export default {
       fields: [
         {
           name: "name",
-          label: this.$t('general.name'),
+          label: this.$t("general.name"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["name"] }
         },
         {
           name: "surname",
-          label: this.$t('general.surname'),
+          label: this.$t("general.surname"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["surname"] }
         },
         {
           name: "email",
-          label: this.$t('general.email_adress'),
+          label: this.$t("general.email_adress"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["email"] }
         },
         {
           name: "phoneNumber",
-          label: this.$t('general.phone_number'),
+          label: this.$t("general.phone_number"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["phoneNumber"] }
         },
         {
           name: "groupId",
-          label: this.$t('general.group'),
+          label: this.$t("general.group"),
           filter: { active: true, value: "", selected: false },
           component: "select-option",
           options: {
@@ -106,7 +112,7 @@ export default {
         },
         {
           name: "groupDay",
-          label: this.$t('general.lesson_day'),
+          label: this.$t("general.lesson_day"),
           filter: { active: true, value: "", selected: false },
           component: "no-editable",
           options: {
@@ -115,11 +121,22 @@ export default {
         },
         {
           name: "groupHour",
-          label: this.$t('general.lesson_hour'),
+          label: this.$t("general.lesson_hour"),
           filter: { active: true, value: "" },
           component: "no-editable",
           options: {
             field: ["group", "lessonHour"]
+          }
+        },
+
+        {
+          name: "role",
+          label: this.$t("general.role"),
+          filter: { active: true, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "roles",
+            field: ["roleId"]
           }
         }
       ],
@@ -179,7 +196,8 @@ export default {
         group_id,
         link_sent,
         email,
-        phone_number
+        phone_number,
+        role_id
       }) => {
         return {
           id: id,
@@ -196,7 +214,8 @@ export default {
           group: this.selectOptions.groups.find(({ id }) => id === group_id),
           linkSent: link_sent ?? "",
           email,
-          phoneNumber: phone_number
+          phoneNumber: phone_number,
+          roleId: role_id
         };
       }
     );
