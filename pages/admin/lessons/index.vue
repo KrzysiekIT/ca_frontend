@@ -30,7 +30,7 @@
           <img
             src="~/assets/images/supermemory.png"
             alt="Supermemory icon"
-              class="activities__image"
+            class="activities__image"
           />
         </li>
         <li class="activities__item">
@@ -59,6 +59,9 @@
         </li>
       </ul>
       <header class="lessons__header">{{ $t("general.groups") }}</header>
+      <p class="lessons__no-groups" v-if="noGroups">
+        {{ $t("general.no_groups") }}
+      </p>
       <div class="lessons__tables">
         <div class="lessons__table-box" v-for="group in groups" :key="group.id">
           <table class="lessons__table">
@@ -182,12 +185,18 @@ export default {
       url: urlToGroup
     });
     this.groups = myGroups.data;
-    const groupsIds = this.groups.map(group => group.id).join(",");
+    if (this.groups.length === 0) {
+      this.noGroups = true;
+    }
+    let groupsIds = this.groups.map(group => group.id).join(",");
+    if (groupsIds === "") {
+      groupsIds = "0";
+    }
     const lastLessons = await this.$store.dispatch("auth/request", {
       method: "get",
       url: `lessons/last/${groupsIds}`
     });
-    this.lastLessons = lastLessons.data.data;
+    this.lastLessons = lastLessons?.data?.data;
 
     const lessonsIds = this.lastLessons.map(lesson => lesson.id).join(",");
 
@@ -297,6 +306,7 @@ export default {
   },
   data() {
     return {
+      noGroups: false,
       days,
       columns: [
         { type: "simple-text", options: { label: "Lp." }, field: "index" },
@@ -386,7 +396,7 @@ export default {
   margin: 0;
   gap: 2rem;
   margin-bottom: 2rem;
-  
+
   &__item {
     padding: 0;
     margin: 0;
@@ -401,6 +411,11 @@ export default {
 }
 .lessons {
   padding: 2rem 4rem;
+
+  &__no-groups {
+    margin-top: 2rem;
+  }
+
   &__table-header {
     display: flex;
     justify-content: space-between;

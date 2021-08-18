@@ -1,17 +1,20 @@
 <template>
-  <div class="trainers" v-if="trainers">
-    <data-header
-      :baseTable="trainers"
-      :models="models"
-      :apiUrl="apiUrl"
-      :label="$t('general.add_trainer')"
-    />
-    <data-table
-      :fields="fields"
-      :selectOptions="selectOptions"
-      :data="trainers"
-      :apiUrl="apiUrl"
-    />
+  <div>
+    <div class="trainers" v-if="trainers">
+      <data-header
+        :baseTable="trainers"
+        :models="models"
+        :apiUrl="apiUrl"
+        :label="$t('general.add_trainer')"
+      />
+      <data-table
+        :fields="fields"
+        :selectOptions="selectOptions"
+        :data="trainers"
+        :apiUrl="apiUrl"
+      />
+    </div>
+    <div class="groups"><group-info /></div>
   </div>
 </template>
 <script>
@@ -99,36 +102,6 @@ export default {
           component: "editable",
           options: { field: ["phoneNumber"] }
         },
-        {
-          name: "groupId",
-          label: this.$t("general.group"),
-          filter: { active: true, value: "", selected: false },
-          component: "select-option",
-          options: {
-            options: "groups",
-            field: ["group", "id"],
-            base: "group"
-          }
-        },
-        {
-          name: "groupDay",
-          label: this.$t("general.lesson_day"),
-          filter: { active: true, value: "", selected: false },
-          component: "no-editable",
-          options: {
-            field: ["group", "lessonDay"]
-          }
-        },
-        {
-          name: "groupHour",
-          label: this.$t("general.lesson_hour"),
-          filter: { active: true, value: "" },
-          component: "no-editable",
-          options: {
-            field: ["group", "lessonHour"]
-          }
-        },
-
         {
           name: "role",
           label: this.$t("general.role"),
@@ -223,4 +196,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.groups {
+  margin-top: 5rem;
+}
+</style>

@@ -107,5 +107,6 @@ module.exports = {
   oops: "Something went wrong",
   activate_message: "An email with login details has been sent",
   loading: "Loading…",
-  role: "Role"
+  role: "Role",
+  no_groups: "No groups found for this user"
 };

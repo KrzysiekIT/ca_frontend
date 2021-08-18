@@ -1,5 +1,6 @@
 <template>
   <div>
+    <nuxt-link to="/admin/lessons" class="back"><fa icon="arrow-left" /></nuxt-link>
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
         <h2 class="games__student u-margin-small">
@@ -290,6 +291,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.back {
+  font-size: 4rem;
+  color: $green;
+}
 .games {
   display: flex;
   flex-wrap: wrap;
