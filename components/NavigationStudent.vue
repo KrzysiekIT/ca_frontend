@@ -59,21 +59,27 @@
               {{ $t("general.anzan") }}
             </nuxt-link>
           </li>
-          <li>
+          <!-- <li>
             <img
               src="~/assets/images/supermind.png"
               alt="Supermind icon"
               height="32"
             />
             {{ $t("general.supermind") }}
-          </li>
+          </li> -->
           <li>
-            <img
-              src="~/assets/images/supermemory.png"
-              alt="Supermemory icon"
-              height="32"
-            />
-            {{ $t("general.supermemory") }}
+            <nuxt-link
+              class="navigation__link"
+              :to="localePath('/student/supermemory')"
+            >
+              <img
+                src="~/assets/images/supermemory.png"
+                alt="Supermemory icon"
+                height="32"
+                class="navigation__image"
+              />
+              {{ $t("general.supermemory") }}
+            </nuxt-link>
           </li>
           <li>
             <nuxt-link

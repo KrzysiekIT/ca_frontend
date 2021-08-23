@@ -69,8 +69,8 @@ export default {
     return {
       payments: [],
       monthInterval: {
-        from: -1,
-        to: 1
+        from: 0,
+        to: 0
       },
       apiUrl: "students",
       selectOptions: {
