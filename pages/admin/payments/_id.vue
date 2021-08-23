@@ -16,6 +16,24 @@
 </template>
 <script>
 export default {
+  methods: {
+    padZeros(number, length) {
+      let my_string = "" + number;
+      while (my_string.length < length) {
+        my_string = "0" + my_string;
+      }
+      return my_string;
+    },
+    preparePaymentDate(startDate, paymentOrder) {
+      startDate = startDate.substring(0, 7);
+      const monthNumber = +startDate.substring(5, 8);
+      const yearNumber = +startDate.substring(0, 4);
+      const newMonthNumber = ((monthNumber + (paymentOrder - 1)) % 12) + 1;
+      const yearsToAdd = ~~((monthNumber + paymentOrder - 1) / 12);
+      const newYearNumber = yearNumber + yearsToAdd;
+      return `${newYearNumber}.${this.padZeros(newMonthNumber, 2)}`;
+    }
+  },
   computed: {
     fieldsWithMonths() {
       const toAdd = [];
@@ -25,13 +43,21 @@ export default {
           paymentsIndex < +this.monthInterval.to + 1;
           paymentsIndex++
         ) {
+          const todayDate = new Date();
+          const currentDate = new Date(
+            todayDate.setMonth(todayDate.getMonth() + paymentsIndex)
+          );
+          const monthToShow = currentDate.getMonth() + 1;
+          const yeatToShow = currentDate.getFullYear();
+          const dateToShow = `${yeatToShow}.${this.padZeros(monthToShow, 2)}`;
+          /* console.log(dateToShow); */
           const newField = {};
-          newField[`m${paymentsIndex}`] = "";
-          newField.name = `m${paymentsIndex}`;
-          newField.label = `m${paymentsIndex}`;
+          newField[dateToShow] = "";
+          newField.name = dateToShow;
+          newField.label = dateToShow;
           newField.filter = { active: false, value: "", selected: false };
           newField.component = "payment";
-          newField.options = { field: [`m${paymentsIndex}`] };
+          newField.options = { field: [dateToShow, "amount"] };
           toAdd.push(newField);
         }
       }
@@ -43,8 +69,8 @@ export default {
     return {
       payments: [],
       monthInterval: {
-        from: 1,
-        to: 4
+        from: -1,
+        to: 1
       },
       apiUrl: "students",
       selectOptions: {
@@ -136,14 +162,7 @@ export default {
           options: { field: ["parent", "phoneNumber"] }
         }
       ],
-      users: null,
-      monthlyPayments: (() => {
-        const payments = {};
-        for (let paymentsIndex = 1; paymentsIndex < 49; paymentsIndex++) {
-          payments[`m${paymentsIndex}`] = "";
-        }
-        return payments;
-      })()
+      users: null
     };
   },
   async fetch() {
@@ -217,8 +236,7 @@ export default {
             phoneNumber: parent_phone_number ?? ""
           },
           group: this.selectOptions.groups.find(({ id }) => id === group_id),
-          linkSent: link_sent ?? "",
-          m3: 100
+          linkSent: link_sent ?? ""
         };
       }
     );
@@ -227,12 +245,23 @@ export default {
 
     this.payments.forEach(payment => {
       const studentIndex = mappedFrontendStudents.indexOf(payment.user_id);
-      frontendStudents[studentIndex][`m${payment.order_number}`] =
-        payment.amount;
+      if (studentIndex === -1) {
+        return;
+      }
+      const newLabel = this.preparePaymentDate(
+        frontendStudents[studentIndex].startAt,
+        payment.order_number
+      );
+      frontendStudents[studentIndex][newLabel] = {
+        amount: payment.amount,
+        order: payment.order_number
+      };
     });
 
     if (this.$route.params.id) {
-      frontendStudents = frontendStudents.filter((user) => user.id === + this.$route.params.id);
+      frontendStudents = frontendStudents.filter(
+        user => user.id === +this.$route.params.id
+      );
     }
 
     this.users = frontendStudents;

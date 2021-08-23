@@ -57,9 +57,7 @@ export default {
             newValue.getTime() - newValue.getTimezoneOffset() * 60000
           ).toISOString();
 
-          const newDate = clearDate
-            .slice(0, 19)
-            .replace("T", " ");
+          const newDate = clearDate.slice(0, 19).replace("T", " ");
           this.toSend.date = newDate;
           this.toSend.value = oldValue;
         }
@@ -67,14 +65,34 @@ export default {
     }
   },
   methods: {
+    monthDiff(dateFrom, dateTo) {
+      return (
+        dateTo.getMonth() -
+        dateFrom.getMonth() +
+        12 * (dateTo.getFullYear() - dateFrom.getFullYear())
+      );
+    },
     saveChanges() {
-      const orderNumber = +this.options.field[0].substring(1);
+      const currentInfo = this.info[this.options.field[0]];
+      let orderNumber;
+      if (currentInfo) {
+        orderNumber = currentInfo.order;
+      } else {
+        let fieldDate = this.options.field[0];
+        fieldDate = new Date(
+          +fieldDate.substring(0, 4),
+          +fieldDate.substring(5, 7) - 1
+        );
+        const firstDate = new Date(this.info.startAt);
+        const newOrderNumber = this.monthDiff(firstDate, fieldDate);
+        console.log(firstDate, fieldDate, newOrderNumber);
+        orderNumber = newOrderNumber;
+      }
       const userId = this.info.id;
       const newValues = {
         createdAt: this.toSend.date,
         amount: +this.toSend.value
       };
-      console.log(orderNumber, userId, newValues);
 
       this.$store.dispatch("auth/request", {
         method: "patch",
