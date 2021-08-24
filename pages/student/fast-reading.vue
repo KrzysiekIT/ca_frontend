@@ -13,8 +13,9 @@
         :href="pdf.link"
         target="_blank"
         @click="sendMessage(index)"
-        >{{ pdf.title }}</a
       >
+        {{ pdf[`description_${$i18n.locale}`] }}
+      </a>
     </div>
   </div>
 </template>
@@ -23,74 +24,41 @@ import socket from "~/mixins/sockets.js";
 import user from "~/mixins/user.js";
 export default {
   mixins: [socket, user],
-  created() {
+  async created() {
     if (process.client) {
       this.sendResult("game", {
         studentId: this.user.id,
         game: "fast-reading",
         action: "lesson-choice"
       });
+      let filesResponse = await this.$store.dispatch("auth/request", {
+        method: "get",
+        url: `files/folder/4`
+      });
+      let files = filesResponse.data;
+      files = files.map(file => {
+        return {
+          id: file.id,
+          description_pl: file.description_pl,
+          description_en: file.description_en,
+          name: file.name,
+          link: this.getLinkToFile(file.name)
+        };
+      });
+      this.pdfs = files;
     }
   },
   data() {
     return {
-      pdfs: [
-        {
-          title: "Be happy",
-          link: "http://localhost:41205/file/test.pdf"
-        },
-        {
-          title: "Wake me up",
-          link: "http://localhost:41205/file/test.pdf"
-        },
-        {
-          title: "DOTA",
-          link: "http://localhost:41205/file/test.pdf"
-        },
-        {
-          title: "Sugar",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "YMCA",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "All Start",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Livin' La Vida Loca",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Juanes - La Camisa Negra",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Party Rock Anthem",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Coca Cola",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Uptown Funk",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "Hips Don't Lie",
-          link: "https://api.ngo.pl/media/get/108219"
-        },
-        {
-          title: "They Don’t Care About Us",
-          link: "https://api.ngo.pl/media/get/108219"
-        }
-      ]
+      pdfs: []
     };
   },
   methods: {
+    getLinkToFile(filename) {
+      const apiUrl = process.env.API_URL;
+      const fullUrl = `${apiUrl}/file/${filename}`;
+      return fullUrl;
+    },
     sendMessage(index) {
       this.sendResult("game", {
         studentId: this.user.id,
