@@ -1,14 +1,16 @@
 <template>
   <div>
-    <nuxt-link to="/admin/lessons" class="back"><fa icon="arrow-left" /></nuxt-link>
+    <nuxt-link to="/admin/lessons" class="back"
+      ><fa icon="arrow-left"
+    /></nuxt-link>
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
         <h2 class="games__student u-margin-small">
           <span>{{ findFullName(game.studentId) }}</span
           ><input
-            v-model="note"
+            v-model="game['note']"
             class="abacus__note"
-            @change="sendNote(note, game.studentId)"
+            @change="sendNote(game['note'], game)"
           />
           <br />
           <small>{{ game.game }}</small>
@@ -66,7 +68,6 @@ export default {
   },
   mounted() {
     this.socket.on("game", (message, cb) => {
-      console.log(message);
       if (message.demoId) {
         let userIndex = this.games
           .map(game => game.studentId)
@@ -77,10 +78,6 @@ export default {
           theSameGame = false;
         }
 
-        if (userIndex === -1) {
-          userIndex = this.games.length;
-        }
-
         if (message.game === "abacus") {
           if (message.action === "start") {
             this.$set(this.games, userIndex, {
@@ -88,7 +85,8 @@ export default {
               game: message.game,
               exercises: message.samples,
               results: new Array(message.samples.length),
-              ready: true
+              ready: true,
+              level: message.level
             });
           } else if (message.action === "result") {
             if (!userFound || !theSameGame) {
@@ -110,7 +108,8 @@ export default {
               game: message.game,
               exercises: message.samples,
               results: message.results,
-              ready: true
+              ready: true,
+              level: message.level
             });
           } else if (message.action === "lesson-choice") {
             this.$set(this.games, userIndex, {
@@ -143,6 +142,21 @@ export default {
 
         if (userIndex === -1) {
           userIndex = this.games.length;
+
+          this.$store
+            .dispatch("auth/request", {
+              method: "get",
+              url: `notes/${message.studentId}/${message.game}/${message.level}`
+            })
+            .then(res => {
+              const note = res.data?.[0]?.note;
+              if (note) {
+                this.$set(this.games, userIndex, {
+                  ...this.games[userIndex],
+                  note
+                });
+              }
+            });
         }
 
         if (message.game === "abacus") {
@@ -152,7 +166,8 @@ export default {
               game: message.game,
               exercises: message.samples,
               results: new Array(message.samples.length),
-              ready: true
+              ready: true,
+              level: message.level
             });
           } else if (message.action === "result") {
             if (!userFound || !theSameGame) {
@@ -174,7 +189,8 @@ export default {
               game: message.game,
               exercises: message.samples,
               results: message.results,
-              ready: true
+              ready: true,
+              level: message.level
             });
           } else if (message.action === "lesson-choice") {
             this.$set(this.games, userIndex, {
@@ -193,7 +209,6 @@ export default {
           }
         } else if (message.game === "fast-reading") {
           if (message.action === "lesson-selected") {
-            console.log(message);
             this.$set(this.games, userIndex, {
               studentId: message.studentId,
               game: message.game,
@@ -210,7 +225,6 @@ export default {
           }
         } else if (message.game === "movies") {
           if (message.action === "lesson-selected") {
-            console.log(message);
             this.$set(this.games, userIndex, {
               studentId: message.studentId,
               game: message.game,
@@ -260,13 +274,22 @@ export default {
       }
       return `${this.students[studentIndex]?.name} ${this.students[studentIndex]?.surname}`;
     },
-    sendNote(note, userId) {
+    sendNote(note, game) {
       this.sendResult("game", {
-        studentId: userId,
+        studentId: game.studentId,
         game: "abacus",
         action: "note",
         note
       });
+      const newValues = {
+        note
+      };
+      this.$store.dispatch("auth/request", {
+        method: "patch",
+        url: `notes/update/${game.studentId}/${game.game}/${game.level}`,
+        data: { newValues }
+      });
+      console.log(game);
     },
     changeLock(userId, level, game) {
       this.$store

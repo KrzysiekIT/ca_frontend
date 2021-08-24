@@ -6,7 +6,12 @@
         <score-box
           :presences="{ present: $route.params['level'], total: 48 }"
         />
-        <mark class="abacus__note">{{ note }}</mark>
+        <input
+          readonly
+          class="abacus__note"
+          :value="note"
+          :placeholder="$t('general.note') + '…'"
+        />
       </div>
       <div class="abacus__header--sub">
         <span class="abacus__title">{{ getTitle() }}</span>
@@ -50,19 +55,28 @@ export default {
           this.note = message.note;
         }
       });
+      console.log("SENDING");
       this.sendResult("game", {
         studentId: this.user.id,
         game: "abacus",
         action: "start",
-        samples: this.allSamples
+        samples: this.allSamples,
+        level: this.$route.params["level"]
       });
     }
+  },
+  async created() {
+    const noteRes = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: `notes/${this.user.id}/abacus/${this.$route.params["level"]}`
+    });
+    this.note = noteRes.data?.[0]?.note;
   },
   data() {
     return {
       allSamples: [],
       results: [],
-      note: this.$t("general.note")
+      note: ""
     };
   },
   methods: {
@@ -90,6 +104,9 @@ export default {
   color: $black;
   padding: 0.25rem 1rem;
   margin-left: 1rem;
+  font-size: 1.25rem;
+  cursor: default;
+  width: 75%;
 }
 .abacus__header--sub {
   margin: 2rem 0;

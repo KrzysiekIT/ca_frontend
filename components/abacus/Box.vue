@@ -59,7 +59,8 @@ export default {
           game: "abacus",
           action: "info",
           samples: this.exercises,
-          results: this.results
+          results: this.results,
+          level: this.$route.params['level']
         });
       }
     });
