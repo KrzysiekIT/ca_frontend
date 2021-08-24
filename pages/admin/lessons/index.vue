@@ -57,6 +57,15 @@
             />
           </nuxt-link>
         </li>
+        <li class="activities__item">
+          <nuxt-link class="activities__link" :to="localePath('/admin/terms')">
+            <img
+              src="~/assets/images/terms_of_use.svg"
+              alt="Terms of use"
+              class="activities__image"
+            />
+          </nuxt-link>
+        </li>
       </ul>
       <header class="lessons__header">{{ $t("general.groups") }}</header>
       <p class="lessons__no-groups" v-if="noGroups">

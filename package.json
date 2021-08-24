@@ -19,7 +19,8 @@
     "nuxt-socket-io": "^1.1.17",
     "v-calendar": "^2.3.0",
     "v-video-embed": "^1.0.8",
-    "vue-burger-menu": "^2.0.5"
+    "vue-burger-menu": "^2.0.5",
+    "vue2-editor": "^2.10.3"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

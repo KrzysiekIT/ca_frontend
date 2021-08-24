@@ -119,6 +119,9 @@ export default {
       if(currentRouteName.startsWith("teaching_materials")) {
         return this.$t(`general.teaching_materials`)
       }
+      if(currentRouteName==="terms") {
+        return this.$t(`general.terms_of_use`)
+      }
       return currentRouteName && this.$t(`general.${currentRouteName}`);
     },
     logOut() {

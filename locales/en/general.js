@@ -108,5 +108,7 @@ module.exports = {
   activate_message: "An email with login details has been sent",
   loading: "Loading…",
   role: "Role",
-  no_groups: "No groups found for this user"
+  no_groups: "No groups found for this user",
+  save: "Save",
+  saved: "Saved"
 };

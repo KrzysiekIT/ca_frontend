@@ -59,7 +59,12 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources", "nuxt-i18n", "nuxt-socket-io"],
+  modules: [
+    "@nuxtjs/style-resources",
+    "nuxt-i18n",
+    "nuxt-socket-io",
+    "vue2-editor/nuxt"
+  ],
   io: {
     // module options
     sockets: [

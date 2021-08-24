@@ -107,7 +107,7 @@ export default {
         url: "terms"
       })
     )?.data?.[0]?.body;
-    this.termsOfUse = termsOfUse.substring(1, termsOfUse.length - 1);
+    this.termsOfUse = termsOfUse;
   },
   computed: {
     editableUser() {
