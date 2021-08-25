@@ -48,7 +48,7 @@ export default {
           password: this.password
         })
         .then(result => {
-          this.alert = { type: "success", message: result.data.message };
+          /* this.alert = { type: "success", message: result.data.message }; */
           this.loading = false;
           const role = result.data.user.role.name;
           const nextPage = this.nextPage[role];

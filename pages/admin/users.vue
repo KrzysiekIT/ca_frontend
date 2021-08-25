@@ -114,6 +114,13 @@ export default {
           options: { field: ["surname"] }
         },
         {
+          name: "email",
+          label: this.$t("general.email_adress"),
+          filter: { active: true, value: "", selected: false },
+          component: "editable",
+          options: { field: ["email"] }
+        },
+        {
           name: "birthYear",
           label: this.$t("settings.birth_year"),
           filter: { active: false, value: "", selected: false },
