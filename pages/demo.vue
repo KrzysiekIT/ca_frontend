@@ -65,7 +65,7 @@ export default {
     handleOpenMenu() {
       setTimeout(() => {
         this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
-          "30rem";
+          "20rem";
       }, 0);
     },
     getRandomString(length) {
