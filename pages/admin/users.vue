@@ -6,6 +6,7 @@
         :models="models"
         :apiUrl="apiUrl"
         :label="$t('general.add_student')"
+        @new-added="$fetch()"
       />
       <button
         @click="resetFilters"
@@ -20,6 +21,7 @@
       :data="users"
       :apiUrl="apiUrl"
       :refresh="refresh"
+      :showNumbers="true"
     />
   </div>
 </template>
@@ -90,7 +92,7 @@ export default {
             lessonHour: "",
             trainerLabel: ""
           },
-          linkSent: 1
+          linkSent: 0
         },
         backend: {
           role_id: 4,
@@ -112,14 +114,14 @@ export default {
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["surname"] }
-        },
+        } /* 
         {
           name: "email",
           label: this.$t("general.email_adress"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
           options: { field: ["email"] }
-        },
+        }, */,
         {
           name: "birthYear",
           label: this.$t("settings.birth_year"),
@@ -139,7 +141,7 @@ export default {
           label: this.$t("general.parent_email"),
           filter: { active: true, value: "", selected: false },
           component: "editable",
-          options: { field: ["parent", "email"] }
+          options: { field: ["email"] }
         },
         {
           name: "parentPhoneNumber",
@@ -362,6 +364,7 @@ export default {
         };
       }
     );
+    frontendStudents.reverse();
     this.users = frontendStudents;
   }
 };

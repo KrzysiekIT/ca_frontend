@@ -110,5 +110,7 @@ module.exports = {
   role: "Role",
   no_groups: "No groups found for this user",
   save: "Save",
-  saved: "Saved"
+  saved: "Saved",
+  no_acces_message: "You do not have access to this section",
+  download_excel: "Download the table"
 };

@@ -1,17 +1,25 @@
 <template>
   <div>
-    <client-only>
-      <VueEditor v-model="termsOfUse" />
-    </client-only>
-    <button class="save button button--default" @click="saveChanges">
-      {{ $t("general.save") }}
-    </button>
-    <span class="saved" v-if="saved">{{ $t("general.saved") }} ✔</span>
+    <template v-if="user.role.name === 'superadmin'">
+      <client-only>
+        <VueEditor v-model="termsOfUse" />
+      </client-only>
+      <button class="save button button--default" @click="saveChanges">
+        {{ $t("general.save") }}
+      </button>
+      <span class="saved" v-if="saved">{{ $t("general.saved") }} ✔</span>
+    </template>
+    <template v-else>
+      {{ $t("general.no_acces_message") }}
+    </template>
   </div>
 </template>
 
 <script>
+import user from "~/mixins/user.js";
+
 export default {
+  mixins: [user],
   async fetch() {
     const termsOfUse = (
       await this.$store.dispatch("auth/request", {

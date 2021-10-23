@@ -25,16 +25,17 @@ export default {
   },
   methods: {
     async add(modelBackend) {
-      const newId = (
-        await this.$store.dispatch("auth/request", {
-          method: "post",
-          url: this.addUrl,
-          data: { values: modelBackend }
-        })
-      ).data[1][0].id;
-      const newRow = JSON.parse(JSON.stringify(this.models.frontend));
+      /* const newId = ( */
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: this.addUrl,
+        data: { values: modelBackend }
+      });
+      this.$emit("new-added");
+      /* ).data[1][0].id; */
+      /* const newRow = JSON.parse(JSON.stringify(this.models.frontend));
       newRow.id = newId;
-      this.baseTable.unshift(newRow);
+      this.baseTable.unshift(newRow); */
     }
   }
 };

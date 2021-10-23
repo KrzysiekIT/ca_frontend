@@ -1,5 +1,7 @@
 <template>
-  <span class="title">{{ $t("general.welcome") }}</span>
+  <span class="title">
+    <img src="~/assets/anims/logo-once.gif" alt="Start" height="256" />
+  </span>
 </template>
 <style lang="scss" scoped>
 .title {
@@ -8,11 +10,11 @@
   font-size: 5rem;
   display: block;
   text-align: center;
-  animation: zoom 1s ease-out;
-  animation-fill-mode: backwards;
+  /* animation: zoom 1s ease-out;
+  animation-fill-mode: backwards; */
 }
 
-@keyframes zoom {
+/* @keyframes zoom {
   0% {
     transform: scale(0);
   }
@@ -22,5 +24,5 @@
   100% {
     transform: scale(1);
   }
-}
+} */
 </style>

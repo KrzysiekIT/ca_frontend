@@ -1,5 +1,5 @@
 <template>
-  <table class="data__table" v-if="filtered">
+  <table class="data__table" v-if="filtered" :id="id">
     <thead>
       <tr>
         <th class="data__table-th" v-if="showNumbers">Lp.</th>
@@ -89,6 +89,10 @@ export default {
     apiUrl: {
       type: String,
       required: true
+    },
+    id: {
+      type: String,
+      required: false
     },
     refresh: {
       type: Boolean
@@ -216,6 +220,7 @@ export default {
         } else {
           value = value[fields[fieldIndex]];
         }
+        this.$emit("changed");
       }
     },
     highlight(rowIndex) {

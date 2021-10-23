@@ -95,7 +95,7 @@ module.exports = {
   add_group: "Dodaj grupę",
   group_name: "Nazwa grupy",
   kind: "Rodzaj",
-  tool: "Narzędzie",
+  tool: "Nazwa konta komunikatora",
   show_months: "Pokaż miesiące",
   from: "od",
   to: "do",
@@ -112,5 +112,7 @@ module.exports = {
   role: "Rola",
   no_groups: "Nie znaleziono grup dla podanego użytkownika",
   save: "Zapisz",
-  saved: "Zapisano"
+  saved: "Zapisano",
+  no_acces_message: "Nie masz dostępu do tej sekcji",
+  download_excel: "Pobierz tabelę"
 };

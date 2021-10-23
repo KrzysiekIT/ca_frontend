@@ -45,13 +45,13 @@
                   src="~/assets/images/flag_usa.svg"
                   alt="USA flag"
                   class="lang--image"
-                  v-if="locale.code === 'pl'"
+                  v-if="locale.code === 'en'"
                 />
                 <img
                   src="~/assets/images/flag_poland.svg"
                   alt="Poland flag"
                   class="lang--image"
-                  v-if="locale.code === 'en'"
+                  v-if="locale.code === 'pl'"
                 />
               </button>
             </li>
@@ -111,14 +111,14 @@ export default {
       return (this.$store.state.auth || {}).user || null;
     },
     availableLocales() {
-      return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale);
+      return this.$i18n.locales/* .filter(i => i.code !== this.$i18n.locale) */;
     }
   },
   methods: {
     handleOpenMenu() {
       setTimeout(() => {
         this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
-          "20rem";
+          "24rem";
       }, 0);
     },
     logOut() {
@@ -184,6 +184,8 @@ $headerEndWidth: 10rem;
 }
 .lang--list-item {
   align-self: center;
+  display: flex;
+  gap: 0.25rem;
 }
 .lang--image {
   height: 1.5rem;

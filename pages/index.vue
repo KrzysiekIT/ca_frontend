@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">
-        {{ $t("general.welcome") }}
+        <img src="~/assets/anims/logo-once.gif" alt="Start" height="256" />
       </h1>
       <div class="links">
         <a href="/login" class="button--green">

@@ -6,7 +6,6 @@
           <img
             src="~/assets/images/home.svg"
             alt="Home icon"
-            height="28"
             class="navigation__image"
           />
           {{ $t("general.main_page") }}
@@ -20,7 +19,6 @@
               <img
                 src="~/assets/images/user_white.svg"
                 alt="User icon white"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.student_account") }}
@@ -39,7 +37,6 @@
               <img
                 src="~/assets/images/abacus.png"
                 alt="Abacus icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.abacus") }}
@@ -53,7 +50,6 @@
               <img
                 src="~/assets/images/anzan.png"
                 alt="Anzan icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.anzan") }}
@@ -63,7 +59,6 @@
             <img
               src="~/assets/images/supermind.png"
               alt="Supermind icon"
-              height="32"
             />
             {{ $t("general.supermind") }}
           </li> -->
@@ -75,7 +70,6 @@
               <img
                 src="~/assets/images/supermemory.png"
                 alt="Supermemory icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.supermemory") }}
@@ -89,7 +83,6 @@
               <img
                 src="~/assets/images/fast_reading.png"
                 alt="Abacus icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.fast_reading") }}
@@ -103,7 +96,6 @@
               <img
                 src="~/assets/images/movies.png"
                 alt="Movies icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.movies") }}
@@ -142,6 +134,6 @@
 }
 .navigation__image {
   margin-right: 0.5rem;
-  transform: scale(1.3);
+  max-width: 10%;
 }
 </style>

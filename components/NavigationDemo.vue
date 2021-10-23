@@ -12,7 +12,6 @@
               <img
                 src="~/assets/images/abacus.png"
                 alt="Abacus icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.abacus") }}
@@ -26,7 +25,6 @@
               <img
                 src="~/assets/images/anzan.png"
                 alt="Anzan icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.anzan") }}
@@ -36,7 +34,6 @@
             <img
               src="~/assets/images/supermind.png"
               alt="Supermind icon"
-              height="32"
               class="navigation__image"
             />
             {{ $t("general.supermind") }}
@@ -45,7 +42,6 @@
             <img
               src="~/assets/images/supermemory.png"
               alt="Supermemory icon"
-              height="32"
               class="navigation__image"
             />
             {{ $t("general.supermemory") }}
@@ -61,7 +57,6 @@
               <img
                 src="~/assets/images/fast_reading.png"
                 alt="Abacus icon"
-                height="32"
                 class="navigation__image"
               />
               {{ $t("general.fast_reading") }}
@@ -100,6 +95,6 @@
 }
 .navigation__image {
   margin-right: 0.5rem;
-  transform: scale(1.3);
+  width: 10%;
 }
 </style>

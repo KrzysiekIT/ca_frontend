@@ -20,12 +20,13 @@
         <div class="header--upper">
           <figure class="user--box">
             <img
-              src="~/assets/images/user.png"
+              src="~/assets/images/trainers.svg"
               alt="User icon"
               class="user--image"
             />
             <figcaption class="user--label">
-              <strong>Admin</strong>
+              <strong>{{ getHeaderTitle(user) }}</strong>
+              <pre></pre>
               <fa
                 class="logout"
                 icon="sign-out-alt"
@@ -47,13 +48,13 @@
                   src="~/assets/images/flag_usa.svg"
                   alt="USA flag"
                   class="lang--image"
-                  v-if="locale.code === 'pl'"
+                  v-if="locale.code === 'en'"
                 />
                 <img
                   src="~/assets/images/flag_poland.svg"
                   alt="Poland flag"
                   class="lang--image"
-                  v-if="locale.code === 'en'"
+                  v-if="locale.code === 'pl'"
                 />
               </button>
             </li>
@@ -95,12 +96,21 @@ export default {
   },
   mixins: [group],
   layout: "default",
+  data() {
+    return {
+      roles: [
+        { value: 1, label: "Superadmin" },
+        { value: 2, label: "Admin" },
+        { value: 3, label: "Trener" }
+      ]
+    };
+  },
   computed: {
     user() {
       return (this.$store.state.auth || {}).user || null;
     },
     availableLocales() {
-      return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale);
+      return this.$i18n.locales/* .filter(i => i.code !== this.$i18n.locale) */;
     },
     currentRouteName() {
       const splittedRouteName = this.$route.name.split("-");
@@ -109,18 +119,26 @@ export default {
     }
   },
   methods: {
+    getHeaderTitle(user) {
+      const roles = this.roles;
+      let currentRole = roles.find(role => role.value === user.role.bit);
+      if (currentRole) {
+        currentRole = `${currentRole.label} `;
+      }
+      return `${currentRole}${user.name} ${user.surname}`;
+    },
     getRouteName(currentRouteName) {
-      if(currentRouteName==="presences_id") {
-        return this.$t(`general.presences`)
+      if (currentRouteName === "presences_id") {
+        return this.$t(`general.presences`);
       }
-      if(currentRouteName==="payments_id") {
-        return this.$t(`general.payments`)
+      if (currentRouteName === "payments_id") {
+        return this.$t(`general.payments`);
       }
-      if(currentRouteName.startsWith("teaching_materials")) {
-        return this.$t(`general.teaching_materials`)
+      if (currentRouteName.startsWith("teaching_materials")) {
+        return this.$t(`general.teaching_materials`);
       }
-      if(currentRouteName==="terms") {
-        return this.$t(`general.terms_of_use`)
+      if (currentRouteName === "terms") {
+        return this.$t(`general.terms_of_use`);
       }
       return currentRouteName && this.$t(`general.${currentRouteName}`);
     },
@@ -134,7 +152,7 @@ export default {
     handleOpenMenu() {
       setTimeout(() => {
         this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
-          "20rem";
+          "24rem";
       }, 0);
     }
   }
@@ -190,9 +208,12 @@ $headerEndWidth: 10rem;
   display: flex;
   list-style: none;
   padding-left: 5rem;
+  gap: 1rem;
 }
 .lang--list-item {
   align-self: center;
+  display: flex;
+  gap: 0.25rem;
 }
 .lang--image {
   height: 1.5rem;

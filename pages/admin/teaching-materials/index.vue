@@ -25,7 +25,6 @@
             :title="$t('general.remove')"
             icon="minus-circle"
             @click="remove(index)"
-            v-if="folder.id !== 4"
           />
         </li>
       </ul>

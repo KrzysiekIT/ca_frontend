@@ -24,7 +24,7 @@ export default {
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 20px;
+  font-size: 14px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -42,31 +42,31 @@ html {
 
 @media only screen and (min-width: 550px) and (max-width: 700px) {
   html {
-    font-size: 8px;
+    font-size: 6px;
   }
 }
 
 @media only screen and (min-width: 700px) and (max-width: 800px) {
   html {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 
 @media only screen and (min-width: 800px) and (max-width: 1000px) {
   html {
-    font-size: 12px;
+    font-size: 8px;
   }
 }
 
 @media only screen and (min-width: 1000px) and (max-width: 1200px) {
   html {
-    font-size: 14px;
+    font-size: 10px;
   }
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1400px) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 

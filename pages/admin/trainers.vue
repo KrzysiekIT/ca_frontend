@@ -1,24 +1,43 @@
 <template>
   <div>
-    <div class="trainers" v-if="trainers">
-      <data-header
-        :baseTable="trainers"
-        :models="models"
-        :apiUrl="apiUrl"
-        :label="$t('general.add_trainer')"
-      />
+    <div class="trainers" v-if="trainers" ref="trainers-table">
+      <div class="users_buttons">
+        <data-header
+          :baseTable="trainers"
+          :models="models"
+          :apiUrl="apiUrl"
+          :label="$t('general.add_trainer')"
+          @new-added="$fetch()"
+        />
+        <button
+          @click="downloadTable('trainers')"
+          class="users__add__button add__button add__button--default"
+        >
+          {{ $t("general.download_excel") }}
+        </button>
+      </div>
       <data-table
         :fields="fields"
         :selectOptions="selectOptions"
         :data="trainers"
         :apiUrl="apiUrl"
+        @changed="$fetch()"
+        :id="'trainers'"
       />
     </div>
-    <div class="groups"><group-info /></div>
+    <div class="groups"><group-info :trainers="groupTrainers" /></div>
   </div>
 </template>
 <script>
 export default {
+  computed: {
+    groupTrainers: function() {
+      if (this.trainers) {
+        return this.trainers;
+      }
+      return [];
+    }
+  },
   data() {
     return {
       apiUrl: "trainers",
@@ -116,6 +135,54 @@ export default {
       trainers: null
     };
   },
+  methods: {
+    downloadTable(table_id, separator = ",") {
+      // Select rows from table_id
+      let rows = document.querySelectorAll("table#" + table_id + " tr");
+      // Construct csv
+      let csv = [];
+      for (let i = 0; i < rows.length; i++) {
+        if (i === 1) {
+          // skip row with search
+          continue;
+        }
+        let row = [],
+          cols = rows[i].querySelectorAll("td, th");
+        for (let j = 0; j < cols.length; j++) {
+          // Clean innertext to remove multiple spaces and jumpline (break csv)
+          let textContent = cols[j].textContent;
+          if (cols[j].firstChild.nodeName === "INPUT") {
+            textContent = cols[j].firstChild.value;
+          } else if (cols[j].firstChild.nodeName === "SELECT") {
+            textContent = cols[j].firstChild.selectedOptions[0].innerText;
+          }
+          let data = textContent
+            .replace(/(\r\n|\n|\r)/gm, "")
+            .replace(/(\s\s)/gm, " ");
+          // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+          data = data.replace(/"/g, '""');
+          // Push escaped string
+          row.push('"' + data + '"');
+        }
+        csv.push(row.join(separator));
+      }
+      let csv_string = csv.join("\n");
+      // Download it
+      let filename =
+        "export_" + table_id + "_" + new Date().toLocaleDateString() + ".csv";
+      let link = document.createElement("a");
+      link.style.display = "none";
+      link.setAttribute("target", "_blank");
+      link.setAttribute(
+        "href",
+        "data:text/csv;charset=utf-8," + encodeURIComponent(csv_string)
+      );
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  },
   async fetch() {
     const toFetch = [
       this.$store.dispatch("auth/request", {
@@ -192,6 +259,7 @@ export default {
         };
       }
     );
+    frontendStudents.reverse();
     this.trainers = frontendStudents;
   }
 };
@@ -199,5 +267,34 @@ export default {
 <style lang="scss" scoped>
 .groups {
   margin-top: 5rem;
+}
+.users_buttons {
+  display: flex;
+  align-items: center;
+}
+.add__button {
+  border: none;
+  border-radius: $appRadius;
+  color: $white;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  min-width: 8rem;
+  outline: none;
+  padding: 0.625rem;
+}
+.add__button:active {
+  transform: scale(0.95);
+}
+.add__button--default {
+  background-color: $resultNeutralBlue;
+}
+.add__button--default:hover {
+  background-color: darken($resultNeutralBlue, 15%);
+}
+.users__add__button {
+  margin-bottom: 1rem;
+  text-align: center;
+  margin-left: 2rem;
 }
 </style>

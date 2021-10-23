@@ -5,6 +5,7 @@
       :models="models"
       :addUrl="apiUrl"
       :label="label"
+      @new-added="$emit('new-added')"
     />
   </header>
 </template>

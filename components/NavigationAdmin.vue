@@ -9,7 +9,6 @@
           <img
             :src="require(`~/assets/images/${img.file}`)"
             :alt="img.alt"
-            height="32"
             class="navigation__image"
           />
           {{ label }}
@@ -108,6 +107,6 @@ export default {
 }
 .navigation__image {
   margin-right: 0.5rem;
-  transform: scale(1.3);
+  width: 10%;
 }
 </style>

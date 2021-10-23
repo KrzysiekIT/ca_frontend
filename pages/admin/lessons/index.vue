@@ -57,7 +57,7 @@
             />
           </nuxt-link>
         </li>
-        <li class="activities__item">
+        <li class="activities__item" v-if="user.role.name === 'superadmin'">
           <nuxt-link class="activities__link" :to="localePath('/admin/terms')">
             <img
               src="~/assets/images/terms_of_use.svg"
