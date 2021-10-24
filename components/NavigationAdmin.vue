@@ -94,11 +94,6 @@ export default {
               label: this.$t("general.fast_reading"),
               link: "lesson/fast-reading",
               img: { file: "fast_reading.png", alt: "Fast reading icon" }
-            },
-            {
-              label: this.$t("general.movies"),
-              link: "lesson/movies",
-              img: { file: "movies.png", alt: "Movies icon" }
             }
           ]
         },
