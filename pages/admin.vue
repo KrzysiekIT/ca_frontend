@@ -16,6 +16,11 @@
         <NavigationAdmin /> </slide-menu
     ></client-only>
     <header class="header">
+        <img
+          src="~/assets/images/logo.png"
+          alt="Champions academy"
+          class="logo"
+        />
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -26,7 +31,6 @@
             />
             <figcaption class="user--label">
               <strong>{{ getHeaderTitle(user) }}</strong>
-              <pre></pre>
               <fa
                 class="logout"
                 icon="sign-out-alt"
@@ -110,7 +114,8 @@ export default {
       return (this.$store.state.auth || {}).user || null;
     },
     availableLocales() {
-      return this.$i18n.locales/* .filter(i => i.code !== this.$i18n.locale) */;
+      return this.$i18n
+        .locales /* .filter(i => i.code !== this.$i18n.locale) */;
     },
     currentRouteName() {
       const splittedRouteName = this.$route.name.split("-");
@@ -161,7 +166,16 @@ export default {
 <style lang="scss" scoped>
 .header {
   display: flex;
-  justify-content: space-between;
+  position: sticky;
+  align-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 100%;
+  padding-left: 3rem;
+  border-bottom: 2px solid darken($mainBackground, 5);;
+  background-color: $mainBackground;
+  z-index: 10;
+  top: 0;
 }
 .header--logo-box {
   width: $logoIconWidth;
@@ -262,6 +276,10 @@ $headerEndWidth: 10rem;
   padding-left: 2rem;
   padding-top: 1rem;
   display: flex;
+}
+.logo {
+  height: 4rem;
+  padding-left: 2rem;
 }
 /* .main {
   min-width: calc(100% - #{$navMenuWidth});

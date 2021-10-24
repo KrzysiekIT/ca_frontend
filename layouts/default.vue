@@ -80,7 +80,6 @@ html {
   background-color: $mainBackground;
   color: #fff;
   min-height: 100vh;
-  padding: 1rem 1rem 0 1rem;
 }
 .embed-responsive-item {
   width: 16rem;
@@ -95,8 +94,10 @@ html {
 .bm-burger-button {
   height: 1.5rem;
   width: 1.8rem;
-  left: 1.8rem;
+  left: 1.2rem;
   top: 1.8rem;
+  z-index: 100;
+  position: fixed;
 }
 
 .u-margin-small {

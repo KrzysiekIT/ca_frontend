@@ -2,7 +2,7 @@
   <nav class="navigation">
     <ul class="navigation__ul">
       <li
-        v-for="({ img, label, link, sub }, index) in navigation"
+        v-for="({ img, label, link, sub }, index) in filteredNavigation"
         :key="'link' + index"
       >
         <nuxt-link class="navigation__link" :to="localePath(`/admin/${link}`)">
@@ -19,7 +19,16 @@
               class="navigation__link"
               :to="localePath(`/admin/${sublink.link}`)"
             >
-              {{ `-${sublink.label} ` }}
+              <img
+                v-if="sublink.img"
+                :src="require(`~/assets/images/${sublink.img.file}`)"
+                :alt="img.alt"
+                class="navigation__image"
+              />
+              <template v-else>
+                -
+              </template>
+              {{ `${sublink.label} ` }}
             </nuxt-link>
           </li>
         </ul>
@@ -28,9 +37,26 @@
   </nav>
 </template>
 <script>
+import user from "~/mixins/user.js";
 export default {
+  computed: {
+    filteredNavigation: function() {
+      const newNavigation = this.navigation;
+      if (this.user?.role?.name === "superadmin" && !this.subNavAdded) {
+        this.navigation[2].sub.push({
+          label: this.$t("general.terms_of_use"),
+          link: "terms",
+          img: { file: "terms_of_use.svg", alt: "Terms of use icon" }
+        });
+        this.subNavAdded = true;
+      }
+      return newNavigation;
+    }
+  },
+  mixins: [user],
   data() {
     return {
+      subNavAdded: false,
       navigation: [
         {
           label: this.$t("general.students"),
@@ -49,8 +75,31 @@ export default {
           link: "lessons/",
           img: { file: "lessons.svg", alt: "lessons icon white" },
           sub: [
-            { label: this.$t("general.demo_classes"), link: "demo/" },
-            { label: this.$t("general.schedules"), link: "schedules/" }
+            {
+              label: this.$t("general.demo_classes"),
+              link: "demo/"
+            },
+            { label: this.$t("general.schedules"), link: "schedules/" },
+            {
+              label: this.$t("general.abacus"),
+              link: "lesson/abacus",
+              img: { file: "abacus.png", alt: "Abacus icon" }
+            },
+            {
+              label: this.$t("general.anzan"),
+              link: "lesson/anzan",
+              img: { file: "anzan.png", alt: "Anzan icon" }
+            },
+            {
+              label: this.$t("general.fast_reading"),
+              link: "lesson/fast-reading",
+              img: { file: "fast_reading.png", alt: "Fast reading icon" }
+            },
+            {
+              label: this.$t("general.movies"),
+              link: "lesson/movies",
+              img: { file: "movies.png", alt: "Movies icon" }
+            }
           ]
         },
         {

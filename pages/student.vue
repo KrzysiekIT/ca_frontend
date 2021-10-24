@@ -18,6 +18,11 @@
       </slide-menu>
     </client-only>
     <header class="header" v-if="$route.name !== 'student-terms-first'">
+      <img
+        src="~/assets/images/logo.png"
+        alt="Champions academy"
+        class="logo"
+      />
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -29,7 +34,12 @@
             <figcaption class="user--label">
               {{ $t("general.student") }}
               <strong>{{ `${user.name} ${user.surname}` }}</strong>
-              <fa class="logout" icon="sign-out-alt" title="Wyloguj" @click="logOut" />
+              <fa
+                class="logout"
+                icon="sign-out-alt"
+                title="Wyloguj"
+                @click="logOut"
+              />
             </figcaption>
           </figure>
           <ul class="lang--list">
@@ -111,7 +121,8 @@ export default {
       return (this.$store.state.auth || {}).user || null;
     },
     availableLocales() {
-      return this.$i18n.locales/* .filter(i => i.code !== this.$i18n.locale) */;
+      return this.$i18n
+        .locales /* .filter(i => i.code !== this.$i18n.locale) */;
     }
   },
   methods: {
@@ -134,8 +145,17 @@ export default {
 <style lang="scss" scoped>
 .header {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
   flex-wrap: wrap;
+  position: sticky;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+  border-bottom: 2px solid darken($mainBackground, 5);
+  background-color: $mainBackground;
+  z-index: 10;
+  top: 0;
 }
 .header--logo-box {
   width: $logoIconWidth;
@@ -229,5 +249,9 @@ $headerEndWidth: 10rem;
 .logout {
   transform: translateX(2rem);
   cursor: pointer;
+}
+.logo {
+  height: 4rem;
+  padding-left: 2rem;
 }
 </style>
