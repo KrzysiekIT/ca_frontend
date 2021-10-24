@@ -129,8 +129,8 @@ export default {
 $boxPadding: 0.5rem;
 .account__header {
   display: flex;
-  justify-content: space-between;
   padding: $boxPadding;
+  gap: 4rem;
 }
 .account__header-label {
   color: #00b0f0;

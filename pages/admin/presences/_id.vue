@@ -1,15 +1,29 @@
 <template>
   <div>
     <div class="search-box">
-      {{ $t("general.student") }}: 
       <div class="autocomplete-box" v-if="!currentId">
-        <autocomplete
-          :items="students"
-          type="multiple"
-          @set="getAttendances($event)"
-        />
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          {{ $t("general.trainer") }}:
+          <autocomplete
+            :items="trainers"
+            type="multiple"
+            @set="selectTrainer($event)"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          {{ $t("general.student") }}:
+          <autocomplete
+            :items="filteredStudents"
+            type="multiple"
+            @set="getAttendances($event)"
+          />
+        </div>
       </div>
-      <div v-else>{{ currentStudent && currentStudent.name }} {{ currentStudent && currentStudent.surname }}</div>
+      <span v-if="currentId">{{ $t("general.student") }}:</span>
+      <div v-if="currentId">
+        {{ currentStudent && currentStudent.name }}
+        {{ currentStudent && currentStudent.surname }}
+      </div>
     </div>
     <div></div>
     <div class="account__box">
@@ -46,6 +60,13 @@ export default {
     this.students = students.data.map(student => {
       return { ...student, label: `${student.name} ${student.surname}` };
     });
+    const trainers = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: "trainers"
+    });
+    this.trainers = trainers.data.map(trainer => {
+      return { ...trainer, label: `${trainer.name} ${trainer.surname}` };
+    });
   },
   async created() {
     this.currentId = this.$route.params.id;
@@ -68,14 +89,25 @@ export default {
   computed: {
     numberOfPresences() {
       return this.attendance.filter(presence => presence.status === 2).length;
+    },
+    filteredStudents() {
+      if (this.selectedTrainer > 0) {
+        return this.students.filter(
+          ({ training_groups_trainer_id }) =>
+            training_groups_trainer_id === this.selectedTrainer
+        );
+      }
+      return this.students;
     }
   },
   data() {
     return {
       attendance: [],
       students: [],
+      trainers: [],
       currentId: null,
-      currentStudent: null
+      currentStudent: null,
+      selectedTrainer: -1
     };
   },
   methods: {
@@ -85,6 +117,9 @@ export default {
         url: `presences/${user.id}`
       });
       this.attendance = presences.data;
+    },
+    selectTrainer(trainer) {
+      this.selectedTrainer = trainer.id;
     }
   }
 };
@@ -128,7 +163,10 @@ export default {
   align-items: center;
 }
 .autocomplete-box {
-  width: 10rem;
+  display: flex;
+  align-items: center;
+  width: 35rem;
+  gap: 2rem;
   margin-left: 0.25rem;
 }
 </style>

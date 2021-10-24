@@ -14,7 +14,7 @@
         />
       </div>
       <div class="abacus__header--sub">
-        <span class="abacus__title">{{ getTitle() }}</span>
+        <p class="abacus__title">{{ getTitle() }}</p>
       </div>
     </header>
     <abacus-box
@@ -113,6 +113,9 @@ export default {
 }
 .abacus__title {
   font-size: 1.25rem;
-  text-transform: capitalize;
+  text-transform: lowercase;
+}
+.abacus__title::first-letter {
+  text-transform: uppercase;
 }
 </style>

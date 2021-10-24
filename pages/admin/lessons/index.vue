@@ -171,7 +171,8 @@ const days = {
   4: "thursday",
   5: "friday",
   6: "saturday",
-  0: "sunday"
+  0: "sunday",
+  7: "sunday",
 };
 export default {
   mixins: [user],
