@@ -52,7 +52,9 @@ export default {
         studentId: this.user.id,
         game: "movies",
         action: "lesson-selected",
-        file: this.videos[index]
+        file: this.videos[index],
+        videoId: this.videos[index].id,
+        level: this.videos[index].id
       });
     }
   }

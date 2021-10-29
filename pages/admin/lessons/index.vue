@@ -84,6 +84,7 @@
               </tr>
             </tbody>
           </table>
+          {{ $t("general.phone_numbers") }}: {{ getNumbers(group.id) }}
           <!-- <table class="lessons__table">
             <tfoot>
               <tr>
@@ -106,7 +107,7 @@ const days = {
   5: "friday",
   6: "saturday",
   0: "sunday",
-  7: "sunday",
+  7: "sunday"
 };
 export default {
   mixins: [user],
@@ -246,6 +247,20 @@ export default {
         return;
       }
       return filteredStudents;
+    },
+    getNumbers(groupId) {
+      if (!this.students) {
+        return "-";
+      }
+      const filteredStudents = this.students.filter(
+        student => student.group_id === groupId
+      );
+      if (filteredStudents.length === 0) {
+        return "-";
+      }
+      const numbers = filteredStudents.map(({ phoneNumber }) => phoneNumber);
+      const stringNumbers = numbers.join(", ");
+      return stringNumbers;
     }
   },
   data() {

@@ -84,6 +84,7 @@ module.exports = {
   schedules: "Schedules",
   teaching_materials: "Teaching materials",
   phone_number: "Phone number",
+  phone_numbers: "Phone numbers",
   email_adress: "E-mail adress",
   datetime: "Date and time",
   number_of_students: "Number of students",

@@ -92,11 +92,12 @@
             src="~/assets/images/money.svg"
             alt="Money icon"
             class="header__image--end"
-        /></nuxt-link>
+          />
+        </nuxt-link>
         <img
           src="~/assets/images/sad.svg"
           alt="Sad icon"
-          class="header__image--end"
+          class="header__image--end face"
         />
       </section>
     </header>
@@ -253,5 +254,9 @@ $headerEndWidth: 10rem;
 .logo {
   height: 4rem;
   padding-left: 2rem;
+}
+.face {
+  margin-left: 0.25rem;
+  transform: scale(0.63);
 }
 </style>

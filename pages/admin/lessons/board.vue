@@ -6,8 +6,10 @@
     <div class="games">
       <div class="games__game" v-for="game in games" :key="game.studentId">
         <h2 class="games__student u-margin-small">
-          <span>{{ findFullName(game.studentId) }}</span
-          ><input
+          <span>
+            {{ findFullName(game.studentId) }}
+          </span>
+          <input
             v-model="game['note']"
             class="abacus__note"
             @change="sendNote(game['note'], game)"
@@ -67,186 +69,18 @@ export default {
     this.students = students.data;
   },
   mounted() {
+    for (let i = 0; i < this.students.length; i++) {
+      const userIndex = i;
+
+      this.$set(this.games, userIndex, {
+        ...this.games[userIndex],
+        studentId: this.students[i].id,
+        note: "Oczekiwanie na start…"
+      });
+    }
+
     this.socket.on("game", (message, cb) => {
-      if (message.demoId) {
-        let userIndex = this.games
-          .map(game => game.studentId)
-          .indexOf(message.studentId);
-        const userFound = userIndex !== -1 ? true : false;
-        let theSameGame = true;
-        if (!userFound || this.games[userIndex].game !== message.game) {
-          theSameGame = false;
-        }
-
-        if (message.game === "abacus") {
-          if (message.action === "start") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              exercises: message.samples,
-              results: new Array(message.samples.length),
-              ready: true,
-              level: message.level
-            });
-          } else if (message.action === "result") {
-            if (!userFound || !theSameGame) {
-              this.sendResult("game", {
-                studentId: message.studentId,
-                game: "abacus",
-                action: "info-needed"
-              });
-            } else {
-              this.$set(
-                this.games[userIndex].results,
-                message.result.row,
-                message.result.result
-              );
-            }
-          } else if (message.action === "info") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              exercises: message.samples,
-              results: message.results,
-              ready: true,
-              level: message.level
-            });
-          } else if (message.action === "lesson-choice") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              ready: false
-            });
-          } else if (message.action === "settings") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              borderNumber: message.borderNumber,
-              action: message.action,
-              ready: false
-            });
-          }
-        }
-      } else {
-        if (!this.studentsIds.includes(message.studentId)) {
-          return;
-        }
-        let userIndex = this.games
-          .map(game => game.studentId)
-          .indexOf(message.studentId);
-        const userFound = userIndex !== -1 ? true : false;
-        let theSameGame = true;
-        if (!userFound || this.games[userIndex].game !== message.game) {
-          theSameGame = false;
-        }
-
-        if (userIndex === -1) {
-          userIndex = this.games.length;
-
-          this.$store
-            .dispatch("auth/request", {
-              method: "get",
-              url: `notes/${message.studentId}/${message.game}/${message.level}`
-            })
-            .then(res => {
-              const note = res.data?.[0]?.note;
-              if (note) {
-                this.$set(this.games, userIndex, {
-                  ...this.games[userIndex],
-                  note
-                });
-              }
-            });
-        }
-
-        if (message.game === "abacus") {
-          if (message.action === "start") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              exercises: message.samples,
-              results: new Array(message.samples.length),
-              ready: true,
-              level: message.level
-            });
-          } else if (message.action === "result") {
-            if (!userFound || !theSameGame) {
-              this.sendResult("game", {
-                studentId: message.studentId,
-                game: "abacus",
-                action: "info-needed"
-              });
-            } else {
-              this.$set(
-                this.games[userIndex].results,
-                message.result.row,
-                message.result.result
-              );
-            }
-          } else if (message.action === "info") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              exercises: message.samples,
-              results: message.results,
-              ready: true,
-              level: message.level
-            });
-          } else if (message.action === "lesson-choice") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              ready: false
-            });
-          } else if (message.action === "settings") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              borderNumber: message.borderNumber,
-              action: message.action,
-              ready: false
-            });
-          }
-        } else if (message.game === "fast-reading") {
-          if (message.action === "lesson-selected") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              link: message.file.link,
-              title: message.file.title,
-              ready: true
-            });
-          } else if (message.action === "lesson-choice") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              ready: false
-            });
-          }
-        } else if (message.game === "movies") {
-          if (message.action === "lesson-selected") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              link: message.file.link,
-              title: message.file.title,
-              ready: true
-            });
-          } else if (message.action === "lesson-choice") {
-            this.$set(this.games, userIndex, {
-              studentId: message.studentId,
-              game: message.game,
-              ready: false
-            });
-          }
-        } else if (message.game) {
-          this.$set(this.games, userIndex, {
-            studentId: message.studentId,
-            game: message.game,
-            ready: false
-          });
-        }
-      }
+      this.messageHandler(message);
     });
   },
   computed: {
@@ -264,6 +98,193 @@ export default {
     };
   },
   methods: {
+    handleDemoMessage(message) {
+      let userIndex = this.games
+        .map(game => game.studentId)
+        .indexOf(message.studentId);
+      const userFound = userIndex !== -1 ? true : false;
+      let theSameGame = true;
+      if (!userFound || this.games[userIndex].game !== message.game) {
+        theSameGame = false;
+      }
+
+      if (message.game === "abacus") {
+        if (message.action === "start") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: new Array(message.samples.length),
+            ready: true,
+            level: message.level
+          });
+        } else if (message.action === "result") {
+          if (!userFound || !theSameGame) {
+            this.sendResult("game", {
+              studentId: message.studentId,
+              game: "abacus",
+              action: "info-needed"
+            });
+          } else {
+            this.$set(
+              this.games[userIndex].results,
+              message.result.row,
+              message.result.result
+            );
+          }
+        } else if (message.action === "info") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: message.results,
+            ready: true,
+            level: message.level
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        } else if (message.action === "settings") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            borderNumber: message.borderNumber,
+            action: message.action,
+            ready: false
+          });
+        }
+      }
+    },
+    handleGameMessage(message) {
+      if (!this.studentsIds.includes(message.studentId)) {
+        return;
+      }
+      let userIndex = this.games
+        .map(game => game.studentId)
+        .indexOf(message.studentId);
+      const userFound = userIndex !== -1 ? true : false;
+      let theSameGame = true;
+      if (!userFound || this.games[userIndex].game !== message.game) {
+        theSameGame = false;
+      }
+
+      if (userIndex === -1) {
+        userIndex = this.games.length;
+
+        this.$store
+          .dispatch("auth/request", {
+            method: "get",
+            url: `notes/${message.studentId}/${message.game}/${message.level}`
+          })
+          .then(res => {
+            const note = res.data?.[0]?.note;
+            if (note) {
+              this.$set(this.games, userIndex, {
+                ...this.games[userIndex],
+                note
+              });
+            }
+          });
+      }
+
+      if (message.game === "abacus") {
+        if (message.action === "start") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: new Array(message.samples.length),
+            ready: true,
+            level: message.level
+          });
+        } else if (message.action === "result") {
+          if (!userFound || !theSameGame) {
+            this.sendResult("game", {
+              studentId: message.studentId,
+              game: "abacus",
+              action: "info-needed"
+            });
+          } else {
+            this.$set(
+              this.games[userIndex].results,
+              message.result.row,
+              message.result.result
+            );
+          }
+        } else if (message.action === "info") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            exercises: message.samples,
+            results: message.results,
+            ready: true,
+            level: message.level
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        } else if (message.action === "settings") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            borderNumber: message.borderNumber,
+            action: message.action,
+            ready: false
+          });
+        }
+      } else if (message.game === "fast-reading") {
+        if (message.action === "lesson-selected") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
+      } else if (message.game === "movies") {
+        if (message.action === "lesson-selected") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            link: message.file.link,
+            title: message.file.title,
+            ready: true
+          });
+        } else if (message.action === "lesson-choice") {
+          this.$set(this.games, userIndex, {
+            studentId: message.studentId,
+            game: message.game,
+            ready: false
+          });
+        }
+      } else if (message.game) {
+        this.$set(this.games, userIndex, {
+          studentId: message.studentId,
+          game: message.game,
+          ready: false
+        });
+      }
+    },
+    messageHandler(message) {
+      if (message.demoId) {
+        this.handleDemoMessage(message);
+      } else {
+        this.handleGameMessage(message);
+      }
+    },
     reloadGame(userIndex) {
       this.games[userIndex].reload = !this.games[userIndex].reload;
     },

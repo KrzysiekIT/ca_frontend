@@ -86,6 +86,7 @@ module.exports = {
   schedules: "Grafiki",
   teaching_materials: "Materiały szkoleniowe",
   phone_number: "Numer telefonu",
+  phone_numbers: "Numery telefonu",
   email_adress: "Adres e-mail",
   datetime: "Data i godz.",
   number_of_students: "Liczba uczniów",
