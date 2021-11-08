@@ -113,5 +113,6 @@ module.exports = {
   save: "Save",
   saved: "Saved",
   no_acces_message: "You do not have access to this section",
-  download_excel: "Download the table"
+  download_excel: "Download the table",
+  future_skills: "Future skills"
 };

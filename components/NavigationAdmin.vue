@@ -91,6 +91,11 @@ export default {
               img: { file: "anzan.png", alt: "Anzan icon" }
             },
             {
+              label: this.$t("general.future_skills"),
+              link: "lesson/future-skills",
+              img: { file: "supermind.png", alt: "" }
+            },
+            {
               label: this.$t("general.fast_reading"),
               link: "lesson/fast-reading",
               img: { file: "fast_reading.png", alt: "Fast reading icon" }

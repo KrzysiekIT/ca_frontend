@@ -130,7 +130,7 @@ export default {
     handleOpenMenu() {
       setTimeout(() => {
         this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
-          "24rem";
+          "27rem";
       }, 0);
     },
     logOut() {

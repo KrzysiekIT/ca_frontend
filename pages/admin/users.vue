@@ -203,7 +203,7 @@ export default {
           component: "editable",
           options: { field: ["parent", "phoneNumber"] }
         },
-        {
+        /* {
           name: "groupId",
           label: this.$t("general.group"),
           filter: { active: true, value: "", selected: false },
@@ -213,8 +213,36 @@ export default {
             field: ["group", "id"],
             base: "group"
           }
+        }, */
+        {
+          name: "trainerId",
+          label: this.$t("general.trainer"),
+          filter: { active: false, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "groups",
+            field: ["group", "id"],
+            base: "group",
+            newLabelField: "trainerLabel"
+          }
         },
         {
+          name: "chosenDay",
+          label: this.$t("general.lesson_day"),
+          filter: { active: false, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "groups",
+            field: ["group", "id"],
+            base: "group",
+            selectFilter: {
+              optionsFields: ["trainerId"],
+              infoFields: ["group", "trainerId"]
+            },
+            newLabelField: "lessonDay"
+          }
+        },
+        /* {
           name: "trainerLabel",
           label: this.$t("general.trainer"),
           filter: { active: true, value: "", selected: false },
@@ -222,8 +250,8 @@ export default {
           options: {
             field: ["group", "trainerLabel"]
           }
-        },
-        {
+        }, */
+        /* {
           name: "groupDay",
           label: this.$t("general.lesson_day"),
           filter: { active: true, value: "", selected: false },
@@ -231,14 +259,34 @@ export default {
           options: {
             field: ["group", "lessonDay"]
           }
-        },
-        {
+        }, */
+        /* {
           name: "groupHour",
           label: this.$t("general.lesson_hour"),
           filter: { active: true, value: "" },
           component: "no-editable",
           options: {
             field: ["group", "lessonHour"]
+          }
+        }, */
+        {
+          name: "groupHour",
+          label: this.$t("general.lesson_hour"),
+          filter: { active: false, value: "", selected: false },
+          component: "select-option",
+          options: {
+            options: "groups",
+            field: ["group", "id"],
+            base: "group",
+            selectFilter: {
+              optionsFields: ["trainerId"],
+              infoFields: ["group", "trainerId"]
+            },
+            selectFilterSecond: {
+              optionsFields: ["lessonDay"],
+              infoFields: ["group", "lessonDay"]
+            },
+            newLabelField: "lessonHour"
           }
         },
         {

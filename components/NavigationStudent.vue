@@ -55,13 +55,19 @@
               {{ $t("general.anzan") }}
             </nuxt-link>
           </li>
-          <!-- <li>
-            <img
-              src="~/assets/images/supermind.png"
-              alt="Supermind icon"
-            />
-            {{ $t("general.supermind") }}
-          </li> -->
+          <li>
+            <nuxt-link
+              class="navigation__link"
+              :to="localePath('/student/supermind')"
+            >
+              <img
+                src="~/assets/images/supermind.png"
+                alt=""
+                class="navigation__image"
+              />
+              {{ $t("general.future_skills") }}
+            </nuxt-link>
+          </li>
           <li>
             <nuxt-link
               class="navigation__link"
