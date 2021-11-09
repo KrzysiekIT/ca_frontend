@@ -21,6 +21,7 @@ module.exports = {
   show_trainer_board: "Pokaż tablicę trenera",
   run_trainer_board: "Uruchom tablicę trenera",
   trainer_full_name: "Imię i nazwisko trenera",
+  chosen_trainer: "Wybierz trenera",
   contact: "Kontakt",
   lesson_day: "Termin zajęć",
   lesson_hour: "Godzina zajęć",
@@ -116,5 +117,9 @@ module.exports = {
   saved: "Zapisano",
   no_acces_message: "Nie masz dostępu do tej sekcji",
   download_excel: "Pobierz tabelę",
-  future_skills: "Umiejętności przyszłości"
+  future_skills: "Umiejętności przyszłości",
+  no_students: "Brak uczniów",
+  payments_data: "Dane do płatności",
+  billing_period: "Okres rozliczeniowy",
+  enter_the_amount: "Wprowadź kwotę"
 };

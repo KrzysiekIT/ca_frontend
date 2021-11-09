@@ -84,7 +84,7 @@
       </section>
       <section class="header--end">
         <nuxt-link
-          to="#"
+          :to="localePath(`/student/payments`)"
           class="link"
           :title="$t('general.show_payments_data')"
         >

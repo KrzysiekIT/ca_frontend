@@ -21,6 +21,7 @@ module.exports = {
   show_trainer_board: "Show trainer board",
   run_trainer_board: "Run trainer board",
   trainer_full_name: "Trainer full name",
+  chosen_trainer: "Choose trainer",
   contact: "Contact",
   lesson_day: "Lessons day",
   lesson_hour: "Lessons hour",
@@ -114,5 +115,9 @@ module.exports = {
   saved: "Saved",
   no_acces_message: "You do not have access to this section",
   download_excel: "Download the table",
-  future_skills: "Future skills"
+  future_skills: "Future skills",
+  no_students: "No students",
+  payments_data: "Payments data",
+  billing_period: "Billing period",
+  enter_the_amount: "Enter the amount"
 };

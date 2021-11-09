@@ -3,9 +3,9 @@
     <section class="tm">
       <div class="movies__button-box">
         <label class="login--label">
-          <span class="login--label__input"
-            >{{ $t("general.new_filename") }}:</span
-          >
+          <span class="login--label__input">
+            {{ $t("general.new_filename") }}:
+          </span>
           <input class="login--input" v-model="newFile.name" />
         </label>
         <label class="login--label">
@@ -36,9 +36,15 @@
       </div>
       <ul class="tm__files">
         <li class="tm__file" v-for="(file, index) in files" :key="file.id">
-          <a class="link" :href="`${apiUrl}/file/${file.name}`" target="_blank"
-            >🔗 {{ file[`description_${$i18n.locale}`] }}</a
-          ><fa
+          <a
+            class="link"
+            :href="`${apiUrl}/file/${file.name}`"
+            target="openFile"
+            @click="isOpen = true"
+          >
+            🔗 {{ file[`description_${$i18n.locale}`] }}
+          </a>
+          <fa
             class="tm__icon"
             :title="$t('general.remove')"
             icon="minus-circle"
@@ -47,6 +53,10 @@
         </li>
       </ul>
     </section>
+    <div class="file-opener" v-show="isOpen">
+      <button class="file-close" @click="isOpen = false">X</button>
+      <iframe name="openFile" class="openFile" />
+    </div>
   </div>
 </template>
 <script>
@@ -69,6 +79,7 @@ export default {
   },
   data() {
     return {
+      isOpen: false,
       newFile: {
         description_pl: "",
         description_en: "",
@@ -217,5 +228,26 @@ export default {
 input:focus {
   box-shadow: 0 0 0 0.125rem #d48a0b;
   outline: none;
+}
+.file-opener {
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+.openFile {
+  position: absolute;
+  top: 10vh;
+  left: 4vw;
+  width: 90vw;
+  height: 75vh;
+}
+.file-close {
+  cursor: pointer;
+  position: absolute;
+  left: 94vw;
+  transform: translate(-100%, -100%);
+  top: 10vh;
 }
 </style>

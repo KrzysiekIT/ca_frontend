@@ -11,7 +11,7 @@
           {{ label }}
         </th>
       </tr>
-      <tr>
+      <tr v-if="areFilters">
         <th class="data__table-th" v-if="showNumbers"></th>
         <th
           v-for="({ filter, options, component }, index) in fields"
@@ -105,7 +105,8 @@ export default {
     CalendarPicker: () => import("@/components/table/CalendarPicker.vue"),
     Editable: () => import("@/components/table/Editable.vue"),
     NoEditable: () => import("@/components/table/NoEditable.vue"),
-    Payment: () => import("@/components/table/Payment.vue")
+    Payment: () => import("@/components/table/Payment.vue"),
+    NextPayment: () => import("@/components/table/NextPayment.vue")
   },
   data() {
     return {
@@ -125,6 +126,9 @@ export default {
             selected: filter.selected
           };
         });
+    },
+    areFilters() {
+      return this.fields.filter(({ filter }) => filter.active)?.length > 0;
     },
     filtered() {
       const { filters, data, getDeepValue } = this;
@@ -239,6 +243,38 @@ export default {
         },
         remove: ({ row }) => {
           this.data.splice(row, 1);
+        },
+        nextPayment: options => {
+          const yearKeys = Object.keys(this.data[options.row]).filter(el =>
+            el.startsWith("20")
+          );
+          for (let i = 0; i < yearKeys.length; i++) {
+            const currentPayment = this.data[options.row][yearKeys[i]];
+            console.log(currentPayment);
+            if (!currentPayment.amount) {
+              console.log("NIE MA");
+              /* const userId = this.info.id;
+              const newValues = {
+                createdAt: this.toSend.date,
+                amount: +this.toSend.value
+              };
+
+              this.$store.dispatch("auth/request", {
+                method: "patch",
+                url: `payments/update/${userId}/${orderNumber}`,
+                data: { newValues }
+              }); */
+              break;
+            }
+          }
+
+          this.changeDeepValue(
+            this.data[options.row],
+            options.field,
+            options.value,
+            options.base,
+            options.options
+          );
         }
       };
       actions[details.name](details);

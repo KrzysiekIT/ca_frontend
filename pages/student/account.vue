@@ -26,7 +26,7 @@
     <div class="account__box">
       <section class="account__box--inner payments">
         <nuxt-link
-          to="#"
+          :to="localePath(`/student/payments`)"
           class="link"
           :title="$t('general.show_payments_data')"
         >

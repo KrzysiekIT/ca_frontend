@@ -1,12 +1,30 @@
 <template>
   <client-only>
     <section class="lessons">
+      <div class="search-box">
+        <div class="autocomplete-box">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            {{ $t("general.trainer") }}:
+            <autocomplete
+              :items="trainers"
+              type="multiple"
+              @set="selectTrainer($event)"
+              @input="selectedTrainer = -1"
+            />
+          </div>
+        </div>
+      </div>
+
       <header class="lessons__header">{{ $t("general.groups") }}</header>
       <p class="lessons__no-groups" v-if="noGroups">
         {{ $t("general.no_groups") }}
       </p>
       <div class="lessons__tables">
-        <div class="lessons__table-box" v-for="group in groups" :key="group.id">
+        <div
+          class="lessons__table-box"
+          v-for="group in filteredGroups"
+          :key="group.id"
+        >
           <table class="lessons__table">
             <thead>
               <tr>
@@ -44,7 +62,10 @@
               </tr>
             </thead>
           </table>
-          <table class="table lessons__table">
+          <table
+            class="table lessons__table"
+            v-if="getNumbers(group.id) !== '-'"
+          >
             <thead>
               <tr>
                 <th
@@ -84,7 +105,10 @@
               </tr>
             </tbody>
           </table>
-          {{ $t("general.phone_numbers") }}: {{ getNumbers(group.id) }}
+          <span v-else>{{ $t("general.no_students") }}</span>
+          <span v-if="getNumbers(group.id) !== '-'">
+            {{ $t("general.phone_numbers") }}: {{ getNumbers(group.id) }}
+          </span>
           <!-- <table class="lessons__table">
             <tfoot>
               <tr>
@@ -111,6 +135,16 @@ const days = {
 };
 export default {
   mixins: [user],
+  computed: {
+    filteredGroups() {
+      if (this.selectedTrainer < 0) {
+        return this.groups;
+      }
+      return this.groups.filter(
+        ({ trainer_id }) => trainer_id === this.selectedTrainer
+      );
+    }
+  },
   components: {
     Absent: () => import("@/components/attendance/Absent.vue"),
     Excused: () => import("@/components/attendance/Excused.vue"),
@@ -181,8 +215,19 @@ export default {
         excused: attendance === 1
       };
     });
+
+    const trainers = await this.$store.dispatch("auth/request", {
+      method: "get",
+      url: "trainers"
+    });
+    this.trainers = trainers.data.map(trainer => {
+      return { ...trainer, label: `${trainer.name} ${trainer.surname}` };
+    });
   },
   methods: {
+    selectTrainer(trainer) {
+      this.selectedTrainer = trainer.id;
+    },
     async setAttendance(user, columnIndex) {
       const columnToStatus = {
         4: 0,
@@ -265,6 +310,8 @@ export default {
   },
   data() {
     return {
+      trainers: [],
+      selectedTrainer: -1,
       noGroups: false,
       days,
       columns: [
@@ -367,6 +414,8 @@ export default {
 }
 .lessons__table-box {
   margin-bottom: 5rem;
+  border: 1px solid $white;
+  padding: 4px;
 }
 .lessons {
   padding: 2rem 4rem;
@@ -399,5 +448,17 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+.search-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.autocomplete-box {
+  display: flex;
+  align-items: center;
+  width: 35rem;
+  gap: 2rem;
+  margin-left: 0.25rem;
 }
 </style>

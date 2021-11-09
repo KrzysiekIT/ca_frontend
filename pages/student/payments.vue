@@ -1,23 +1,9 @@
 <template>
   <div class="users" v-if="users">
-    <!-- {{ $t("general.show_months") }} {{ $t("general.from") }}
+    {{ $t("general.show_months") }} {{ $t("general.from") }}
     <input type="number" class="payments__input" v-model="monthInterval.from" />
     {{ $t("general.to") }}
-    <input type="number" v-model="monthInterval.to" class="payments__input" /> -->
-    <div>{{ $t("general.billing_period") }}</div>
-    {{ $t("general.year") }}
-    <select v-model="selectedYear">
-      <option v-for="year in years" :value="year" :key="year">
-        {{ year }}
-      </option>
-    </select>
-    {{ $t("general.month") }}
-    <select v-model="selectedMonth">
-      <option v-for="month in months" :value="month" :key="month">
-        {{ month }}
-      </option>
-    </select>
-    <button @click="changeFromAndTo()">{{ $t("general.show") }}</button>
+    <input type="number" v-model="monthInterval.to" class="payments__input" />
     <client-only>
       <data-table
         :fields="fieldsWithMonths"
@@ -29,52 +15,24 @@
     <div class="payments-data">
       <label>
         <div>{{ $t("general.payments_data") }}</div>
-        <textarea
-          v-model.lazy="paymentsInfo"
-          @change="sendPaymentInfo"
-          class="payments-area"
-        />
+        <p class="payments-area">
+          {{ paymentsInfo }}
+        </p>
       </label>
     </div>
   </div>
 </template>
 <script>
+import user from "~/mixins/user.js";
 export default {
+  mixins: [user],
   methods: {
-    monthDiff(today, selectedYear, selectedMonth) {
-      let months;
-      months = (today.getFullYear() - selectedYear) * 12;
-      months -= selectedMonth;
-      months += today.getMonth();
-      return months;
-    },
-    changeFromAndTo() {
-      const todayDate = new Date();
-      const monthDiff = this.monthDiff(
-        todayDate,
-        this.selectedYear,
-        this.selectedMonth - 1
-      );
-      this.monthInterval.from = -monthDiff;
-      this.monthInterval.to = -monthDiff + 5;
-    },
     padZeros(number, length) {
       let my_string = "" + number;
       while (my_string.length < length) {
         my_string = "0" + my_string;
       }
       return my_string;
-    },
-    sendPaymentInfo() {
-      this.$store.dispatch("auth/request", {
-        method: "put",
-        url: `single/payment_data`,
-        data: {
-          newValues: {
-            body: this.paymentsInfo
-          }
-        }
-      });
     },
     preparePaymentDate(startDate, paymentOrder) {
       startDate = startDate.substring(0, 7);
@@ -108,7 +66,7 @@ export default {
           newField.name = dateToShow;
           newField.label = dateToShow;
           newField.filter = { active: false, value: "", selected: false };
-          newField.component = "payment";
+          newField.component = "no-editable";
           newField.options = { field: [dateToShow, "amount"] };
           toAdd.push(newField);
         }
@@ -119,15 +77,11 @@ export default {
   },
   data() {
     return {
-      years: [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
-      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-      selectedMonth: 1,
-      selectedYear: 2020,
       payments: [],
       paymentsInfo: "",
       monthInterval: {
         from: 0,
-        to: 5
+        to: 0
       },
       apiUrl: "students",
       selectOptions: {
@@ -179,51 +133,16 @@ export default {
         {
           name: "name",
           label: this.$t("general.name"),
-          filter: { active: true, value: "", selected: false },
+          filter: { active: false, value: "", selected: false },
           component: "no-editable",
           options: { field: ["name"] }
         },
         {
           name: "surname",
           label: this.$t("general.surname"),
-          filter: { active: true, value: "", selected: false },
+          filter: { active: false, value: "", selected: false },
           component: "no-editable",
           options: { field: ["surname"] }
-        },
-        {
-          name: "birthYear",
-          label: this.$t("settings.birth_year"),
-          filter: { active: false, value: "", selected: false },
-          component: "no-editable",
-          options: { field: ["birthYear"] }
-        },
-        {
-          name: "parentFullName",
-          label: this.$t("general.parent_full_name"),
-          filter: { active: true, value: "", selected: false },
-          component: "no-editable",
-          options: { field: ["parent", "fullName"] }
-        },
-        {
-          name: "parentEmail",
-          label: this.$t("general.parent_email"),
-          filter: { active: true, value: "", selected: false },
-          component: "no-editable",
-          options: { field: ["parent", "email"] }
-        },
-        {
-          name: "parentPhoneNumber",
-          label: this.$t("general.parent_phone"),
-          filter: { active: false, value: "", selected: false },
-          component: "no-editable",
-          options: { field: ["parent", "phoneNumber"] }
-        },
-        {
-          name: "emptyField",
-          label: this.$t("general.enter_the_amount"),
-          filter: { active: false, value: "", selected: false },
-          component: "next-payment",
-          options: { field: [''] }
         }
       ],
       users: null
@@ -232,15 +151,11 @@ export default {
   async fetch() {
     const payments = await this.$store.dispatch("auth/request", {
       method: "get",
-      url: `payments`
+      url: `payments/`
     });
     this.payments = payments.data;
 
     const toFetch = [
-      this.$store.dispatch("auth/request", {
-        method: "get",
-        url: "students"
-      }),
       this.$store.dispatch("auth/request", {
         method: "get",
         url: "groups"
@@ -251,10 +166,11 @@ export default {
       })
     ];
     const apiReponses = await Promise.all(toFetch);
-    let [backendStudents, groups, paymentsInfo] = apiReponses;
-    backendStudents = backendStudents.data;
+    let [groups, paymentsInfo] = apiReponses;
+    let backendStudents = [this.user];
     groups = groups.data;
     this.paymentsInfo = paymentsInfo.data[0].body;
+    console.log(this.paymentsInfo);
     this.selectOptions.groups = groups.map(
       ({
         id,
@@ -328,12 +244,6 @@ export default {
       };
     });
 
-    if (this.$route.params.id) {
-      frontendStudents = frontendStudents.filter(
-        user => user.id === +this.$route.params.id
-      );
-    }
-
     this.users = frontendStudents;
   }
 };
@@ -346,8 +256,7 @@ export default {
   margin-top: 4rem;
 }
 .payments-area {
-  min-width: 50%;
-  min-height: 10rem;
+  white-space: pre-line;
   margin-top: 0.5rem;
 }
 </style>
