@@ -61,6 +61,7 @@ module.exports = {
   add_video: "Dodaj film",
   add_folder: "Dodaj folder",
   add_file: "Dodaj plik",
+  add_movie: "Dodaj film",
   url: "Url",
   title_polish: "Polski tytuł",
   title_english: "Angielski tytuł",
@@ -106,6 +107,7 @@ module.exports = {
   label: "Nazwa",
   file: "Plik",
   folder: "Folder",
+  link: "Link",
   new_filename: "Nowa nazwa pliku",
   name_and_surname: "Imię i nazwisko",
   type_of_group: "Rodzaj grupy",
@@ -129,5 +131,6 @@ module.exports = {
   approve_file_remove: "Potwierdź usunięcie",
   file_remove_question: "Czy na pewno chcesz usunąć",
   folder_name: "Nazwa folderu",
-  file_name: "Nazwa pliku"
+  file_name: "Nazwa pliku",
+  movie_name: "Nazwa filmu"
 };

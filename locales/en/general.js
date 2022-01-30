@@ -59,7 +59,8 @@ module.exports = {
   back: "Back",
   add_video: "Add video",
   add_folder: "Add folder",
-  add_file: "Add File",
+  add_file: "Add file",
+  add_movie: "Add movie",
   url: "Url",
   title_polish: "Polish title",
   title_english: "English title",
@@ -104,6 +105,7 @@ module.exports = {
   label: "Name",
   file: "File",
   folder: "Folder",
+  link: "Link",
   new_filename: "New filename",
   name_and_surname: "Name and surname",
   type_of_group: "Type of group",
@@ -127,5 +129,6 @@ module.exports = {
   approve_file_remove: "Approve removing",
   file_remove_question: "Are you sure you want to remove",
   folder_name: "Folder name",
-  file_name: "File name"
+  file_name: "File name",
+  file_name: "Movie name"
 };

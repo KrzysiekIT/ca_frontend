@@ -1,233 +1,303 @@
 <template>
-  <div>
-    <section class="tm">
-      <div class="movies__button-box">
-        <label class="login--label">
-          <span class="login--label__input">
-            {{ $t("general.new_filename") }}:
-          </span>
-          <input class="login--input" v-model="newFile.name" />
+  <div class="fs">
+    <div v-for="(file, index) in files" :key="file + index" class="fs__file">
+      <nuxt-link
+        class="link"
+        :to="localePath(`/admin/teaching-materials/${file.id}`)"
+        v-if="file.type === 'folder'"
+      >
+        {{ `📁  ${file.name}` }}
+      </nuxt-link>
+      <a
+        v-else-if="file.type === 'file'"
+        class="link"
+        :href="`${apiUrl}/file/${file.name}`"
+        target="openFile"
+        @click="isFileOpen = true"
+      >
+        {{ `🔗 ${file.name}` }}
+      </a>
+      <a
+        v-else-if="file.type === 'movie'"
+        class="link"
+        :href="file.link.replace('watch?v=', '/embed/')"
+        target="openFile"
+        @click="isFileOpen = true"
+      >
+        {{ `🎥 ${file.name}` }}
+      </a>
+
+      <button class="fs__remove" @click="prepareToRemove(file)">
+        {{ $t("general.remove") }}
+      </button>
+    </div>
+    <div class="fs__actions">
+      <div class="fs__action">
+        <label>
+          {{ $t("general.folder_name") }}
+          <input v-model="folderToAddName" />
         </label>
-        <label class="login--label">
-          <span class="login--label__input">{{ $t("general.file") }}:</span>
-          <input
-            class="login--input--file"
-            type="file"
-            @change="handleFileChange($event)"
-          />
-        </label>
-        <label class="login--label">
-          <span class="login--label__input"
-            >{{ $t("general.title_polish") }}:</span
-          >
-          <input class="login--input" v-model="newFile.description_pl" />
-        </label>
-        <label class="login--label">
-          <span class="login--label__input"
-            >{{ $t("general.title_english") }}:</span
-          >
-          <input class="login--input" v-model="newFile.description_en" />
-        </label>
-        <div class="movies__add-button-box">
-          <button class="add__button add__button--default" @click="addFile">
-            {{ $t("general.add_file") }}
-          </button>
-        </div>
+        <button @click="addFolder(folderToAddName)" class="fs__add">
+          {{ $t("general.add_folder") }}
+        </button>
       </div>
-      <ul class="tm__files">
-        <li class="tm__file" v-for="(file, index) in files" :key="file.id">
-          <a
-            class="link"
-            :href="`${apiUrl}/file/${file.name}`"
-            target="openFile"
-            @click="isOpen = true"
-          >
-            🔗 {{ file[`description_${$i18n.locale}`] }}
-          </a>
-          <fa
-            class="tm__icon"
-            :title="$t('general.remove')"
-            icon="minus-circle"
-            @click="remove(index)"
-          />
-        </li>
-      </ul>
-    </section>
-    <div class="file-opener" v-show="isOpen">
-      <button class="file-close" @click="isOpen = false">X</button>
+      <div class="fs__action">
+        <div>
+          <label>
+            {{ $t("general.file_name") }}
+            <input v-model="newFile.name" />
+          </label>
+          <label>
+            <br />
+            {{ $t("general.file") }}
+            <input type="file" @change="handleFileChange($event)" />
+          </label>
+        </div>
+        <button class="fs__add" @click="addFile">
+          {{ $t("general.add_file") }}
+        </button>
+      </div>
+      <div class="fs__action">
+        <div>
+          <label>
+            {{ $t("general.movie_name") }}
+            <input v-model="newMovie.name" />
+          </label>
+          <label>
+            <br />
+            {{ $t("general.link") }}
+            <input v-model="newMovie.link" />
+          </label>
+        </div>
+        <button class="fs__add" @click="addMovie()">
+          {{ $t("general.add_movie") }}
+        </button>
+      </div>
+    </div>
+    <app-modal
+      v-show="isModalVisible"
+      @close="closeModal"
+      @ok="removeFile"
+      @no="closeModal"
+    >
+      <template v-slot:header>
+        {{ $t("general.approve_file_remove") }}
+      </template>
+
+      <template v-slot:body>
+        <span
+          v-html="
+            `${$t('general.file_remove_question')} <strong>${
+              fileToRemove.name
+            }</strong>?`
+          "
+        />
+      </template>
+    </app-modal>
+    <div class="file-opener" v-if="isFileOpen">
+      <button class="file-close" @click="isFileOpen = false">X</button>
       <iframe name="openFile" class="openFile" />
     </div>
   </div>
 </template>
 <script>
 export default {
-  async created() {
-    let filesResponse = await this.$store.dispatch("auth/request", {
-      method: "get",
-      url: `files/folder/${this.$route.params.id}`
-    });
-    let files = filesResponse.data;
-    files = files.map(file => {
-      return {
-        id: file.id,
-        description_pl: file.description_pl,
-        description_en: file.description_en,
-        name: file.name
-      };
-    });
-    this.files = files;
+  name: "TeachingMaterials",
+  components: {
+    AppModal: () => import("@/components/AppModal.vue"),
+  },
+  created() {
+    const parentId = this.$route.params.id;
+    this.currentParent = parentId ? +parentId : 0;
+  },
+  watch: {
+    $route(to) {
+      this.currentParent = to.params.id ? +to.params.id : 0;
+    },
+    currentParent: {
+      handler(newValue) {
+        if (newValue !== null && newValue !== undefined) {
+          this.getFiles(newValue);
+        }
+      },
+      immediate: true,
+    },
   },
   data() {
     return {
-      isOpen: false,
-      newFile: {
-        description_pl: "",
-        description_en: "",
-        name: "",
-        file: null
-      },
       files: [],
-      apiUrl: process.env.API_URL
+      isFileOpen: false,
+      currentParent: null,
+      isModalVisible: false,
+      folderToAddName: "",
+      fileToAdd: null,
+      fileToRemove: {
+        id: "",
+        name: "",
+      },
+      newFile: {
+        name: "",
+        file: null,
+      },
+      newMovie: {
+        name: "",
+        link: "",
+      },
+      apiUrl: process.env.API_URL,
     };
   },
   methods: {
     handleFileChange(evt) {
       this.newFile.file = evt.target.files[0];
-      console.log(this.newFile.file);
     },
-    async addFile() {
-      const bodyFormData = new FormData();
-      bodyFormData.append("name", this.newFile.name);
-      bodyFormData.append("description_pl", this.newFile.description_pl);
-      bodyFormData.append("description_en", this.newFile.description_en);
-      bodyFormData.append("folder_id", +this.$route.params.id);
-      bodyFormData.append("new_file", this.newFile.file);
-      let newFile = await this.$store.dispatch("auth/request", {
-        method: "post",
-        url: "files",
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      newFile = newFile.data[1][0];
-      this.files.push(newFile);
-      this.newFile = {
-        description_pl: "",
-        description_en: "",
-        name: "",
-        file: null
-      };
+    closeModal() {
+      this.isModalVisible = false;
     },
-    async remove(index) {
+    prepareToRemove(file) {
+      this.fileToRemove = file;
+      this.isModalVisible = true;
+    },
+    async removeFile() {
       await this.$store.dispatch("auth/request", {
         method: "delete",
-        url: `files/${this.files[index].id}`
+        url: `teaching-materials/${this.fileToRemove.id}`,
       });
-      this.files.splice(index, 1);
-    }
-  }
+      await this.getFiles(this.currentParent);
+      this.isModalVisible = false;
+    },
+
+    async addFolder(name) {
+      if (!name) {
+        return;
+      }
+      const newData = {};
+      if (this.currentParent !== 0) {
+        newData.parent_id = this.currentParent;
+      }
+      newData.name = name;
+      newData.type = "folder";
+
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: `teaching-materials/`,
+        data: { values: { ...newData } },
+      });
+      await this.getFiles(this.currentParent);
+    },
+
+    async addMovie() {
+      if (!this.newMovie.name) {
+        return;
+      }
+      if (!this.newMovie.link) {
+        return;
+      }
+      const newData = {};
+      if (this.currentParent !== 0) {
+        newData.parent_id = this.currentParent;
+      }
+      newData.name = this.newMovie.name;
+      newData.type = "movie";
+      newData.link = this.newMovie.link;
+
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: `teaching-materials/`,
+        data: { values: { ...newData } },
+      });
+      await this.getFiles(this.currentParent);
+    },
+
+    async addFile() {
+      if (!this.newFile.name) {
+        return;
+      }
+      if (!this.newFile.file) {
+        return;
+      }
+      const bodyFormData = new FormData();
+      if (this.currentParent !== 0) {
+        bodyFormData.append("parent_id", this.currentParent);
+      }
+      bodyFormData.append("name", this.newFile.name);
+      bodyFormData.append("type", "file");
+      bodyFormData.append("new_file", this.newFile.file);
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: "teaching-materials/file",
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      await this.getFiles(this.currentParent);
+    },
+    async getFiles(id) {
+      const files = await this.$store.dispatch("auth/request", {
+        method: "get",
+        url: `teaching-materials/${id}`,
+      });
+      this.files = files.data;
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
-.tm__files {
-  list-style: none;
-  font-size: 3rem;
-}
-.tm__icon {
-  margin-left: 5rem;
-  cursor: pointer;
-  color: $red;
-  transform: scale(0.5);
-}
-.movies {
-  display: flex;
-  flex-wrap: wrap;
-}
-.movies__button-box {
-  width: 100%;
-  padding-left: 2rem;
-}
-.movies__movie-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1rem;
-}
-.movies__title {
-  max-width: 16rem;
-  text-align: center;
-}
-.add__button {
-  border: none;
-  border-radius: $appRadius;
-  color: $white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-left: 0.5rem;
-  min-width: 8rem;
-  outline: none;
-  padding: 0.625rem;
-}
-.add__button:active {
-  transform: scale(0.95);
-}
-.add__button--default {
-  background-color: $resultNeutralBlue;
-}
-.add__button--default:hover {
-  background-color: darken($resultNeutralBlue, 15%);
-}
-.movies__input {
-  display: block;
-  width: 100%;
-}
-.movies__add-button-box {
-  display: flex;
-  width: 26rem;
-  justify-content: flex-end;
-}
-.login--label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.25rem;
-  width: 26rem;
-  font-size: 1rem;
-  padding-bottom: 0.25rem;
-}
-.login--input {
-  border: none;
-  border-radius: $appRadius;
-  display: block;
-  font-size: 1rem;
-  padding: 0.1rem;
-  padding-left: 0.25rem;
-}
-.login--input--file {
-  border: none;
-  border-radius: $appRadius;
-  display: block;
-  font-size: 1rem;
-}
-.login--select {
-  border: none;
-  border-radius: $appRadius;
-  display: block;
-  font-size: 1rem;
-  padding: 0.1rem;
-  width: 12rem;
-  padding-left: 0.25rem;
-}
-.login--label__input {
-  display: block;
-}
-.login--link {
-  color: #3c69bd;
-  font-size: 1.5rem;
-  text-decoration: none;
-}
-input:focus {
-  box-shadow: 0 0 0 0.125rem #d48a0b;
-  outline: none;
+.fs {
+  margin-bottom: 5rem;
+  &__file {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    padding: 0.25rem;
+  }
+
+  &__remove {
+    margin-left: 6rem;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    color: $white;
+    background-color: $red;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(2px);
+    }
+  }
+
+  &__actions {
+    margin-top: 5rem;
+    font-size: 2rem;
+  }
+
+  &__action {
+    display: grid;
+    grid-template-columns: 26rem 16rem;
+    margin-bottom: 2rem;
+  }
+
+  &__add {
+    font-size: 2rem;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    background-color: $green;
+    align-self: center;
+    padding: 1rem 2rem;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(2px);
+    }
+  }
 }
 .file-opener {
   position: absolute;
@@ -235,6 +305,7 @@ input:focus {
   left: 0;
   width: 100vw;
   height: 90vh;
+  background-color: rgba($darkBackground, 0.8);
 }
 .openFile {
   position: absolute;
