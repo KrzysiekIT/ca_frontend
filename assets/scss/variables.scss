@@ -152,8 +152,18 @@ $red: #f00;
 }
 
 .link {
+  display: inline-block;
   &:any-link {
     color: $white;
     text-decoration: none;
+
+    &:hover {
+      color: lighten($green, 20%);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(2px);
+    }
   }
 }

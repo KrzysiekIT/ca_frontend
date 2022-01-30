@@ -105,6 +105,7 @@ module.exports = {
   back: "Cofnij",
   label: "Nazwa",
   file: "Plik",
+  folder: "Folder",
   new_filename: "Nowa nazwa pliku",
   name_and_surname: "Imię i nazwisko",
   type_of_group: "Rodzaj grupy",
@@ -121,5 +122,12 @@ module.exports = {
   no_students: "Brak uczniów",
   payments_data: "Dane do płatności",
   billing_period: "Okres rozliczeniowy",
-  enter_the_amount: "Wprowadź kwotę"
+  enter_the_amount: "Wprowadź kwotę",
+  future_skills: "Umiejętności przyszłości",
+  approve: "Potwierdź",
+  cancel: "Anuluj",
+  approve_file_remove: "Potwierdź usunięcie",
+  file_remove_question: "Czy na pewno chcesz usunąć",
+  folder_name: "Nazwa folderu",
+  file_name: "Nazwa pliku"
 };

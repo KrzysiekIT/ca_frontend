@@ -103,6 +103,7 @@ module.exports = {
   back: "Back",
   label: "Name",
   file: "File",
+  folder: "Folder",
   new_filename: "New filename",
   name_and_surname: "Name and surname",
   type_of_group: "Type of group",
@@ -119,5 +120,12 @@ module.exports = {
   no_students: "No students",
   payments_data: "Payments data",
   billing_period: "Billing period",
-  enter_the_amount: "Enter the amount"
+  enter_the_amount: "Enter the amount",
+  future_skills: "Skills of the future",
+  approve: "Approve",
+  cancel: "Cancel",
+  approve_file_remove: "Approve removing",
+  file_remove_question: "Are you sure you want to remove",
+  folder_name: "Folder name",
+  file_name: "File name"
 };

@@ -16,11 +16,11 @@
         <NavigationAdmin /> </slide-menu
     ></client-only>
     <header class="header">
-        <img
-          src="~/assets/images/logo.png"
-          alt="Champions academy"
-          class="logo"
-        />
+      <img
+        src="~/assets/images/logo.png"
+        alt="Champions academy"
+        class="logo"
+      />
       <section class="header--middle">
         <div class="header--upper">
           <figure class="user--box">
@@ -82,7 +82,9 @@
       </section>
     </header>
     <header class="page--middle-header">
-      {{ getRouteName(currentRouteName) }}
+      <h1>
+        {{ getRouteName(currentRouteName) }}
+      </h1>
     </header>
     <div class="page--middle">
       <main class="main">
@@ -96,7 +98,7 @@ import group from "~/mixins/group.vue";
 export default {
   middleware: "auth",
   meta: {
-    auth: { authority: 7 }
+    auth: { authority: 7 },
   },
   mixins: [group],
   layout: "default",
@@ -105,8 +107,8 @@ export default {
       roles: [
         { value: 1, label: "Superadmin" },
         { value: 2, label: "Admin" },
-        { value: 3, label: "Trener" }
-      ]
+        { value: 3, label: "Trener" },
+      ],
     };
   },
   computed: {
@@ -121,12 +123,12 @@ export default {
       const splittedRouteName = this.$route.name.split("-");
       splittedRouteName.shift();
       return splittedRouteName.join("_");
-    }
+    },
   },
   methods: {
     getHeaderTitle(user) {
       const roles = this.roles;
-      let currentRole = roles.find(role => role.value === user.role.bit);
+      let currentRole = roles.find((role) => role.value === user.role.bit);
       if (currentRole) {
         currentRole = `${currentRole.label} `;
       }
@@ -145,6 +147,12 @@ export default {
       if (currentRouteName === "terms") {
         return this.$t(`general.terms_of_use`);
       }
+      if (currentRouteName.startsWith("lesson_future_skills")) {
+        return this.$t(`general.future_skills`);
+      }
+      if (currentRouteName.startsWith("lesson_fast_reading")) {
+        return this.$t(`general.fast_reading`);
+      }
       return currentRouteName && this.$t(`general.${currentRouteName}`);
     },
     logOut() {
@@ -159,8 +167,8 @@ export default {
         this.$refs["slide-menu"].$el.firstChild.firstChild.style.width =
           "27rem";
       }, 0);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -172,7 +180,7 @@ export default {
   padding-bottom: 1rem;
   width: 100%;
   padding-left: 3rem;
-  border-bottom: 2px solid darken($mainBackground, 5);;
+  border-bottom: 2px solid darken($mainBackground, 5);
   background-color: $mainBackground;
   z-index: 10;
   top: 0;
@@ -259,7 +267,7 @@ $headerEndWidth: 10rem;
 .main {
   /* background-color: #fff; */
   min-width: 100%;
-  padding: 2rem;
+  padding: 1rem 0 0 2rem;
 }
 
 @media only screen and (max-width: 800px) {
