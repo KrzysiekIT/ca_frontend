@@ -132,10 +132,10 @@ export default {
       apiUrl: "students",
       selectOptions: {
         statuses: [
-          { value: 4, label: "Blokada" },
-          { value: 3, label: "Nieaktywny" },
-          { value: 2, label: "Pauza" },
-          { value: 1, label: "Aktywny" }
+          { value: 4, label: this.$t('general.status_blocked') },
+          { value: 3, label: this.$t('general.status_inactive') },
+          { value: 2, label: this.$t('general.status_pause') },
+          { value: 1, label: this.$t('general.status_active') }
         ],
         groups: [],
         days: [

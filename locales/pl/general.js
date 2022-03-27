@@ -133,5 +133,10 @@ module.exports = {
   folder_name: "Nazwa folderu",
   file_name: "Nazwa pliku",
   movie_name: "Nazwa filmu",
-  empty: "Wolne"
+  empty: "Wolne",
+  status_active: "Aktywny",
+  status_inactive: "Nieaktywny",
+  status_pause: "Pauza",
+  status_blocked: "Zablokowany",
+  unknown: "Nieznany"
 };

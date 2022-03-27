@@ -83,22 +83,30 @@
         </ul>
       </section>
       <section class="header--end">
-        <nuxt-link
-          :to="localePath(`/student/payments`)"
-          class="link"
-          :title="$t('general.show_payments_data')"
-        >
+        <div>
+          <nuxt-link
+            :to="localePath(`/student/payments`)"
+            class="link"
+            :title="$t('general.show_payments_data')"
+          >
+            <img
+              src="~/assets/images/money.svg"
+              alt="Money icon"
+              class="header__image--end"
+            />
+          </nuxt-link>
           <img
-            src="~/assets/images/money.svg"
-            alt="Money icon"
-            class="header__image--end"
+            src="~/assets/images/sad.svg"
+            alt="Sad icon"
+            class="header__image--end face"
           />
-        </nuxt-link>
-        <img
-          src="~/assets/images/sad.svg"
-          alt="Sad icon"
-          class="header__image--end face"
-        />
+        </div>
+        <p class="status">
+          <strong>{{ $t("general.status") }}</strong>
+          <span :class="getStatusClass(user.status)">{{
+            getStatusLabel(user.status)
+          }}</span>
+        </p>
       </section>
     </header>
     <div class="page--middle">
@@ -113,10 +121,20 @@ import group from "~/mixins/group.vue";
 export default {
   middleware: "auth",
   meta: {
-    auth: { authority: 8 }
+    auth: { authority: 8 },
   },
   mixins: [group],
   layout: "default",
+  data() {
+    return {
+      statuses: [
+        { value: 4, label: this.$t("general.status_blocked") },
+        { value: 3, label: this.$t("general.status_inactive") },
+        { value: 2, label: this.$t("general.status_pause") },
+        { value: 1, label: this.$t("general.status_active") },
+      ],
+    };
+  },
   computed: {
     user() {
       return (this.$store.state.auth || {}).user || null;
@@ -124,7 +142,7 @@ export default {
     availableLocales() {
       return this.$i18n
         .locales /* .filter(i => i.code !== this.$i18n.locale) */;
-    }
+    },
   },
   methods: {
     handleOpenMenu() {
@@ -139,8 +157,20 @@ export default {
         this.$store.commit("movies/reset");
         this.$router.push("/");
       });
-    }
-  }
+    },
+    getStatusLabel(statusId) {
+      const statusIndex = this.statuses
+        .map(({ value }) => value)
+        .indexOf(statusId);
+      if (statusIndex > -1) {
+        return this.statuses[statusIndex].label;
+      }
+      return this.$t("general.unknown");
+    },
+    getStatusClass(statusId) {
+      return statusId === 1 ? "green" : "red";
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -171,6 +201,7 @@ $headerEndWidth: 10rem;
 }
 .header--end {
   display: flex;
+  flex-direction: column;
   width: $headerEndWidth;
 }
 .header__image--end {
@@ -258,5 +289,14 @@ $headerEndWidth: 10rem;
 .face {
   margin-left: 0.25rem;
   transform: scale(0.63);
+}
+.status {
+  text-transform: uppercase;
+}
+.red {
+  color: $red;
+}
+.green {
+  color: $green;
 }
 </style>
