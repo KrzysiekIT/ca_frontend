@@ -138,5 +138,6 @@ module.exports = {
   status_inactive: "Nieaktywny",
   status_pause: "Pauza",
   status_blocked: "Zablokowany",
-  unknown: "Nieznany"
+  unknown: "Nieznany",
+  show_links: "Pokaż linki"
 };

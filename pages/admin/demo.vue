@@ -106,7 +106,7 @@
                     title="Generuj link"
                     @click="generateLink(demoLesson)"
                   >
-                    {{ $t("general.generate") }}
+                    {{ $t("general.show_links") }}
                   </button>
                   <a
                     class="demo__button-img"
@@ -140,13 +140,13 @@
             }}</span>
             <li
               class="demo__item"
-              v-for="demoLesson in generatedLinks"
-              :key="demoLesson.id"
+              v-for="link in generatedLinks"
+              :key="link"
             >
               <client-only>
-                <span class="demo__link" :href="demoLesson.link">
-                  {{ getFullLink(demoLesson.link) }}
-                </span>
+                <a class="demo__link" :href="getFullLink(link)" target="_blank">
+                  {{ getFullLink(link) }}
+                </a>
               </client-only>
             </li>
           </ol>
@@ -168,12 +168,12 @@ export default {
     const toFetch = [
       this.$store.dispatch("auth/request", {
         method: "get",
-        url: "trainers"
+        url: "trainers",
       }),
       this.$store.dispatch("auth/request", {
         method: "get",
-        url: "demo"
-      })
+        url: "demo",
+      }),
     ];
     const apiReponses = await Promise.all(toFetch);
     let [trainers, demo] = apiReponses;
@@ -183,22 +183,31 @@ export default {
     this.trainers = trainers.map(({ id, name, surname }) => {
       return {
         id,
-        fullName: `${name} ${surname}`
+        fullName: `${name} ${surname}`,
       };
     });
 
-    this.demoLessons = demo.map(demoLesson => {
+    this.demoLessons = demo.map((demoLesson) => {
       return {
         ...demoLesson,
         date: `${demoLesson.day} ${demoLesson.hour}`,
         trainerId: demoLesson.trainer_id,
-        studentsNumber: demoLesson.students_number
+        studentsNumber: demoLesson.students_number,
       };
     });
   },
   computed: {
     generatedLinks() {
-      return this.demoLessons.filter(demoLesson => {
+      const currentDemoLessonIndex = this.demoLessons
+        .map(({ id }) => id)
+        .indexOf(this.selectedDemo);
+      if (currentDemoLessonIndex > -1) {
+        const currentDemoLesson = this.demoLessons[currentDemoLessonIndex];
+        console.log(currentDemoLesson);
+        return currentDemoLesson.link.split(";");
+      }
+      return [];
+      return this.demoLessons.filter((demoLesson) => {
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, "0");
         const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -210,15 +219,16 @@ export default {
 
         return demoLesson.link && isTheSameDay;
       });
-    }
+    },
   },
   data() {
     return {
+      selectedDemo: null,
       newDemo: {
         hour: "12:00",
         day: new Date(),
         trainerId: 3,
-        studentsNumber: 4
+        studentsNumber: 4,
       },
       hours: (() => {
         const hours = Array.from(Array(24).keys());
@@ -242,8 +252,8 @@ export default {
         { name: "lp", label: "Lp. " },
         { name: "datetime", label: this.$t("general.datetime") },
         { name: "trainer", label: this.$t("general.trainer_full_name") },
-        { name: "studentNumber", label: this.$t("general.number_of_students") }
-      ]
+        { name: "studentNumber", label: this.$t("general.number_of_students") },
+      ],
     };
   },
   methods: {
@@ -267,87 +277,85 @@ export default {
       await this.$store.dispatch("auth/request", {
         method: "post",
         url: `demo`,
-        data: { values: newDemo }
+        data: { values: newDemo },
       });
 
       let newDemos = await this.$store.dispatch("auth/request", {
         method: "get",
-        url: "demo"
+        url: "demo",
       });
       newDemos = newDemos.data;
-      this.demoLessons = newDemos.map(demoLesson => {
+      this.demoLessons = newDemos.map((demoLesson) => {
         return {
           ...demoLesson,
           date: `${demoLesson.day} ${demoLesson.hour}`,
           trainerId: demoLesson.trainer_id,
-          studentsNumber: demoLesson.students_number
+          studentsNumber: demoLesson.students_number,
         };
       });
     },
     async removeDemo(demoId) {
       await this.$store.dispatch("auth/request", {
         method: "delete",
-        url: `demo/${demoId}`
+        url: `demo/${demoId}`,
       });
       let newDemos = await this.$store.dispatch("auth/request", {
         method: "get",
-        url: "demo"
+        url: "demo",
       });
       newDemos = newDemos.data;
-      this.demoLessons = newDemos.map(demoLesson => {
+      this.demoLessons = newDemos.map((demoLesson) => {
         return {
           ...demoLesson,
           date: `${demoLesson.day} ${demoLesson.hour}`,
           trainerId: demoLesson.trainer_id,
-          studentsNumber: demoLesson.students_number
+          studentsNumber: demoLesson.students_number,
         };
       });
     },
     async generateLink(demo) {
-      if (demo.link) {
-        return;
-      }
-      await this.$store.dispatch("auth/request", {
-        method: "patch",
-        url: `demo/generate/${demo.id}`
-      });
+      this.selectedDemo = demo.id;
+      // await this.$store.dispatch("auth/request", {
+      //   method: "patch",
+      //   url: `demo/generate/${demo.id}`
+      // });
       let newDemo = await this.$store.dispatch("auth/request", {
         method: "get",
-        url: "demo"
+        url: "demo",
       });
       newDemo = newDemo.data;
-      this.demoLessons = newDemo.map(demoLesson => {
+      this.demoLessons = newDemo.map((demoLesson) => {
         return {
           ...demoLesson,
           date: `${demoLesson.day} ${demoLesson.hour}`,
           trainerId: demoLesson.trainer_id,
-          studentsNumber: demoLesson.students_number
+          studentsNumber: demoLesson.students_number,
         };
       });
     },
     getTableData(name, lessonIndex) {
       const handleName = {
-        lp: lessonIndex => {
+        lp: (lessonIndex) => {
           return lessonIndex + 1;
         },
-        datetime: lessonIndex => {
+        datetime: (lessonIndex) => {
           return this.demoLessons[lessonIndex].date;
         },
-        trainer: lessonIndex => {
+        trainer: (lessonIndex) => {
           const selectedTrainer = this.demoLessons[lessonIndex].trainerId;
           const trainerIndex = this.trainers
-            .map(trainer => trainer.id)
+            .map((trainer) => trainer.id)
             .indexOf(selectedTrainer);
           return this.trainers[trainerIndex]?.fullName;
         },
-        studentNumber: lessonIndex => {
+        studentNumber: (lessonIndex) => {
           return this.demoLessons[lessonIndex].studentsNumber;
-        }
+        },
       };
 
       return handleName[name]?.(lessonIndex);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
