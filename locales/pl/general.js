@@ -132,5 +132,6 @@ module.exports = {
   file_remove_question: "Czy na pewno chcesz usunąć",
   folder_name: "Nazwa folderu",
   file_name: "Nazwa pliku",
-  movie_name: "Nazwa filmu"
+  movie_name: "Nazwa filmu",
+  empty: "Wolne"
 };

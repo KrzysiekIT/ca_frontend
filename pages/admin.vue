@@ -153,6 +153,15 @@ export default {
       if (currentRouteName.startsWith("lesson_fast_reading")) {
         return this.$t(`general.fast_reading`);
       }
+      if (currentRouteName.startsWith("lesson_movies")) {
+        return this.$t(`general.movies`);
+      }
+      if (currentRouteName.startsWith("lesson_abacus")) {
+        return this.$t(`general.abacus`);
+      }
+      if (currentRouteName.startsWith("lesson_anzan")) {
+        return this.$t(`general.anzan`);
+      }
       return currentRouteName && this.$t(`general.${currentRouteName}`);
     },
     logOut() {

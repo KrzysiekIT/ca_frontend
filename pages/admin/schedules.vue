@@ -55,7 +55,7 @@ export default {
           const newUsersNumber = maxStudentsInGroup - numberOfUsers;
           for (let i = 0; i < newUsersNumber; i++) {
             const newUser = JSON.parse(JSON.stringify(this.users[userIndex]));
-            newUser.fullName = "-----";
+            newUser.fullName = this.$t('general.empty')
             newUser.birthYear = "";
             usersWithEmpty.push(newUser);
           }

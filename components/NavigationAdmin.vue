@@ -25,9 +25,7 @@
                 :alt="img.alt"
                 class="navigation__image"
               />
-              <template v-else>
-                -
-              </template>
+              <template v-else> - </template>
               {{ `${sublink.label} ` }}
             </nuxt-link>
           </li>
@@ -41,14 +39,34 @@ import user from "~/mixins/user.js";
 export default {
   computed: {
     filteredNavigation: function() {
-      const newNavigation = this.navigation;
-      if (this.user?.role?.name === "superadmin" && !this.subNavAdded) {
-        this.navigation[2].sub.push({
-          label: this.$t("general.terms_of_use"),
-          link: "terms",
-          img: { file: "terms_of_use.svg", alt: "Terms of use icon" }
-        });
-        this.subNavAdded = true;
+      let newNavigation = this.navigation;
+      const isSuperAdminRole = !!(this.user?.role?.name === "superadmin");
+      if (isSuperAdminRole && !this.subNavAdded) {
+        const lessonsNavIndex = this.navigation
+          .map(({ id }) => id)
+          .indexOf("lessons");
+        if (lessonsNavIndex !== -1) {
+          newNavigation[lessonsNavIndex].sub.push({
+            label: this.$t("general.terms_of_use"),
+            link: "terms",
+            img: { file: "terms_of_use.svg", alt: "Terms of use icon" }
+          });
+          this.subNavAdded = true;
+        }
+      }
+      if (isSuperAdminRole) {
+        const trainersNav = {
+          label: this.$t("general.trainers"),
+          link: "trainers/",
+          img: { file: "trainers.svg", alt: "trainers icon white" },
+          sub: []
+        }
+        const usersNavIndex = newNavigation
+          .map(({ id }) => id)
+          .indexOf("users");
+        if(usersNavIndex!==-1) {
+          newNavigation.splice(usersNavIndex+1, 0, trainersNav)
+        }
       }
       return newNavigation;
     }
@@ -59,18 +77,14 @@ export default {
       subNavAdded: false,
       navigation: [
         {
+          id: "users",
           label: this.$t("general.students"),
           link: "users/",
           img: { file: "users.svg", alt: "users icon white" },
           sub: []
         },
         {
-          label: this.$t("general.trainers"),
-          link: "trainers/",
-          img: { file: "trainers.svg", alt: "trainers icon white" },
-          sub: []
-        },
-        {
+          id: "lessons",
           label: this.$t("general.lessons"),
           link: "lessons/",
           img: { file: "lessons.svg", alt: "lessons icon white" },
@@ -99,6 +113,11 @@ export default {
               label: this.$t("general.fast_reading"),
               link: "lesson/fast-reading",
               img: { file: "fast_reading.png", alt: "Fast reading icon" }
+            },
+            {
+              label: this.$t("general.movies"),
+              link: "lesson/movies",
+              img: { file: "movies.png", alt: "" }
             }
           ]
         },
@@ -115,6 +134,7 @@ export default {
           sub: []
         },
         {
+          id: 'teaching_materials',
           label: this.$t("general.teaching_materials"),
           link: "teaching-materials/",
           img: {

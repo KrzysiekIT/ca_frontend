@@ -3,13 +3,13 @@
     <div v-for="(file, index) in files" :key="file + index" class="fs__file">
       <nuxt-link
         class="link"
-        :to="localePath(`/admin/lesson/future-skills/${file.id}`)"
+        :to="localePath(`/student/movies/${file.id}`)"
         v-if="file.type === 'folder'"
       >
         {{ `📁  ${file.name}` }}
       </nuxt-link>
       <a
-        v-if="file.type === 'file'"
+        v-else-if="file.type === 'file'"
         class="link"
         :href="`${apiUrl}/file/${file.name}`"
         target="openFile"
@@ -17,59 +17,17 @@
       >
         {{ `🔗 ${file.name}` }}
       </a>
-
-      <button class="fs__remove" @click="prepareToRemove(file)">
-        {{ $t("general.remove") }}
-      </button>
+      <a
+        v-else-if="file.type === 'movie'"
+        class="link"
+        :href="file.link.replace('watch?v=', '/embed/')"
+        target="openFile"
+        @click="isFileOpen = true"
+      >
+        {{ `🎥 ${file.name}` }}
+      </a>
     </div>
-    <div class="fs__actions">
-      <div class="fs__action">
-        <label>
-          {{ $t("general.folder_name") }}
-          <input v-model="folderToAddName" />
-        </label>
-        <button @click="addFolder(folderToAddName)" class="fs__add">
-          {{ $t("general.add_folder") }}
-        </button>
-      </div>
-      <div class="fs__action">
-        <div>
-          <label>
-            {{ $t("general.file_name") }}
-            <input v-model="newFile.name" />
-          </label>
-          <label>
-            <br />
-            {{ $t("general.file") }}
-            <input type="file" @change="handleFileChange($event)" />
-          </label>
-        </div>
-        <button class="fs__add" @click="addFile">
-          {{ $t("general.add_file") }}
-        </button>
-      </div>
-    </div>
-    <app-modal
-      v-show="isModalVisible"
-      @close="closeModal"
-      @ok="removeFile"
-      @no="closeModal"
-    >
-      <template v-slot:header>
-        {{ $t("general.approve_file_remove") }}
-      </template>
-
-      <template v-slot:body>
-        <span
-          v-html="
-            `${$t('general.file_remove_question')} <strong>${
-              fileToRemove.name
-            }</strong>?`
-          "
-        />
-      </template>
-    </app-modal>
-    <div class="file-opener" v-show="isFileOpen">
+    <div class="file-opener" v-if="isFileOpen">
       <button class="file-close" @click="isFileOpen = false">X</button>
       <iframe name="openFile" class="openFile" />
     </div>
@@ -77,7 +35,7 @@
 </template>
 <script>
 export default {
-  name: "FutureSkills",
+  name: "Movies",
   components: {
     AppModal: () => import("@/components/AppModal.vue"),
   },
@@ -117,6 +75,10 @@ export default {
         name: "",
         file: null,
       },
+      newMovie: {
+        name: "",
+        link: "",
+      },
       apiUrl: process.env.API_URL,
     };
   },
@@ -134,11 +96,12 @@ export default {
     async removeFile() {
       await this.$store.dispatch("auth/request", {
         method: "delete",
-        url: `future-skills/${this.fileToRemove.id}`,
+        url: `movies/${this.fileToRemove.id}`,
       });
       await this.getFiles(this.currentParent);
       this.isModalVisible = false;
     },
+
     async addFolder(name) {
       if (!name) {
         return;
@@ -149,11 +112,33 @@ export default {
       }
       newData.name = name;
       newData.type = "folder";
-      console.log(newData);
 
       await this.$store.dispatch("auth/request", {
         method: "post",
-        url: `future-skills/`,
+        url: `movies/`,
+        data: { values: { ...newData } },
+      });
+      await this.getFiles(this.currentParent);
+    },
+
+    async addMovie() {
+      if (!this.newMovie.name) {
+        return;
+      }
+      if (!this.newMovie.link) {
+        return;
+      }
+      const newData = {};
+      if (this.currentParent !== 0) {
+        newData.parent_id = this.currentParent;
+      }
+      newData.name = this.newMovie.name;
+      newData.type = "movie";
+      newData.link = this.newMovie.link;
+
+      await this.$store.dispatch("auth/request", {
+        method: "post",
+        url: `movies/`,
         data: { values: { ...newData } },
       });
       await this.getFiles(this.currentParent);
@@ -175,7 +160,7 @@ export default {
       bodyFormData.append("new_file", this.newFile.file);
       await this.$store.dispatch("auth/request", {
         method: "post",
-        url: "future-skills/file",
+        url: "movies/file",
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -184,7 +169,7 @@ export default {
     async getFiles(id) {
       const files = await this.$store.dispatch("auth/request", {
         method: "get",
-        url: `future-skills/${id}`,
+        url: `movies/${id}`,
       });
       this.files = files.data;
     },

@@ -119,6 +119,9 @@ export default {
         if (newValue !== null && newValue !== undefined) {
           this.getFiles(newValue);
         }
+        if(this.$route.params.id && !newValue) {
+          this.currentParent = +this.$route.params.id
+        }
       },
       immediate: true,
     },

@@ -137,10 +137,14 @@ export default {
   mixins: [user],
   computed: {
     filteredGroups() {
+      let filteredGroups = JSON.parse(JSON.stringify(this.groups))
+      filteredGroups = filteredGroups.filter(({id}) => {
+        return this.getNumbers(id) !== '-'
+      })
       if (this.selectedTrainer < 0) {
-        return this.groups;
+        return filteredGroups;
       }
-      return this.groups.filter(
+      return filteredGroups(
         ({ trainer_id }) => trainer_id === this.selectedTrainer
       );
     }
